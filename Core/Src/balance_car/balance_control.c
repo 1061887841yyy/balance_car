@@ -5,6 +5,7 @@
 #include "balance_car/encoder_hal.h"
 #include "balance_car/motor_tb6612.h"
 #include "balance_car/mpu6050_hal.h"
+#include "balance_car/remote_control.h"
 #include <math.h>
 
 #define PI_F                         3.14159f
@@ -310,6 +311,7 @@ HAL_StatusTypeDef BalanceCar_Init(void)
 
     (void)AppSensors_Init();
     (void)DisplayUi_Init();
+    (void)RemoteControl_Init();
 
     s_htim4.Instance = TIM4;
     s_htim4.Init.Prescaler = 64U - 1U;
@@ -330,6 +332,7 @@ void BalanceCar_Background(void)
 {
     AppSensors_Background();
     DisplayUi_Background();
+    RemoteControl_Background();
 
     if (s_button_toggle_pending != 0U) {
         s_button_toggle_pending = 0U;
