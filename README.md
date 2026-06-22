@@ -61,6 +61,42 @@
 
 如果编码器方向反了，可以交换 A/B 相，也可以在代码中给对应 delta 加负号。
 
+### OLED 显示屏
+
+默认使用 0.96 寸 I2C SSD1306 128x64 OLED，地址 `0x3C`。
+
+| 功能 | STM32 引脚 | OLED |
+| --- | --- | --- |
+| I2C2_SCL | PB10 | SCL |
+| I2C2_SDA | PB11 | SDA |
+| 3.3V | 3.3V | VCC |
+| GND | GND | GND |
+
+OLED 使用 I2C2，不占用 MPU6050 的 PB8/PB9。
+
+### DHT11 温湿度模块
+
+| 功能 | STM32 引脚 | DHT11 |
+| --- | --- | --- |
+| DATA | PC14 | DATA |
+| 3.3V | 3.3V | VCC |
+| GND | GND | GND |
+
+DHT11 数据脚需要上拉电阻；多数模块板已自带上拉。
+
+### FSR402 + RFP602 压力/重量估算
+
+| 功能 | STM32 引脚 | RFP602 |
+| --- | --- | --- |
+| 模拟输出 | PA2 / ADC1_IN2 | AO |
+| 3.3V | 3.3V | VCC |
+| GND | GND | GND |
+
+注意：
+
+- RFP602 输出必须限制在 `0~3.3V`，不能超过 STM32 ADC 输入范围。
+- FSR402 不是精密称重传感器，OLED 上显示的重量是通过校准系数估算出来的克重。
+
 ## 2. 工程结构
 
 核心代码在：
@@ -79,6 +115,12 @@ Core/Src/balance_car/
 | `mpu6050_hal.c/.h` | HAL I2C 版 MPU6050 初始化和原始数据读取 |
 | `motor_tb6612.c/.h` | TB6612 电机方向和 PWM 输出 |
 | `encoder_hal.c/.h` | TIM1/TIM2 编码器模式读取左右轮速度 |
+| `i2c_bus.c/.h` | I2C1/I2C2 总线初始化，MPU6050 用 I2C1，OLED 用 I2C2 |
+| `oled_ssd1306.c/.h` | SSD1306 128x64 I2C OLED 分页刷新 |
+| `dht11.c/.h` | PC14 单总线读取 DHT11 温湿度 |
+| `fsr_adc.c/.h` | PA2 / ADC1_IN2 读取 RFP602 模拟电平 |
+| `app_sensors.c/.h` | 温湿度、ADC、电压、重量估算和 Ozone 状态变量 |
+| `display_ui.c/.h` | OLED 四行数据显示和后台刷新 |
 
 CubeMX 生成的主入口在：
 
@@ -198,6 +240,7 @@ right_pwm = ave_pwm - dif_pwm / 2;
 ```c
 g_balance_debug
 g_balance_state
+g_sensor_state
 g_angle_pid
 g_speed_pid
 g_turn_pid
@@ -243,6 +286,30 @@ g_turn_pid
 | `ave_pwm` | 平均 PWM，主要来自角度环 |
 | `dif_pwm` | 差分 PWM，主要来自转向环 |
 
+### 5.3 g_sensor_state
+
+这是 OLED、DHT11 和 FSR402/RFP602 的观察与校准入口。
+
+| 变量 | 含义 |
+| --- | --- |
+| `temperature_c` | DHT11 温度，单位摄氏度 |
+| `humidity_percent` | DHT11 湿度，单位百分比 |
+| `fsr_adc_raw` | PA2 / ADC1_IN2 原始 ADC 值，范围约 0~4095 |
+| `fsr_voltage_mv` | RFP602 模拟输出电压，单位 mV |
+| `weight_g` | 按校准系数估算出的重量，单位 g |
+| `fsr_zero_adc` | 空载零点 ADC 值，可在 Ozone 中手动修正 |
+| `fsr_g_per_count` | 每个 ADC count 对应多少克，可在 Ozone 中手动校准 |
+| `sensor_fault_flags` | 传感器和 OLED 故障位 |
+| `dht_valid` | 1=DHT11 最近一次读取成功 |
+| `fsr_valid` | 1=FSR ADC 最近一次读取成功 |
+| `oled_ready` | 1=OLED 初始化成功且正在刷新 |
+
+重量换算公式：
+
+```text
+weight_g = max(0, (fsr_adc_raw - fsr_zero_adc) * fsr_g_per_count)
+```
+
 容易混淆的一点：
 
 ```c
@@ -257,7 +324,7 @@ g_balance_state.az
 g_balance_state.angle
 ```
 
-### 5.3 三个 PID
+### 5.4 三个 PID
 
 | PID | 作用 | 调试顺序 |
 | --- | --- | --- |
@@ -766,6 +833,53 @@ g_balance_state.angle
 g_balance_state.ave_speed
 ```
 
+### 6.8 OLED、温湿度和重量显示调试
+
+先不要接电机电源，只接 STM32、MPU6050、OLED、DHT11 和 RFP602。
+
+在 Ozone 中观察：
+
+```c
+g_sensor_state.oled_ready
+g_sensor_state.temperature_c
+g_sensor_state.humidity_percent
+g_sensor_state.fsr_adc_raw
+g_sensor_state.fsr_voltage_mv
+g_sensor_state.weight_g
+g_sensor_state.sensor_fault_flags
+```
+
+调好标准：
+
+- OLED 每隔约 500ms 更新一次显示。
+- DHT11 温湿度每隔约 2s 更新一次。
+- 按压 FSR402 时，`fsr_adc_raw` 和 `fsr_voltage_mv` 连续变化。
+- 空载时 `weight_g` 接近 0。
+
+FSR402 重量校准步骤：
+
+1. 空载时观察 `g_sensor_state.fsr_adc_raw`，把稳定值写入：
+
+```c
+g_sensor_state.fsr_zero_adc
+```
+
+2. 放一个已知重量的物体，观察新的 ADC 值。
+
+3. 按下面公式计算：
+
+```text
+fsr_g_per_count = 已知重量g / (当前fsr_adc_raw - fsr_zero_adc)
+```
+
+4. 把结果写入：
+
+```c
+g_sensor_state.fsr_g_per_count
+```
+
+FSR402 受受力面积、安装结构和材料回弹影响很大，建议只把它当作估算重量或压力趋势显示。
+
 ## 7. 方向反了怎么办
 
 方向问题不要同时改多个地方。一次只改一处。
@@ -858,6 +972,18 @@ g_balance_debug.clear_fault_request = 1;
 ```
 
 如果硬件问题还在，故障会再次出现。
+
+`g_sensor_state.sensor_fault_flags` 是新增显示和传感器故障位。
+
+| 值 | 含义 | 排查方向 |
+| --- | --- | --- |
+| `0x00000000` | 无故障 | 正常 |
+| `0x00000001` | DHT11 初始化失败 | 检查 PC14、供电和上拉 |
+| `0x00000002` | DHT11 读取失败 | 检查数据线、上拉、电源稳定性 |
+| `0x00000004` | FSR ADC 初始化失败 | 检查 ADC1/PA2 配置 |
+| `0x00000008` | FSR ADC 读取失败 | 检查 PA2 输入和 ADC |
+| `0x00000010` | OLED 初始化失败 | 检查 PB10/PB11、地址 0x3C、供电 |
+| `0x00000020` | OLED 刷新失败 | 检查 I2C 总线和 OLED 接触 |
 
 ## 9. 脱离 Ozone 后自启动
 
@@ -985,7 +1111,7 @@ HEX/BIN 只适合烧录，不适合看变量。
 - `main.c` 中是否还调用 `BalanceCar_Init()` 和 `BalanceCar_Background()`
 - `stm32f1xx_hal_msp.c` 中是否仍保留 SWD，不要禁用 SWD
 - `Makefile` 是否仍包含 `Core/Src/balance_car/*.c`
-- `stm32f1xx_hal_conf.h` 是否启用了 `HAL_I2C_MODULE_ENABLED` 和 `HAL_TIM_MODULE_ENABLED`
+- `stm32f1xx_hal_conf.h` 是否启用了 `HAL_I2C_MODULE_ENABLED`、`HAL_TIM_MODULE_ENABLED` 和 `HAL_ADC_MODULE_ENABLED`
 
 ## 11. 安全建议
 

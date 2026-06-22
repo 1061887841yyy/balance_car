@@ -1,5 +1,7 @@
 #include "balance_car/balance_control.h"
 
+#include "balance_car/app_sensors.h"
+#include "balance_car/display_ui.h"
 #include "balance_car/encoder_hal.h"
 #include "balance_car/motor_tb6612.h"
 #include "balance_car/mpu6050_hal.h"
@@ -306,6 +308,9 @@ HAL_StatusTypeDef BalanceCar_Init(void)
     }
     g_balance_state.mpu_id = Mpu6050_GetLastId();
 
+    (void)AppSensors_Init();
+    (void)DisplayUi_Init();
+
     s_htim4.Instance = TIM4;
     s_htim4.Init.Prescaler = 64U - 1U;
     s_htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
@@ -323,6 +328,9 @@ HAL_StatusTypeDef BalanceCar_Init(void)
 
 void BalanceCar_Background(void)
 {
+    AppSensors_Background();
+    DisplayUi_Background();
+
     if (s_button_toggle_pending != 0U) {
         s_button_toggle_pending = 0U;
         if (g_balance_debug.run_enable == 0U) {
