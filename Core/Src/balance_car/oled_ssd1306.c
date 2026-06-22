@@ -113,7 +113,7 @@ static const uint8_t s_font5x7[][5] = {
 static HAL_StatusTypeDef Oled_WriteCommand(uint8_t command)
 {
     uint8_t data[2] = {OLED_CONTROL_CMD, command};
-    return HAL_I2C_Master_Transmit(BalanceI2C2_GetHandle(), (uint16_t)s_oled_addr_7bit << 1,
+    return HAL_I2C_Master_Transmit(BalanceI2C1_GetHandle(), (uint16_t)s_oled_addr_7bit << 1,
                                    data, sizeof(data), 10U);
 }
 
@@ -141,18 +141,18 @@ HAL_StatusTypeDef Oled_Init(void)
     s_probe_mask = 0U;
     s_fail_step = 0U;
 
-    if (BalanceI2C2_Init() != HAL_OK) {
+    if (BalanceI2C1_Init() != HAL_OK) {
         s_fail_step = 1U;
         return HAL_ERROR;
     }
 
     HAL_Delay(20U);
 
-    if (HAL_I2C_IsDeviceReady(BalanceI2C2_GetHandle(), 0x3CU << 1, 2U, 10U) == HAL_OK) {
+    if (HAL_I2C_IsDeviceReady(BalanceI2C1_GetHandle(), 0x3CU << 1, 2U, 10U) == HAL_OK) {
         s_probe_mask |= 0x01U;
         s_oled_addr_7bit = 0x3CU;
     }
-    if (HAL_I2C_IsDeviceReady(BalanceI2C2_GetHandle(), 0x3DU << 1, 2U, 10U) == HAL_OK) {
+    if (HAL_I2C_IsDeviceReady(BalanceI2C1_GetHandle(), 0x3DU << 1, 2U, 10U) == HAL_OK) {
         s_probe_mask |= 0x02U;
         if (s_oled_addr_7bit == 0U) {
             s_oled_addr_7bit = 0x3DU;
@@ -193,7 +193,7 @@ HAL_StatusTypeDef Oled_RefreshNextPage(void)
     tx[0] = OLED_CONTROL_DATA;
     memcpy(&tx[1], &s_buffer[(uint16_t)s_next_page * OLED_WIDTH], OLED_WIDTH);
 
-    if (HAL_I2C_Master_Transmit(BalanceI2C2_GetHandle(), (uint16_t)s_oled_addr_7bit << 1,
+    if (HAL_I2C_Master_Transmit(BalanceI2C1_GetHandle(), (uint16_t)s_oled_addr_7bit << 1,
                                 tx, sizeof(tx), 20U) != HAL_OK) {
         return HAL_ERROR;
     }
