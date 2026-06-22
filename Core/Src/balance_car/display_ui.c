@@ -17,11 +17,17 @@ HAL_StatusTypeDef DisplayUi_Init(void)
     if (status != HAL_OK) {
         AppSensors_SetFault(SENSOR_FAULT_OLED_INIT);
         g_sensor_state.oled_ready = 0U;
+        g_sensor_state.oled_addr_7bit = Oled_GetAddress7Bit();
+        g_sensor_state.oled_probe_mask = Oled_GetProbeMask();
+        g_sensor_state.oled_fail_step = Oled_GetFailStep();
         return status;
     }
 
     AppSensors_ClearFault(SENSOR_FAULT_OLED_INIT);
     g_sensor_state.oled_ready = 1U;
+    g_sensor_state.oled_addr_7bit = Oled_GetAddress7Bit();
+    g_sensor_state.oled_probe_mask = Oled_GetProbeMask();
+    g_sensor_state.oled_fail_step = Oled_GetFailStep();
     s_next_text_ms = HAL_GetTick();
     s_next_page_ms = HAL_GetTick();
     return HAL_OK;
@@ -67,6 +73,7 @@ void DisplayUi_Background(void)
         if (Oled_RefreshNextPage() != HAL_OK) {
             AppSensors_SetFault(SENSOR_FAULT_OLED_REFRESH);
             g_sensor_state.oled_ready = 0U;
+            g_sensor_state.oled_fail_step = Oled_GetFailStep();
         } else {
             AppSensors_ClearFault(SENSOR_FAULT_OLED_REFRESH);
         }

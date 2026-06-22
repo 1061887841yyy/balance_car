@@ -303,6 +303,9 @@ g_turn_pid
 | `dht_valid` | 1=DHT11 最近一次读取成功 |
 | `fsr_valid` | 1=FSR ADC 最近一次读取成功 |
 | `oled_ready` | 1=OLED 初始化成功且正在刷新 |
+| `oled_addr_7bit` | OLED 实际使用的 7 位 I2C 地址，正常通常是 `0x3C` 或 `0x3D` |
+| `oled_probe_mask` | OLED 地址探测结果，bit0=`0x3C` 有应答，bit1=`0x3D` 有应答 |
+| `oled_fail_step` | OLED 初始化失败步骤，1=I2C2 初始化失败，2=地址无应答，3=初始化命令失败，4=首次刷新失败 |
 
 重量换算公式：
 
@@ -847,6 +850,9 @@ g_sensor_state.fsr_adc_raw
 g_sensor_state.fsr_voltage_mv
 g_sensor_state.weight_g
 g_sensor_state.sensor_fault_flags
+g_sensor_state.oled_addr_7bit
+g_sensor_state.oled_probe_mask
+g_sensor_state.oled_fail_step
 ```
 
 调好标准：
@@ -984,6 +990,15 @@ g_balance_debug.clear_fault_request = 1;
 | `0x00000008` | FSR ADC 读取失败 | 检查 PA2 输入和 ADC |
 | `0x00000010` | OLED 初始化失败 | 检查 PB10/PB11、地址 0x3C、供电 |
 | `0x00000020` | OLED 刷新失败 | 检查 I2C 总线和 OLED 接触 |
+
+OLED 不亮时，优先看：
+
+```c
+g_sensor_state.oled_probe_mask
+g_sensor_state.oled_fail_step
+```
+
+如果 `oled_fail_step == 2` 且 `oled_probe_mask == 0`，说明 PB10/PB11 上没有探测到 `0x3C` 或 `0x3D` OLED，应优先检查 SCL/SDA 是否接反、供电/GND、模块是否真的是 I2C 版本。
 
 ## 9. 脱离 Ozone 后自启动
 

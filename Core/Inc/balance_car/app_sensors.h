@@ -26,6 +26,9 @@ typedef struct {
     uint8_t dht_valid;
     uint8_t fsr_valid;
     uint8_t oled_ready;
+    uint8_t oled_addr_7bit;
+    uint8_t oled_probe_mask;
+    uint8_t oled_fail_step;
     uint8_t reserved;
 } AppSensorState_t;
 

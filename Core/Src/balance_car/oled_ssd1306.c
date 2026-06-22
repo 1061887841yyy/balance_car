@@ -3,12 +3,14 @@
 #include "balance_car/i2c_bus.h"
 #include <string.h>
 
-#define OLED_ADDR          (0x3CU << 1)
 #define OLED_CONTROL_CMD   0x00U
 #define OLED_CONTROL_DATA  0x40U
 
 static uint8_t s_buffer[OLED_WIDTH * OLED_PAGES];
 static uint8_t s_next_page;
+static uint8_t s_oled_addr_7bit;
+static uint8_t s_probe_mask;
+static uint8_t s_fail_step;
 
 static const uint8_t s_font5x7[][5] = {
     {0x00,0x00,0x00,0x00,0x00}, /* space */
@@ -111,7 +113,8 @@ static const uint8_t s_font5x7[][5] = {
 static HAL_StatusTypeDef Oled_WriteCommand(uint8_t command)
 {
     uint8_t data[2] = {OLED_CONTROL_CMD, command};
-    return HAL_I2C_Master_Transmit(BalanceI2C2_GetHandle(), OLED_ADDR, data, sizeof(data), 10U);
+    return HAL_I2C_Master_Transmit(BalanceI2C2_GetHandle(), (uint16_t)s_oled_addr_7bit << 1,
+                                   data, sizeof(data), 10U);
 }
 
 static HAL_StatusTypeDef Oled_SetPage(uint8_t page)
@@ -134,13 +137,35 @@ HAL_StatusTypeDef Oled_Init(void)
         0x40, 0x8D, 0x14, 0xAF
     };
 
+    s_oled_addr_7bit = 0U;
+    s_probe_mask = 0U;
+    s_fail_step = 0U;
+
     if (BalanceI2C2_Init() != HAL_OK) {
+        s_fail_step = 1U;
         return HAL_ERROR;
     }
 
     HAL_Delay(20U);
+
+    if (HAL_I2C_IsDeviceReady(BalanceI2C2_GetHandle(), 0x3CU << 1, 2U, 10U) == HAL_OK) {
+        s_probe_mask |= 0x01U;
+        s_oled_addr_7bit = 0x3CU;
+    }
+    if (HAL_I2C_IsDeviceReady(BalanceI2C2_GetHandle(), 0x3DU << 1, 2U, 10U) == HAL_OK) {
+        s_probe_mask |= 0x02U;
+        if (s_oled_addr_7bit == 0U) {
+            s_oled_addr_7bit = 0x3DU;
+        }
+    }
+    if (s_oled_addr_7bit == 0U) {
+        s_fail_step = 2U;
+        return HAL_ERROR;
+    }
+
     for (uint8_t i = 0U; i < sizeof(init_cmds); i++) {
         if (Oled_WriteCommand(init_cmds[i]) != HAL_OK) {
+            s_fail_step = 3U;
             return HAL_ERROR;
         }
     }
@@ -149,6 +174,7 @@ HAL_StatusTypeDef Oled_Init(void)
     for (uint8_t page = 0U; page < OLED_PAGES; page++) {
         s_next_page = page;
         if (Oled_RefreshNextPage() != HAL_OK) {
+            s_fail_step = 4U;
             return HAL_ERROR;
         }
     }
@@ -167,7 +193,8 @@ HAL_StatusTypeDef Oled_RefreshNextPage(void)
     tx[0] = OLED_CONTROL_DATA;
     memcpy(&tx[1], &s_buffer[(uint16_t)s_next_page * OLED_WIDTH], OLED_WIDTH);
 
-    if (HAL_I2C_Master_Transmit(BalanceI2C2_GetHandle(), OLED_ADDR, tx, sizeof(tx), 20U) != HAL_OK) {
+    if (HAL_I2C_Master_Transmit(BalanceI2C2_GetHandle(), (uint16_t)s_oled_addr_7bit << 1,
+                                tx, sizeof(tx), 20U) != HAL_OK) {
         return HAL_ERROR;
     }
 
@@ -176,6 +203,21 @@ HAL_StatusTypeDef Oled_RefreshNextPage(void)
         s_next_page = 0U;
     }
     return HAL_OK;
+}
+
+uint8_t Oled_GetAddress7Bit(void)
+{
+    return s_oled_addr_7bit;
+}
+
+uint8_t Oled_GetProbeMask(void)
+{
+    return s_probe_mask;
+}
+
+uint8_t Oled_GetFailStep(void)
+{
+    return s_fail_step;
 }
 
 void Oled_Clear(void)
