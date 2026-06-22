@@ -1,0 +1,948 @@
+ARM GAS  D:\TMP\ccqUaSJ3.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"motor_tb6612.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "Core/Src/balance_car/motor_tb6612.c"
+  18              		.section	.text.Motor_Clamp,"ax",%progbits
+  19              		.align	1
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	Motor_Clamp:
+  25              	.LVL0:
+  26              	.LFB65:
+   1:Core/Src/balance_car/motor_tb6612.c **** #include "balance_car/motor_tb6612.h"
+   2:Core/Src/balance_car/motor_tb6612.c **** 
+   3:Core/Src/balance_car/motor_tb6612.c **** #define TB6612_STBY_PORT GPIOA
+   4:Core/Src/balance_car/motor_tb6612.c **** #define TB6612_STBY_PIN  GPIO_PIN_3
+   5:Core/Src/balance_car/motor_tb6612.c **** #define TB6612_AIN1_PORT GPIOA
+   6:Core/Src/balance_car/motor_tb6612.c **** #define TB6612_AIN1_PIN  GPIO_PIN_4
+   7:Core/Src/balance_car/motor_tb6612.c **** #define TB6612_AIN2_PORT GPIOA
+   8:Core/Src/balance_car/motor_tb6612.c **** #define TB6612_AIN2_PIN  GPIO_PIN_5
+   9:Core/Src/balance_car/motor_tb6612.c **** #define TB6612_BIN1_PORT GPIOB
+  10:Core/Src/balance_car/motor_tb6612.c **** #define TB6612_BIN1_PIN  GPIO_PIN_1
+  11:Core/Src/balance_car/motor_tb6612.c **** #define TB6612_BIN2_PORT GPIOB
+  12:Core/Src/balance_car/motor_tb6612.c **** #define TB6612_BIN2_PIN  GPIO_PIN_0
+  13:Core/Src/balance_car/motor_tb6612.c **** 
+  14:Core/Src/balance_car/motor_tb6612.c **** #define PWM_PERIOD_COUNTS 1000U
+  15:Core/Src/balance_car/motor_tb6612.c **** 
+  16:Core/Src/balance_car/motor_tb6612.c **** static TIM_HandleTypeDef s_htim3;
+  17:Core/Src/balance_car/motor_tb6612.c **** 
+  18:Core/Src/balance_car/motor_tb6612.c **** static int16_t Motor_Clamp(int16_t pwm)
+  19:Core/Src/balance_car/motor_tb6612.c **** {
+  27              		.loc 1 19 1 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  20:Core/Src/balance_car/motor_tb6612.c ****     if (pwm > MOTOR_PWM_LIMIT) {
+  32              		.loc 1 20 5 view .LVU1
+  33              		.loc 1 20 8 is_stmt 0 view .LVU2
+  34 0000 6428     		cmp	r0, #100
+  35 0002 03DC     		bgt	.L3
+  21:Core/Src/balance_car/motor_tb6612.c ****         return MOTOR_PWM_LIMIT;
+  22:Core/Src/balance_car/motor_tb6612.c ****     }
+  23:Core/Src/balance_car/motor_tb6612.c ****     if (pwm < -MOTOR_PWM_LIMIT) {
+ARM GAS  D:\TMP\ccqUaSJ3.s 			page 2
+
+
+  36              		.loc 1 23 5 is_stmt 1 view .LVU3
+  37              		.loc 1 23 8 is_stmt 0 view .LVU4
+  38 0004 10F1640F 		cmn	r0, #100
+  39 0008 02DB     		blt	.L4
+  40 000a 7047     		bx	lr
+  41              	.L3:
+  21:Core/Src/balance_car/motor_tb6612.c ****         return MOTOR_PWM_LIMIT;
+  42              		.loc 1 21 16 view .LVU5
+  43 000c 6420     		movs	r0, #100
+  44              	.LVL1:
+  21:Core/Src/balance_car/motor_tb6612.c ****         return MOTOR_PWM_LIMIT;
+  45              		.loc 1 21 16 view .LVU6
+  46 000e 7047     		bx	lr
+  47              	.LVL2:
+  48              	.L4:
+  24:Core/Src/balance_car/motor_tb6612.c ****         return -MOTOR_PWM_LIMIT;
+  49              		.loc 1 24 16 view .LVU7
+  50 0010 6FF06300 		mvn	r0, #99
+  51              	.LVL3:
+  25:Core/Src/balance_car/motor_tb6612.c ****     }
+  26:Core/Src/balance_car/motor_tb6612.c ****     return pwm;
+  27:Core/Src/balance_car/motor_tb6612.c **** }
+  52              		.loc 1 27 1 view .LVU8
+  53 0014 7047     		bx	lr
+  54              		.cfi_endproc
+  55              	.LFE65:
+  57              		.section	.text.Motor_ToCompare,"ax",%progbits
+  58              		.align	1
+  59              		.syntax unified
+  60              		.thumb
+  61              		.thumb_func
+  63              	Motor_ToCompare:
+  64              	.LVL4:
+  65              	.LFB66:
+  28:Core/Src/balance_car/motor_tb6612.c **** 
+  29:Core/Src/balance_car/motor_tb6612.c **** static uint32_t Motor_ToCompare(int16_t pwm)
+  30:Core/Src/balance_car/motor_tb6612.c **** {
+  66              		.loc 1 30 1 is_stmt 1 view -0
+  67              		.cfi_startproc
+  68              		@ args = 0, pretend = 0, frame = 0
+  69              		@ frame_needed = 0, uses_anonymous_args = 0
+  70              		@ link register save eliminated.
+  31:Core/Src/balance_car/motor_tb6612.c ****     int16_t abs_pwm = pwm < 0 ? -pwm : pwm;
+  71              		.loc 1 31 5 view .LVU10
+  72              		.loc 1 31 38 is_stmt 0 view .LVU11
+  73 0000 0028     		cmp	r0, #0
+  74 0002 B8BF     		it	lt
+  75 0004 4042     		rsblt	r0, r0, #0
+  76              	.LVL5:
+  77              		.loc 1 31 13 view .LVU12
+  78 0006 00B2     		sxth	r0, r0
+  79              	.LVL6:
+  32:Core/Src/balance_car/motor_tb6612.c ****     return (uint32_t)abs_pwm * PWM_PERIOD_COUNTS / MOTOR_PWM_LIMIT;
+  80              		.loc 1 32 5 is_stmt 1 view .LVU13
+  81              		.loc 1 32 30 is_stmt 0 view .LVU14
+  82 0008 4FF47A73 		mov	r3, #1000
+  83 000c 03FB00F0 		mul	r0, r3, r0
+ARM GAS  D:\TMP\ccqUaSJ3.s 			page 3
+
+
+  84              	.LVL7:
+  85              		.loc 1 32 50 view .LVU15
+  86 0010 024B     		ldr	r3, .L6
+  87 0012 A3FB0030 		umull	r3, r0, r3, r0
+  33:Core/Src/balance_car/motor_tb6612.c **** }
+  88              		.loc 1 33 1 view .LVU16
+  89 0016 4009     		lsrs	r0, r0, #5
+  90 0018 7047     		bx	lr
+  91              	.L7:
+  92 001a 00BF     		.align	2
+  93              	.L6:
+  94 001c 1F85EB51 		.word	1374389535
+  95              		.cfi_endproc
+  96              	.LFE66:
+  98              		.section	.text.TB6612_SetMotors,"ax",%progbits
+  99              		.align	1
+ 100              		.global	TB6612_SetMotors
+ 101              		.syntax unified
+ 102              		.thumb
+ 103              		.thumb_func
+ 105              	TB6612_SetMotors:
+ 106              	.LVL8:
+ 107              	.LFB68:
+  34:Core/Src/balance_car/motor_tb6612.c **** 
+  35:Core/Src/balance_car/motor_tb6612.c **** HAL_StatusTypeDef TB6612_Init(void)
+  36:Core/Src/balance_car/motor_tb6612.c **** {
+  37:Core/Src/balance_car/motor_tb6612.c ****     GPIO_InitTypeDef gpio = {0};
+  38:Core/Src/balance_car/motor_tb6612.c **** 
+  39:Core/Src/balance_car/motor_tb6612.c ****     __HAL_RCC_GPIOA_CLK_ENABLE();
+  40:Core/Src/balance_car/motor_tb6612.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
+  41:Core/Src/balance_car/motor_tb6612.c **** 
+  42:Core/Src/balance_car/motor_tb6612.c ****     gpio.Pin = TB6612_STBY_PIN | TB6612_AIN1_PIN | TB6612_AIN2_PIN;
+  43:Core/Src/balance_car/motor_tb6612.c ****     gpio.Mode = GPIO_MODE_OUTPUT_PP;
+  44:Core/Src/balance_car/motor_tb6612.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+  45:Core/Src/balance_car/motor_tb6612.c ****     HAL_GPIO_Init(GPIOA, &gpio);
+  46:Core/Src/balance_car/motor_tb6612.c **** 
+  47:Core/Src/balance_car/motor_tb6612.c ****     gpio.Pin = TB6612_BIN1_PIN | TB6612_BIN2_PIN;
+  48:Core/Src/balance_car/motor_tb6612.c ****     gpio.Mode = GPIO_MODE_OUTPUT_PP;
+  49:Core/Src/balance_car/motor_tb6612.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+  50:Core/Src/balance_car/motor_tb6612.c ****     HAL_GPIO_Init(GPIOB, &gpio);
+  51:Core/Src/balance_car/motor_tb6612.c **** 
+  52:Core/Src/balance_car/motor_tb6612.c ****     s_htim3.Instance = TIM3;
+  53:Core/Src/balance_car/motor_tb6612.c ****     s_htim3.Init.Prescaler = 64U - 1U;
+  54:Core/Src/balance_car/motor_tb6612.c ****     s_htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+  55:Core/Src/balance_car/motor_tb6612.c ****     s_htim3.Init.Period = PWM_PERIOD_COUNTS;
+  56:Core/Src/balance_car/motor_tb6612.c ****     s_htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  57:Core/Src/balance_car/motor_tb6612.c ****     s_htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  58:Core/Src/balance_car/motor_tb6612.c ****     if (HAL_TIM_PWM_Init(&s_htim3) != HAL_OK) {
+  59:Core/Src/balance_car/motor_tb6612.c ****         return HAL_ERROR;
+  60:Core/Src/balance_car/motor_tb6612.c ****     }
+  61:Core/Src/balance_car/motor_tb6612.c **** 
+  62:Core/Src/balance_car/motor_tb6612.c ****     TIM_OC_InitTypeDef config = {0};
+  63:Core/Src/balance_car/motor_tb6612.c ****     config.OCMode = TIM_OCMODE_PWM1;
+  64:Core/Src/balance_car/motor_tb6612.c ****     config.Pulse = 0U;
+  65:Core/Src/balance_car/motor_tb6612.c ****     config.OCPolarity = TIM_OCPOLARITY_HIGH;
+  66:Core/Src/balance_car/motor_tb6612.c ****     config.OCFastMode = TIM_OCFAST_DISABLE;
+  67:Core/Src/balance_car/motor_tb6612.c **** 
+ARM GAS  D:\TMP\ccqUaSJ3.s 			page 4
+
+
+  68:Core/Src/balance_car/motor_tb6612.c ****     if (HAL_TIM_PWM_ConfigChannel(&s_htim3, &config, TIM_CHANNEL_1) != HAL_OK) {
+  69:Core/Src/balance_car/motor_tb6612.c ****         return HAL_ERROR;
+  70:Core/Src/balance_car/motor_tb6612.c ****     }
+  71:Core/Src/balance_car/motor_tb6612.c ****     if (HAL_TIM_PWM_ConfigChannel(&s_htim3, &config, TIM_CHANNEL_2) != HAL_OK) {
+  72:Core/Src/balance_car/motor_tb6612.c ****         return HAL_ERROR;
+  73:Core/Src/balance_car/motor_tb6612.c ****     }
+  74:Core/Src/balance_car/motor_tb6612.c ****     if (HAL_TIM_PWM_Start(&s_htim3, TIM_CHANNEL_1) != HAL_OK) {
+  75:Core/Src/balance_car/motor_tb6612.c ****         return HAL_ERROR;
+  76:Core/Src/balance_car/motor_tb6612.c ****     }
+  77:Core/Src/balance_car/motor_tb6612.c ****     if (HAL_TIM_PWM_Start(&s_htim3, TIM_CHANNEL_2) != HAL_OK) {
+  78:Core/Src/balance_car/motor_tb6612.c ****         return HAL_ERROR;
+  79:Core/Src/balance_car/motor_tb6612.c ****     }
+  80:Core/Src/balance_car/motor_tb6612.c **** 
+  81:Core/Src/balance_car/motor_tb6612.c ****     TB6612_Stop();
+  82:Core/Src/balance_car/motor_tb6612.c ****     return HAL_OK;
+  83:Core/Src/balance_car/motor_tb6612.c **** }
+  84:Core/Src/balance_car/motor_tb6612.c **** 
+  85:Core/Src/balance_car/motor_tb6612.c **** void TB6612_SetMotors(int16_t left_pwm, int16_t right_pwm)
+  86:Core/Src/balance_car/motor_tb6612.c **** {
+ 108              		.loc 1 86 1 is_stmt 1 view -0
+ 109              		.cfi_startproc
+ 110              		@ args = 0, pretend = 0, frame = 0
+ 111              		@ frame_needed = 0, uses_anonymous_args = 0
+ 112              		.loc 1 86 1 is_stmt 0 view .LVU18
+ 113 0000 70B5     		push	{r4, r5, r6, lr}
+ 114              	.LCFI0:
+ 115              		.cfi_def_cfa_offset 16
+ 116              		.cfi_offset 4, -16
+ 117              		.cfi_offset 5, -12
+ 118              		.cfi_offset 6, -8
+ 119              		.cfi_offset 14, -4
+ 120 0002 0C46     		mov	r4, r1
+  87:Core/Src/balance_car/motor_tb6612.c ****     left_pwm = Motor_Clamp(left_pwm);
+ 121              		.loc 1 87 5 is_stmt 1 view .LVU19
+ 122              		.loc 1 87 16 is_stmt 0 view .LVU20
+ 123 0004 FFF7FEFF 		bl	Motor_Clamp
+ 124              	.LVL9:
+ 125              		.loc 1 87 16 view .LVU21
+ 126 0008 0646     		mov	r6, r0
+ 127              	.LVL10:
+  88:Core/Src/balance_car/motor_tb6612.c ****     right_pwm = Motor_Clamp(right_pwm);
+ 128              		.loc 1 88 5 is_stmt 1 view .LVU22
+ 129              		.loc 1 88 17 is_stmt 0 view .LVU23
+ 130 000a 2046     		mov	r0, r4
+ 131 000c FFF7FEFF 		bl	Motor_Clamp
+ 132              	.LVL11:
+ 133 0010 0446     		mov	r4, r0
+ 134              	.LVL12:
+  89:Core/Src/balance_car/motor_tb6612.c **** 
+  90:Core/Src/balance_car/motor_tb6612.c ****     HAL_GPIO_WritePin(TB6612_STBY_PORT, TB6612_STBY_PIN, GPIO_PIN_SET);
+ 135              		.loc 1 90 5 is_stmt 1 view .LVU24
+ 136 0012 0122     		movs	r2, #1
+ 137 0014 0821     		movs	r1, #8
+ 138 0016 2048     		ldr	r0, .L14
+ 139 0018 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 140              	.LVL13:
+  91:Core/Src/balance_car/motor_tb6612.c **** 
+ARM GAS  D:\TMP\ccqUaSJ3.s 			page 5
+
+
+  92:Core/Src/balance_car/motor_tb6612.c ****     if (left_pwm >= 0) {
+ 141              		.loc 1 92 5 view .LVU25
+ 142              		.loc 1 92 8 is_stmt 0 view .LVU26
+ 143 001c 002E     		cmp	r6, #0
+ 144 001e 22DB     		blt	.L9
+  93:Core/Src/balance_car/motor_tb6612.c ****         HAL_GPIO_WritePin(TB6612_AIN1_PORT, TB6612_AIN1_PIN, GPIO_PIN_SET);
+ 145              		.loc 1 93 9 is_stmt 1 view .LVU27
+ 146 0020 1D4D     		ldr	r5, .L14
+ 147 0022 0122     		movs	r2, #1
+ 148 0024 1021     		movs	r1, #16
+ 149 0026 2846     		mov	r0, r5
+ 150 0028 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 151              	.LVL14:
+  94:Core/Src/balance_car/motor_tb6612.c ****         HAL_GPIO_WritePin(TB6612_AIN2_PORT, TB6612_AIN2_PIN, GPIO_PIN_RESET);
+ 152              		.loc 1 94 9 view .LVU28
+ 153 002c 0022     		movs	r2, #0
+ 154 002e 2021     		movs	r1, #32
+ 155 0030 2846     		mov	r0, r5
+ 156 0032 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 157              	.LVL15:
+ 158              	.L10:
+  95:Core/Src/balance_car/motor_tb6612.c ****     } else {
+  96:Core/Src/balance_car/motor_tb6612.c ****         HAL_GPIO_WritePin(TB6612_AIN1_PORT, TB6612_AIN1_PIN, GPIO_PIN_RESET);
+  97:Core/Src/balance_car/motor_tb6612.c ****         HAL_GPIO_WritePin(TB6612_AIN2_PORT, TB6612_AIN2_PIN, GPIO_PIN_SET);
+  98:Core/Src/balance_car/motor_tb6612.c ****     }
+  99:Core/Src/balance_car/motor_tb6612.c **** 
+ 100:Core/Src/balance_car/motor_tb6612.c ****     if (right_pwm >= 0) {
+ 159              		.loc 1 100 5 view .LVU29
+ 160              		.loc 1 100 8 is_stmt 0 view .LVU30
+ 161 0036 002C     		cmp	r4, #0
+ 162 0038 21DB     		blt	.L11
+ 101:Core/Src/balance_car/motor_tb6612.c ****         HAL_GPIO_WritePin(TB6612_BIN1_PORT, TB6612_BIN1_PIN, GPIO_PIN_SET);
+ 163              		.loc 1 101 9 is_stmt 1 view .LVU31
+ 164 003a 184D     		ldr	r5, .L14+4
+ 165 003c 0122     		movs	r2, #1
+ 166 003e 0221     		movs	r1, #2
+ 167 0040 2846     		mov	r0, r5
+ 168 0042 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 169              	.LVL16:
+ 102:Core/Src/balance_car/motor_tb6612.c ****         HAL_GPIO_WritePin(TB6612_BIN2_PORT, TB6612_BIN2_PIN, GPIO_PIN_RESET);
+ 170              		.loc 1 102 9 view .LVU32
+ 171 0046 0022     		movs	r2, #0
+ 172 0048 0121     		movs	r1, #1
+ 173 004a 2846     		mov	r0, r5
+ 174 004c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 175              	.LVL17:
+ 176              	.L12:
+ 103:Core/Src/balance_car/motor_tb6612.c ****     } else {
+ 104:Core/Src/balance_car/motor_tb6612.c ****         HAL_GPIO_WritePin(TB6612_BIN1_PORT, TB6612_BIN1_PIN, GPIO_PIN_RESET);
+ 105:Core/Src/balance_car/motor_tb6612.c ****         HAL_GPIO_WritePin(TB6612_BIN2_PORT, TB6612_BIN2_PIN, GPIO_PIN_SET);
+ 106:Core/Src/balance_car/motor_tb6612.c ****     }
+ 107:Core/Src/balance_car/motor_tb6612.c **** 
+ 108:Core/Src/balance_car/motor_tb6612.c ****     __HAL_TIM_SET_COMPARE(&s_htim3, TIM_CHANNEL_1, Motor_ToCompare(left_pwm));
+ 177              		.loc 1 108 5 view .LVU33
+ 178 0050 134B     		ldr	r3, .L14+8
+ 179 0052 1D68     		ldr	r5, [r3]
+ 180 0054 3046     		mov	r0, r6
+ARM GAS  D:\TMP\ccqUaSJ3.s 			page 6
+
+
+ 181 0056 FFF7FEFF 		bl	Motor_ToCompare
+ 182              	.LVL18:
+ 183              		.loc 1 108 5 is_stmt 0 discriminator 1 view .LVU34
+ 184 005a 6863     		str	r0, [r5, #52]
+ 109:Core/Src/balance_car/motor_tb6612.c ****     __HAL_TIM_SET_COMPARE(&s_htim3, TIM_CHANNEL_2, Motor_ToCompare(right_pwm));
+ 185              		.loc 1 109 5 is_stmt 1 view .LVU35
+ 186 005c 2046     		mov	r0, r4
+ 187 005e FFF7FEFF 		bl	Motor_ToCompare
+ 188              	.LVL19:
+ 189              		.loc 1 109 5 is_stmt 0 discriminator 1 view .LVU36
+ 190 0062 A863     		str	r0, [r5, #56]
+ 110:Core/Src/balance_car/motor_tb6612.c **** }
+ 191              		.loc 1 110 1 view .LVU37
+ 192 0064 70BD     		pop	{r4, r5, r6, pc}
+ 193              	.LVL20:
+ 194              	.L9:
+  96:Core/Src/balance_car/motor_tb6612.c ****         HAL_GPIO_WritePin(TB6612_AIN2_PORT, TB6612_AIN2_PIN, GPIO_PIN_SET);
+ 195              		.loc 1 96 9 is_stmt 1 view .LVU38
+ 196 0066 0C4D     		ldr	r5, .L14
+ 197 0068 0022     		movs	r2, #0
+ 198 006a 1021     		movs	r1, #16
+ 199 006c 2846     		mov	r0, r5
+ 200 006e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 201              	.LVL21:
+  97:Core/Src/balance_car/motor_tb6612.c ****     }
+ 202              		.loc 1 97 9 view .LVU39
+ 203 0072 0122     		movs	r2, #1
+ 204 0074 2021     		movs	r1, #32
+ 205 0076 2846     		mov	r0, r5
+ 206 0078 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 207              	.LVL22:
+ 208 007c DBE7     		b	.L10
+ 209              	.L11:
+ 104:Core/Src/balance_car/motor_tb6612.c ****         HAL_GPIO_WritePin(TB6612_BIN2_PORT, TB6612_BIN2_PIN, GPIO_PIN_SET);
+ 210              		.loc 1 104 9 view .LVU40
+ 211 007e 074D     		ldr	r5, .L14+4
+ 212 0080 0022     		movs	r2, #0
+ 213 0082 0221     		movs	r1, #2
+ 214 0084 2846     		mov	r0, r5
+ 215 0086 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 216              	.LVL23:
+ 105:Core/Src/balance_car/motor_tb6612.c ****     }
+ 217              		.loc 1 105 9 view .LVU41
+ 218 008a 0122     		movs	r2, #1
+ 219 008c 1146     		mov	r1, r2
+ 220 008e 2846     		mov	r0, r5
+ 221 0090 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 222              	.LVL24:
+ 223 0094 DCE7     		b	.L12
+ 224              	.L15:
+ 225 0096 00BF     		.align	2
+ 226              	.L14:
+ 227 0098 00080140 		.word	1073809408
+ 228 009c 000C0140 		.word	1073810432
+ 229 00a0 00000000 		.word	s_htim3
+ 230              		.cfi_endproc
+ 231              	.LFE68:
+ARM GAS  D:\TMP\ccqUaSJ3.s 			page 7
+
+
+ 233              		.section	.text.TB6612_Stop,"ax",%progbits
+ 234              		.align	1
+ 235              		.global	TB6612_Stop
+ 236              		.syntax unified
+ 237              		.thumb
+ 238              		.thumb_func
+ 240              	TB6612_Stop:
+ 241              	.LFB69:
+ 111:Core/Src/balance_car/motor_tb6612.c **** 
+ 112:Core/Src/balance_car/motor_tb6612.c **** void TB6612_Stop(void)
+ 113:Core/Src/balance_car/motor_tb6612.c **** {
+ 242              		.loc 1 113 1 view -0
+ 243              		.cfi_startproc
+ 244              		@ args = 0, pretend = 0, frame = 0
+ 245              		@ frame_needed = 0, uses_anonymous_args = 0
+ 246 0000 70B5     		push	{r4, r5, r6, lr}
+ 247              	.LCFI1:
+ 248              		.cfi_def_cfa_offset 16
+ 249              		.cfi_offset 4, -16
+ 250              		.cfi_offset 5, -12
+ 251              		.cfi_offset 6, -8
+ 252              		.cfi_offset 14, -4
+ 114:Core/Src/balance_car/motor_tb6612.c ****     __HAL_TIM_SET_COMPARE(&s_htim3, TIM_CHANNEL_1, 0U);
+ 253              		.loc 1 114 5 view .LVU43
+ 254 0002 104B     		ldr	r3, .L18
+ 255 0004 1B68     		ldr	r3, [r3]
+ 256 0006 0024     		movs	r4, #0
+ 257 0008 5C63     		str	r4, [r3, #52]
+ 115:Core/Src/balance_car/motor_tb6612.c ****     __HAL_TIM_SET_COMPARE(&s_htim3, TIM_CHANNEL_2, 0U);
+ 258              		.loc 1 115 5 view .LVU44
+ 259 000a 9C63     		str	r4, [r3, #56]
+ 116:Core/Src/balance_car/motor_tb6612.c ****     HAL_GPIO_WritePin(TB6612_AIN1_PORT, TB6612_AIN1_PIN, GPIO_PIN_RESET);
+ 260              		.loc 1 116 5 view .LVU45
+ 261 000c 0E4D     		ldr	r5, .L18+4
+ 262 000e 2246     		mov	r2, r4
+ 263 0010 1021     		movs	r1, #16
+ 264 0012 2846     		mov	r0, r5
+ 265 0014 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 266              	.LVL25:
+ 117:Core/Src/balance_car/motor_tb6612.c ****     HAL_GPIO_WritePin(TB6612_AIN2_PORT, TB6612_AIN2_PIN, GPIO_PIN_RESET);
+ 267              		.loc 1 117 5 view .LVU46
+ 268 0018 2246     		mov	r2, r4
+ 269 001a 2021     		movs	r1, #32
+ 270 001c 2846     		mov	r0, r5
+ 271 001e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 272              	.LVL26:
+ 118:Core/Src/balance_car/motor_tb6612.c ****     HAL_GPIO_WritePin(TB6612_BIN1_PORT, TB6612_BIN1_PIN, GPIO_PIN_RESET);
+ 273              		.loc 1 118 5 view .LVU47
+ 274 0022 0A4E     		ldr	r6, .L18+8
+ 275 0024 2246     		mov	r2, r4
+ 276 0026 0221     		movs	r1, #2
+ 277 0028 3046     		mov	r0, r6
+ 278 002a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 279              	.LVL27:
+ 119:Core/Src/balance_car/motor_tb6612.c ****     HAL_GPIO_WritePin(TB6612_BIN2_PORT, TB6612_BIN2_PIN, GPIO_PIN_RESET);
+ 280              		.loc 1 119 5 view .LVU48
+ 281 002e 2246     		mov	r2, r4
+ARM GAS  D:\TMP\ccqUaSJ3.s 			page 8
+
+
+ 282 0030 0121     		movs	r1, #1
+ 283 0032 3046     		mov	r0, r6
+ 284 0034 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 285              	.LVL28:
+ 120:Core/Src/balance_car/motor_tb6612.c ****     HAL_GPIO_WritePin(TB6612_STBY_PORT, TB6612_STBY_PIN, GPIO_PIN_RESET);
+ 286              		.loc 1 120 5 view .LVU49
+ 287 0038 2246     		mov	r2, r4
+ 288 003a 0821     		movs	r1, #8
+ 289 003c 2846     		mov	r0, r5
+ 290 003e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 291              	.LVL29:
+ 121:Core/Src/balance_car/motor_tb6612.c **** }
+ 292              		.loc 1 121 1 is_stmt 0 view .LVU50
+ 293 0042 70BD     		pop	{r4, r5, r6, pc}
+ 294              	.L19:
+ 295              		.align	2
+ 296              	.L18:
+ 297 0044 00000000 		.word	s_htim3
+ 298 0048 00080140 		.word	1073809408
+ 299 004c 000C0140 		.word	1073810432
+ 300              		.cfi_endproc
+ 301              	.LFE69:
+ 303              		.section	.text.TB6612_Init,"ax",%progbits
+ 304              		.align	1
+ 305              		.global	TB6612_Init
+ 306              		.syntax unified
+ 307              		.thumb
+ 308              		.thumb_func
+ 310              	TB6612_Init:
+ 311              	.LFB67:
+  36:Core/Src/balance_car/motor_tb6612.c ****     GPIO_InitTypeDef gpio = {0};
+ 312              		.loc 1 36 1 is_stmt 1 view -0
+ 313              		.cfi_startproc
+ 314              		@ args = 0, pretend = 0, frame = 56
+ 315              		@ frame_needed = 0, uses_anonymous_args = 0
+ 316 0000 70B5     		push	{r4, r5, r6, lr}
+ 317              	.LCFI2:
+ 318              		.cfi_def_cfa_offset 16
+ 319              		.cfi_offset 4, -16
+ 320              		.cfi_offset 5, -12
+ 321              		.cfi_offset 6, -8
+ 322              		.cfi_offset 14, -4
+ 323 0002 8EB0     		sub	sp, sp, #56
+ 324              	.LCFI3:
+ 325              		.cfi_def_cfa_offset 72
+  37:Core/Src/balance_car/motor_tb6612.c **** 
+ 326              		.loc 1 37 5 view .LVU52
+  37:Core/Src/balance_car/motor_tb6612.c **** 
+ 327              		.loc 1 37 22 is_stmt 0 view .LVU53
+ 328 0004 0024     		movs	r4, #0
+ 329 0006 0A94     		str	r4, [sp, #40]
+ 330 0008 0B94     		str	r4, [sp, #44]
+ 331 000a 0C94     		str	r4, [sp, #48]
+ 332 000c 0D94     		str	r4, [sp, #52]
+  39:Core/Src/balance_car/motor_tb6612.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
+ 333              		.loc 1 39 5 is_stmt 1 view .LVU54
+ 334              	.LBB2:
+ARM GAS  D:\TMP\ccqUaSJ3.s 			page 9
+
+
+  39:Core/Src/balance_car/motor_tb6612.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
+ 335              		.loc 1 39 5 view .LVU55
+  39:Core/Src/balance_car/motor_tb6612.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
+ 336              		.loc 1 39 5 view .LVU56
+ 337 000e 304B     		ldr	r3, .L33
+ 338 0010 9A69     		ldr	r2, [r3, #24]
+ 339 0012 42F00402 		orr	r2, r2, #4
+ 340 0016 9A61     		str	r2, [r3, #24]
+  39:Core/Src/balance_car/motor_tb6612.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
+ 341              		.loc 1 39 5 view .LVU57
+ 342 0018 9A69     		ldr	r2, [r3, #24]
+ 343 001a 02F00402 		and	r2, r2, #4
+ 344 001e 0192     		str	r2, [sp, #4]
+  39:Core/Src/balance_car/motor_tb6612.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
+ 345              		.loc 1 39 5 view .LVU58
+ 346 0020 019A     		ldr	r2, [sp, #4]
+ 347              	.LBE2:
+  39:Core/Src/balance_car/motor_tb6612.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
+ 348              		.loc 1 39 5 view .LVU59
+  40:Core/Src/balance_car/motor_tb6612.c **** 
+ 349              		.loc 1 40 5 view .LVU60
+ 350              	.LBB3:
+  40:Core/Src/balance_car/motor_tb6612.c **** 
+ 351              		.loc 1 40 5 view .LVU61
+  40:Core/Src/balance_car/motor_tb6612.c **** 
+ 352              		.loc 1 40 5 view .LVU62
+ 353 0022 9A69     		ldr	r2, [r3, #24]
+ 354 0024 42F00802 		orr	r2, r2, #8
+ 355 0028 9A61     		str	r2, [r3, #24]
+  40:Core/Src/balance_car/motor_tb6612.c **** 
+ 356              		.loc 1 40 5 view .LVU63
+ 357 002a 9B69     		ldr	r3, [r3, #24]
+ 358 002c 03F00803 		and	r3, r3, #8
+ 359 0030 0293     		str	r3, [sp, #8]
+  40:Core/Src/balance_car/motor_tb6612.c **** 
+ 360              		.loc 1 40 5 view .LVU64
+ 361 0032 029B     		ldr	r3, [sp, #8]
+ 362              	.LBE3:
+  40:Core/Src/balance_car/motor_tb6612.c **** 
+ 363              		.loc 1 40 5 view .LVU65
+  42:Core/Src/balance_car/motor_tb6612.c ****     gpio.Mode = GPIO_MODE_OUTPUT_PP;
+ 364              		.loc 1 42 5 view .LVU66
+  42:Core/Src/balance_car/motor_tb6612.c ****     gpio.Mode = GPIO_MODE_OUTPUT_PP;
+ 365              		.loc 1 42 14 is_stmt 0 view .LVU67
+ 366 0034 3823     		movs	r3, #56
+ 367 0036 0A93     		str	r3, [sp, #40]
+  43:Core/Src/balance_car/motor_tb6612.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+ 368              		.loc 1 43 5 is_stmt 1 view .LVU68
+  43:Core/Src/balance_car/motor_tb6612.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+ 369              		.loc 1 43 15 is_stmt 0 view .LVU69
+ 370 0038 0126     		movs	r6, #1
+ 371 003a 0B96     		str	r6, [sp, #44]
+  44:Core/Src/balance_car/motor_tb6612.c ****     HAL_GPIO_Init(GPIOA, &gpio);
+ 372              		.loc 1 44 5 is_stmt 1 view .LVU70
+  44:Core/Src/balance_car/motor_tb6612.c ****     HAL_GPIO_Init(GPIOA, &gpio);
+ 373              		.loc 1 44 16 is_stmt 0 view .LVU71
+ 374 003c 0325     		movs	r5, #3
+ARM GAS  D:\TMP\ccqUaSJ3.s 			page 10
+
+
+ 375 003e 0D95     		str	r5, [sp, #52]
+  45:Core/Src/balance_car/motor_tb6612.c **** 
+ 376              		.loc 1 45 5 is_stmt 1 view .LVU72
+ 377 0040 0AA9     		add	r1, sp, #40
+ 378 0042 2448     		ldr	r0, .L33+4
+ 379 0044 FFF7FEFF 		bl	HAL_GPIO_Init
+ 380              	.LVL30:
+  47:Core/Src/balance_car/motor_tb6612.c ****     gpio.Mode = GPIO_MODE_OUTPUT_PP;
+ 381              		.loc 1 47 5 view .LVU73
+  47:Core/Src/balance_car/motor_tb6612.c ****     gpio.Mode = GPIO_MODE_OUTPUT_PP;
+ 382              		.loc 1 47 14 is_stmt 0 view .LVU74
+ 383 0048 0A95     		str	r5, [sp, #40]
+  48:Core/Src/balance_car/motor_tb6612.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+ 384              		.loc 1 48 5 is_stmt 1 view .LVU75
+  48:Core/Src/balance_car/motor_tb6612.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+ 385              		.loc 1 48 15 is_stmt 0 view .LVU76
+ 386 004a 0B96     		str	r6, [sp, #44]
+  49:Core/Src/balance_car/motor_tb6612.c ****     HAL_GPIO_Init(GPIOB, &gpio);
+ 387              		.loc 1 49 5 is_stmt 1 view .LVU77
+  49:Core/Src/balance_car/motor_tb6612.c ****     HAL_GPIO_Init(GPIOB, &gpio);
+ 388              		.loc 1 49 16 is_stmt 0 view .LVU78
+ 389 004c 0D95     		str	r5, [sp, #52]
+  50:Core/Src/balance_car/motor_tb6612.c **** 
+ 390              		.loc 1 50 5 is_stmt 1 view .LVU79
+ 391 004e 0AA9     		add	r1, sp, #40
+ 392 0050 2148     		ldr	r0, .L33+8
+ 393 0052 FFF7FEFF 		bl	HAL_GPIO_Init
+ 394              	.LVL31:
+  52:Core/Src/balance_car/motor_tb6612.c ****     s_htim3.Init.Prescaler = 64U - 1U;
+ 395              		.loc 1 52 5 view .LVU80
+  52:Core/Src/balance_car/motor_tb6612.c ****     s_htim3.Init.Prescaler = 64U - 1U;
+ 396              		.loc 1 52 22 is_stmt 0 view .LVU81
+ 397 0056 2148     		ldr	r0, .L33+12
+ 398 0058 214B     		ldr	r3, .L33+16
+ 399 005a 0360     		str	r3, [r0]
+  53:Core/Src/balance_car/motor_tb6612.c ****     s_htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+ 400              		.loc 1 53 5 is_stmt 1 view .LVU82
+  53:Core/Src/balance_car/motor_tb6612.c ****     s_htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+ 401              		.loc 1 53 28 is_stmt 0 view .LVU83
+ 402 005c 3F23     		movs	r3, #63
+ 403 005e 4360     		str	r3, [r0, #4]
+  54:Core/Src/balance_car/motor_tb6612.c ****     s_htim3.Init.Period = PWM_PERIOD_COUNTS;
+ 404              		.loc 1 54 5 is_stmt 1 view .LVU84
+  54:Core/Src/balance_car/motor_tb6612.c ****     s_htim3.Init.Period = PWM_PERIOD_COUNTS;
+ 405              		.loc 1 54 30 is_stmt 0 view .LVU85
+ 406 0060 8460     		str	r4, [r0, #8]
+  55:Core/Src/balance_car/motor_tb6612.c ****     s_htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+ 407              		.loc 1 55 5 is_stmt 1 view .LVU86
+  55:Core/Src/balance_car/motor_tb6612.c ****     s_htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+ 408              		.loc 1 55 25 is_stmt 0 view .LVU87
+ 409 0062 4FF47A73 		mov	r3, #1000
+ 410 0066 C360     		str	r3, [r0, #12]
+  56:Core/Src/balance_car/motor_tb6612.c ****     s_htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+ 411              		.loc 1 56 5 is_stmt 1 view .LVU88
+  56:Core/Src/balance_car/motor_tb6612.c ****     s_htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+ 412              		.loc 1 56 32 is_stmt 0 view .LVU89
+ 413 0068 0461     		str	r4, [r0, #16]
+ARM GAS  D:\TMP\ccqUaSJ3.s 			page 11
+
+
+  57:Core/Src/balance_car/motor_tb6612.c ****     if (HAL_TIM_PWM_Init(&s_htim3) != HAL_OK) {
+ 414              		.loc 1 57 5 is_stmt 1 view .LVU90
+  57:Core/Src/balance_car/motor_tb6612.c ****     if (HAL_TIM_PWM_Init(&s_htim3) != HAL_OK) {
+ 415              		.loc 1 57 36 is_stmt 0 view .LVU91
+ 416 006a 8461     		str	r4, [r0, #24]
+  58:Core/Src/balance_car/motor_tb6612.c ****         return HAL_ERROR;
+ 417              		.loc 1 58 5 is_stmt 1 view .LVU92
+  58:Core/Src/balance_car/motor_tb6612.c ****         return HAL_ERROR;
+ 418              		.loc 1 58 9 is_stmt 0 view .LVU93
+ 419 006c FFF7FEFF 		bl	HAL_TIM_PWM_Init
+ 420              	.LVL32:
+  58:Core/Src/balance_car/motor_tb6612.c ****         return HAL_ERROR;
+ 421              		.loc 1 58 8 discriminator 1 view .LVU94
+ 422 0070 18B1     		cbz	r0, .L28
+  59:Core/Src/balance_car/motor_tb6612.c ****     }
+ 423              		.loc 1 59 16 view .LVU95
+ 424 0072 0124     		movs	r4, #1
+ 425              	.L21:
+  83:Core/Src/balance_car/motor_tb6612.c **** 
+ 426              		.loc 1 83 1 view .LVU96
+ 427 0074 2046     		mov	r0, r4
+ 428 0076 0EB0     		add	sp, sp, #56
+ 429              	.LCFI4:
+ 430              		.cfi_remember_state
+ 431              		.cfi_def_cfa_offset 16
+ 432              		@ sp needed
+ 433 0078 70BD     		pop	{r4, r5, r6, pc}
+ 434              	.L28:
+ 435              	.LCFI5:
+ 436              		.cfi_restore_state
+  62:Core/Src/balance_car/motor_tb6612.c ****     config.OCMode = TIM_OCMODE_PWM1;
+ 437              		.loc 1 62 5 is_stmt 1 view .LVU97
+  62:Core/Src/balance_car/motor_tb6612.c ****     config.OCMode = TIM_OCMODE_PWM1;
+ 438              		.loc 1 62 24 is_stmt 0 view .LVU98
+ 439 007a 2246     		mov	r2, r4
+ 440 007c 0394     		str	r4, [sp, #12]
+ 441 007e 0494     		str	r4, [sp, #16]
+ 442 0080 0594     		str	r4, [sp, #20]
+ 443 0082 0694     		str	r4, [sp, #24]
+ 444 0084 0794     		str	r4, [sp, #28]
+ 445 0086 0894     		str	r4, [sp, #32]
+ 446 0088 0994     		str	r4, [sp, #36]
+  63:Core/Src/balance_car/motor_tb6612.c ****     config.Pulse = 0U;
+ 447              		.loc 1 63 5 is_stmt 1 view .LVU99
+  63:Core/Src/balance_car/motor_tb6612.c ****     config.Pulse = 0U;
+ 448              		.loc 1 63 19 is_stmt 0 view .LVU100
+ 449 008a 6023     		movs	r3, #96
+ 450 008c 0393     		str	r3, [sp, #12]
+  64:Core/Src/balance_car/motor_tb6612.c ****     config.OCPolarity = TIM_OCPOLARITY_HIGH;
+ 451              		.loc 1 64 5 is_stmt 1 view .LVU101
+  65:Core/Src/balance_car/motor_tb6612.c ****     config.OCFastMode = TIM_OCFAST_DISABLE;
+ 452              		.loc 1 65 5 view .LVU102
+  66:Core/Src/balance_car/motor_tb6612.c **** 
+ 453              		.loc 1 66 5 view .LVU103
+  68:Core/Src/balance_car/motor_tb6612.c ****         return HAL_ERROR;
+ 454              		.loc 1 68 5 view .LVU104
+  68:Core/Src/balance_car/motor_tb6612.c ****         return HAL_ERROR;
+ARM GAS  D:\TMP\ccqUaSJ3.s 			page 12
+
+
+ 455              		.loc 1 68 9 is_stmt 0 view .LVU105
+ 456 008e 03A9     		add	r1, sp, #12
+ 457 0090 1248     		ldr	r0, .L33+12
+ 458 0092 FFF7FEFF 		bl	HAL_TIM_PWM_ConfigChannel
+ 459              	.LVL33:
+  68:Core/Src/balance_car/motor_tb6612.c ****         return HAL_ERROR;
+ 460              		.loc 1 68 8 discriminator 1 view .LVU106
+ 461 0096 08B1     		cbz	r0, .L29
+  69:Core/Src/balance_car/motor_tb6612.c ****     }
+ 462              		.loc 1 69 16 view .LVU107
+ 463 0098 0124     		movs	r4, #1
+ 464 009a EBE7     		b	.L21
+ 465              	.L29:
+  71:Core/Src/balance_car/motor_tb6612.c ****         return HAL_ERROR;
+ 466              		.loc 1 71 5 is_stmt 1 view .LVU108
+  71:Core/Src/balance_car/motor_tb6612.c ****         return HAL_ERROR;
+ 467              		.loc 1 71 9 is_stmt 0 view .LVU109
+ 468 009c 0422     		movs	r2, #4
+ 469 009e 03A9     		add	r1, sp, #12
+ 470 00a0 0E48     		ldr	r0, .L33+12
+ 471 00a2 FFF7FEFF 		bl	HAL_TIM_PWM_ConfigChannel
+ 472              	.LVL34:
+  71:Core/Src/balance_car/motor_tb6612.c ****         return HAL_ERROR;
+ 473              		.loc 1 71 8 discriminator 1 view .LVU110
+ 474 00a6 08B1     		cbz	r0, .L30
+  72:Core/Src/balance_car/motor_tb6612.c ****     }
+ 475              		.loc 1 72 16 view .LVU111
+ 476 00a8 0124     		movs	r4, #1
+ 477 00aa E3E7     		b	.L21
+ 478              	.L30:
+  74:Core/Src/balance_car/motor_tb6612.c ****         return HAL_ERROR;
+ 479              		.loc 1 74 5 is_stmt 1 view .LVU112
+  74:Core/Src/balance_car/motor_tb6612.c ****         return HAL_ERROR;
+ 480              		.loc 1 74 9 is_stmt 0 view .LVU113
+ 481 00ac 2146     		mov	r1, r4
+ 482 00ae 0B48     		ldr	r0, .L33+12
+ 483 00b0 FFF7FEFF 		bl	HAL_TIM_PWM_Start
+ 484              	.LVL35:
+  74:Core/Src/balance_car/motor_tb6612.c ****         return HAL_ERROR;
+ 485              		.loc 1 74 8 discriminator 1 view .LVU114
+ 486 00b4 08B1     		cbz	r0, .L31
+  75:Core/Src/balance_car/motor_tb6612.c ****     }
+ 487              		.loc 1 75 16 view .LVU115
+ 488 00b6 0124     		movs	r4, #1
+ 489 00b8 DCE7     		b	.L21
+ 490              	.L31:
+  77:Core/Src/balance_car/motor_tb6612.c ****         return HAL_ERROR;
+ 491              		.loc 1 77 5 is_stmt 1 view .LVU116
+  77:Core/Src/balance_car/motor_tb6612.c ****         return HAL_ERROR;
+ 492              		.loc 1 77 9 is_stmt 0 view .LVU117
+ 493 00ba 0421     		movs	r1, #4
+ 494 00bc 0748     		ldr	r0, .L33+12
+ 495 00be FFF7FEFF 		bl	HAL_TIM_PWM_Start
+ 496              	.LVL36:
+  77:Core/Src/balance_car/motor_tb6612.c ****         return HAL_ERROR;
+ 497              		.loc 1 77 8 discriminator 1 view .LVU118
+ 498 00c2 0446     		mov	r4, r0
+ARM GAS  D:\TMP\ccqUaSJ3.s 			page 13
+
+
+ 499 00c4 08B1     		cbz	r0, .L32
+  78:Core/Src/balance_car/motor_tb6612.c ****     }
+ 500              		.loc 1 78 16 view .LVU119
+ 501 00c6 0124     		movs	r4, #1
+ 502 00c8 D4E7     		b	.L21
+ 503              	.L32:
+  81:Core/Src/balance_car/motor_tb6612.c ****     return HAL_OK;
+ 504              		.loc 1 81 5 is_stmt 1 view .LVU120
+ 505 00ca FFF7FEFF 		bl	TB6612_Stop
+ 506              	.LVL37:
+  82:Core/Src/balance_car/motor_tb6612.c **** }
+ 507              		.loc 1 82 5 view .LVU121
+  82:Core/Src/balance_car/motor_tb6612.c **** }
+ 508              		.loc 1 82 12 is_stmt 0 view .LVU122
+ 509 00ce D1E7     		b	.L21
+ 510              	.L34:
+ 511              		.align	2
+ 512              	.L33:
+ 513 00d0 00100240 		.word	1073876992
+ 514 00d4 00080140 		.word	1073809408
+ 515 00d8 000C0140 		.word	1073810432
+ 516 00dc 00000000 		.word	s_htim3
+ 517 00e0 00040040 		.word	1073742848
+ 518              		.cfi_endproc
+ 519              	.LFE67:
+ 521              		.section	.text.HAL_TIM_PWM_MspInit,"ax",%progbits
+ 522              		.align	1
+ 523              		.global	HAL_TIM_PWM_MspInit
+ 524              		.syntax unified
+ 525              		.thumb
+ 526              		.thumb_func
+ 528              	HAL_TIM_PWM_MspInit:
+ 529              	.LVL38:
+ 530              	.LFB70:
+ 122:Core/Src/balance_car/motor_tb6612.c **** 
+ 123:Core/Src/balance_car/motor_tb6612.c **** void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *htim_pwm)
+ 124:Core/Src/balance_car/motor_tb6612.c **** {
+ 531              		.loc 1 124 1 is_stmt 1 view -0
+ 532              		.cfi_startproc
+ 533              		@ args = 0, pretend = 0, frame = 24
+ 534              		@ frame_needed = 0, uses_anonymous_args = 0
+ 535              		.loc 1 124 1 is_stmt 0 view .LVU124
+ 536 0000 00B5     		push	{lr}
+ 537              	.LCFI6:
+ 538              		.cfi_def_cfa_offset 4
+ 539              		.cfi_offset 14, -4
+ 540 0002 87B0     		sub	sp, sp, #28
+ 541              	.LCFI7:
+ 542              		.cfi_def_cfa_offset 32
+ 125:Core/Src/balance_car/motor_tb6612.c ****     GPIO_InitTypeDef gpio = {0};
+ 543              		.loc 1 125 5 is_stmt 1 view .LVU125
+ 544              		.loc 1 125 22 is_stmt 0 view .LVU126
+ 545 0004 0023     		movs	r3, #0
+ 546 0006 0293     		str	r3, [sp, #8]
+ 547 0008 0393     		str	r3, [sp, #12]
+ 548 000a 0493     		str	r3, [sp, #16]
+ 549 000c 0593     		str	r3, [sp, #20]
+ARM GAS  D:\TMP\ccqUaSJ3.s 			page 14
+
+
+ 126:Core/Src/balance_car/motor_tb6612.c **** 
+ 127:Core/Src/balance_car/motor_tb6612.c ****     if (htim_pwm->Instance != TIM3) {
+ 550              		.loc 1 127 5 is_stmt 1 view .LVU127
+ 551              		.loc 1 127 17 is_stmt 0 view .LVU128
+ 552 000e 0268     		ldr	r2, [r0]
+ 553              		.loc 1 127 8 view .LVU129
+ 554 0010 124B     		ldr	r3, .L40
+ 555 0012 9A42     		cmp	r2, r3
+ 556 0014 02D0     		beq	.L39
+ 557              	.LVL39:
+ 558              	.L35:
+ 128:Core/Src/balance_car/motor_tb6612.c ****         return;
+ 129:Core/Src/balance_car/motor_tb6612.c ****     }
+ 130:Core/Src/balance_car/motor_tb6612.c **** 
+ 131:Core/Src/balance_car/motor_tb6612.c ****     __HAL_RCC_TIM3_CLK_ENABLE();
+ 132:Core/Src/balance_car/motor_tb6612.c ****     __HAL_RCC_GPIOA_CLK_ENABLE();
+ 133:Core/Src/balance_car/motor_tb6612.c **** 
+ 134:Core/Src/balance_car/motor_tb6612.c ****     gpio.Pin = GPIO_PIN_6 | GPIO_PIN_7;
+ 135:Core/Src/balance_car/motor_tb6612.c ****     gpio.Mode = GPIO_MODE_AF_PP;
+ 136:Core/Src/balance_car/motor_tb6612.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+ 137:Core/Src/balance_car/motor_tb6612.c ****     HAL_GPIO_Init(GPIOA, &gpio);
+ 138:Core/Src/balance_car/motor_tb6612.c **** }
+ 559              		.loc 1 138 1 view .LVU130
+ 560 0016 07B0     		add	sp, sp, #28
+ 561              	.LCFI8:
+ 562              		.cfi_remember_state
+ 563              		.cfi_def_cfa_offset 4
+ 564              		@ sp needed
+ 565 0018 5DF804FB 		ldr	pc, [sp], #4
+ 566              	.LVL40:
+ 567              	.L39:
+ 568              	.LCFI9:
+ 569              		.cfi_restore_state
+ 131:Core/Src/balance_car/motor_tb6612.c ****     __HAL_RCC_GPIOA_CLK_ENABLE();
+ 570              		.loc 1 131 5 is_stmt 1 view .LVU131
+ 571              	.LBB4:
+ 131:Core/Src/balance_car/motor_tb6612.c ****     __HAL_RCC_GPIOA_CLK_ENABLE();
+ 572              		.loc 1 131 5 view .LVU132
+ 131:Core/Src/balance_car/motor_tb6612.c ****     __HAL_RCC_GPIOA_CLK_ENABLE();
+ 573              		.loc 1 131 5 view .LVU133
+ 574 001c 03F50333 		add	r3, r3, #134144
+ 575 0020 DA69     		ldr	r2, [r3, #28]
+ 576 0022 42F00202 		orr	r2, r2, #2
+ 577 0026 DA61     		str	r2, [r3, #28]
+ 131:Core/Src/balance_car/motor_tb6612.c ****     __HAL_RCC_GPIOA_CLK_ENABLE();
+ 578              		.loc 1 131 5 view .LVU134
+ 579 0028 DA69     		ldr	r2, [r3, #28]
+ 580 002a 02F00202 		and	r2, r2, #2
+ 581 002e 0092     		str	r2, [sp]
+ 131:Core/Src/balance_car/motor_tb6612.c ****     __HAL_RCC_GPIOA_CLK_ENABLE();
+ 582              		.loc 1 131 5 view .LVU135
+ 583 0030 009A     		ldr	r2, [sp]
+ 584              	.LBE4:
+ 131:Core/Src/balance_car/motor_tb6612.c ****     __HAL_RCC_GPIOA_CLK_ENABLE();
+ 585              		.loc 1 131 5 view .LVU136
+ 132:Core/Src/balance_car/motor_tb6612.c **** 
+ 586              		.loc 1 132 5 view .LVU137
+ARM GAS  D:\TMP\ccqUaSJ3.s 			page 15
+
+
+ 587              	.LBB5:
+ 132:Core/Src/balance_car/motor_tb6612.c **** 
+ 588              		.loc 1 132 5 view .LVU138
+ 132:Core/Src/balance_car/motor_tb6612.c **** 
+ 589              		.loc 1 132 5 view .LVU139
+ 590 0032 9A69     		ldr	r2, [r3, #24]
+ 591 0034 42F00402 		orr	r2, r2, #4
+ 592 0038 9A61     		str	r2, [r3, #24]
+ 132:Core/Src/balance_car/motor_tb6612.c **** 
+ 593              		.loc 1 132 5 view .LVU140
+ 594 003a 9B69     		ldr	r3, [r3, #24]
+ 595 003c 03F00403 		and	r3, r3, #4
+ 596 0040 0193     		str	r3, [sp, #4]
+ 132:Core/Src/balance_car/motor_tb6612.c **** 
+ 597              		.loc 1 132 5 view .LVU141
+ 598 0042 019B     		ldr	r3, [sp, #4]
+ 599              	.LBE5:
+ 132:Core/Src/balance_car/motor_tb6612.c **** 
+ 600              		.loc 1 132 5 view .LVU142
+ 134:Core/Src/balance_car/motor_tb6612.c ****     gpio.Mode = GPIO_MODE_AF_PP;
+ 601              		.loc 1 134 5 view .LVU143
+ 134:Core/Src/balance_car/motor_tb6612.c ****     gpio.Mode = GPIO_MODE_AF_PP;
+ 602              		.loc 1 134 14 is_stmt 0 view .LVU144
+ 603 0044 C023     		movs	r3, #192
+ 604 0046 0293     		str	r3, [sp, #8]
+ 135:Core/Src/balance_car/motor_tb6612.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+ 605              		.loc 1 135 5 is_stmt 1 view .LVU145
+ 135:Core/Src/balance_car/motor_tb6612.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+ 606              		.loc 1 135 15 is_stmt 0 view .LVU146
+ 607 0048 0223     		movs	r3, #2
+ 608 004a 0393     		str	r3, [sp, #12]
+ 136:Core/Src/balance_car/motor_tb6612.c ****     HAL_GPIO_Init(GPIOA, &gpio);
+ 609              		.loc 1 136 5 is_stmt 1 view .LVU147
+ 136:Core/Src/balance_car/motor_tb6612.c ****     HAL_GPIO_Init(GPIOA, &gpio);
+ 610              		.loc 1 136 16 is_stmt 0 view .LVU148
+ 611 004c 0323     		movs	r3, #3
+ 612 004e 0593     		str	r3, [sp, #20]
+ 137:Core/Src/balance_car/motor_tb6612.c **** }
+ 613              		.loc 1 137 5 is_stmt 1 view .LVU149
+ 614 0050 02A9     		add	r1, sp, #8
+ 615 0052 0348     		ldr	r0, .L40+4
+ 616              	.LVL41:
+ 137:Core/Src/balance_car/motor_tb6612.c **** }
+ 617              		.loc 1 137 5 is_stmt 0 view .LVU150
+ 618 0054 FFF7FEFF 		bl	HAL_GPIO_Init
+ 619              	.LVL42:
+ 620 0058 DDE7     		b	.L35
+ 621              	.L41:
+ 622 005a 00BF     		.align	2
+ 623              	.L40:
+ 624 005c 00040040 		.word	1073742848
+ 625 0060 00080140 		.word	1073809408
+ 626              		.cfi_endproc
+ 627              	.LFE70:
+ 629              		.section	.bss.s_htim3,"aw",%nobits
+ 630              		.align	2
+ 633              	s_htim3:
+ARM GAS  D:\TMP\ccqUaSJ3.s 			page 16
+
+
+ 634 0000 00000000 		.space	72
+ 634      00000000 
+ 634      00000000 
+ 634      00000000 
+ 634      00000000 
+ 635              		.text
+ 636              	.Letext0:
+ 637              		.file 2 "F:/Msys2/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 638              		.file 3 "F:/Msys2/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 639              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ 640              		.file 5 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 641              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h"
+ 642              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
+ 643              		.file 8 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h"
+ARM GAS  D:\TMP\ccqUaSJ3.s 			page 17
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 motor_tb6612.c
+   D:\TMP\ccqUaSJ3.s:19     .text.Motor_Clamp:00000000 $t
+   D:\TMP\ccqUaSJ3.s:24     .text.Motor_Clamp:00000000 Motor_Clamp
+   D:\TMP\ccqUaSJ3.s:58     .text.Motor_ToCompare:00000000 $t
+   D:\TMP\ccqUaSJ3.s:63     .text.Motor_ToCompare:00000000 Motor_ToCompare
+   D:\TMP\ccqUaSJ3.s:94     .text.Motor_ToCompare:0000001c $d
+   D:\TMP\ccqUaSJ3.s:99     .text.TB6612_SetMotors:00000000 $t
+   D:\TMP\ccqUaSJ3.s:105    .text.TB6612_SetMotors:00000000 TB6612_SetMotors
+   D:\TMP\ccqUaSJ3.s:227    .text.TB6612_SetMotors:00000098 $d
+   D:\TMP\ccqUaSJ3.s:633    .bss.s_htim3:00000000 s_htim3
+   D:\TMP\ccqUaSJ3.s:234    .text.TB6612_Stop:00000000 $t
+   D:\TMP\ccqUaSJ3.s:240    .text.TB6612_Stop:00000000 TB6612_Stop
+   D:\TMP\ccqUaSJ3.s:297    .text.TB6612_Stop:00000044 $d
+   D:\TMP\ccqUaSJ3.s:304    .text.TB6612_Init:00000000 $t
+   D:\TMP\ccqUaSJ3.s:310    .text.TB6612_Init:00000000 TB6612_Init
+   D:\TMP\ccqUaSJ3.s:513    .text.TB6612_Init:000000d0 $d
+   D:\TMP\ccqUaSJ3.s:522    .text.HAL_TIM_PWM_MspInit:00000000 $t
+   D:\TMP\ccqUaSJ3.s:528    .text.HAL_TIM_PWM_MspInit:00000000 HAL_TIM_PWM_MspInit
+   D:\TMP\ccqUaSJ3.s:624    .text.HAL_TIM_PWM_MspInit:0000005c $d
+   D:\TMP\ccqUaSJ3.s:630    .bss.s_htim3:00000000 $d
+
+UNDEFINED SYMBOLS
+HAL_GPIO_WritePin
+HAL_GPIO_Init
+HAL_TIM_PWM_Init
+HAL_TIM_PWM_ConfigChannel
+HAL_TIM_PWM_Start

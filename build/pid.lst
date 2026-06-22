@@ -1,0 +1,348 @@
+ARM GAS  D:\TMP\cc1Idkyg.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"pid.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "Core/Src/balance_car/pid.c"
+  18              		.section	.text.PID_Init,"ax",%progbits
+  19              		.align	1
+  20              		.global	PID_Init
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  25              	PID_Init:
+  26              	.LVL0:
+  27              	.LFB0:
+   1:Core/Src/balance_car/pid.c **** #include "balance_car/pid.h"
+   2:Core/Src/balance_car/pid.c **** 
+   3:Core/Src/balance_car/pid.c **** void PID_Init(PID_t *p)
+   4:Core/Src/balance_car/pid.c **** {
+  28              		.loc 1 4 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+   5:Core/Src/balance_car/pid.c ****     p->Target = 0.0f;
+  33              		.loc 1 5 5 view .LVU1
+  34              		.loc 1 5 15 is_stmt 0 view .LVU2
+  35 0000 0023     		movs	r3, #0
+  36 0002 0360     		str	r3, [r0]	@ float
+   6:Core/Src/balance_car/pid.c ****     p->Actual = 0.0f;
+  37              		.loc 1 6 5 is_stmt 1 view .LVU3
+  38              		.loc 1 6 15 is_stmt 0 view .LVU4
+  39 0004 4360     		str	r3, [r0, #4]	@ float
+   7:Core/Src/balance_car/pid.c ****     p->Actual1 = 0.0f;
+  40              		.loc 1 7 5 is_stmt 1 view .LVU5
+  41              		.loc 1 7 16 is_stmt 0 view .LVU6
+  42 0006 8360     		str	r3, [r0, #8]	@ float
+   8:Core/Src/balance_car/pid.c ****     p->Out = 0.0f;
+  43              		.loc 1 8 5 is_stmt 1 view .LVU7
+  44              		.loc 1 8 12 is_stmt 0 view .LVU8
+  45 0008 C360     		str	r3, [r0, #12]	@ float
+   9:Core/Src/balance_car/pid.c ****     p->Error0 = 0.0f;
+  46              		.loc 1 9 5 is_stmt 1 view .LVU9
+  47              		.loc 1 9 15 is_stmt 0 view .LVU10
+  48 000a C361     		str	r3, [r0, #28]	@ float
+  10:Core/Src/balance_car/pid.c ****     p->Error1 = 0.0f;
+ARM GAS  D:\TMP\cc1Idkyg.s 			page 2
+
+
+  49              		.loc 1 10 5 is_stmt 1 view .LVU11
+  50              		.loc 1 10 15 is_stmt 0 view .LVU12
+  51 000c 0362     		str	r3, [r0, #32]	@ float
+  11:Core/Src/balance_car/pid.c ****     p->ErrorInt = 0.0f;
+  52              		.loc 1 11 5 is_stmt 1 view .LVU13
+  53              		.loc 1 11 17 is_stmt 0 view .LVU14
+  54 000e 4362     		str	r3, [r0, #36]	@ float
+  12:Core/Src/balance_car/pid.c **** }
+  55              		.loc 1 12 1 view .LVU15
+  56 0010 7047     		bx	lr
+  57              		.cfi_endproc
+  58              	.LFE0:
+  60              		.global	__aeabi_fsub
+  61              		.global	__aeabi_fcmpeq
+  62              		.global	__aeabi_fadd
+  63              		.global	__aeabi_fcmpgt
+  64              		.global	__aeabi_fcmplt
+  65              		.global	__aeabi_fmul
+  66              		.section	.text.PID_Update,"ax",%progbits
+  67              		.align	1
+  68              		.global	PID_Update
+  69              		.syntax unified
+  70              		.thumb
+  71              		.thumb_func
+  73              	PID_Update:
+  74              	.LVL1:
+  75              	.LFB1:
+  13:Core/Src/balance_car/pid.c **** 
+  14:Core/Src/balance_car/pid.c **** void PID_Update(PID_t *p)
+  15:Core/Src/balance_car/pid.c **** {
+  76              		.loc 1 15 1 is_stmt 1 view -0
+  77              		.cfi_startproc
+  78              		@ args = 0, pretend = 0, frame = 0
+  79              		@ frame_needed = 0, uses_anonymous_args = 0
+  80              		.loc 1 15 1 is_stmt 0 view .LVU17
+  81 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+  82              	.LCFI0:
+  83              		.cfi_def_cfa_offset 24
+  84              		.cfi_offset 4, -24
+  85              		.cfi_offset 5, -20
+  86              		.cfi_offset 6, -16
+  87              		.cfi_offset 7, -12
+  88              		.cfi_offset 8, -8
+  89              		.cfi_offset 14, -4
+  90 0004 0446     		mov	r4, r0
+  16:Core/Src/balance_car/pid.c ****     p->Error1 = p->Error0;
+  91              		.loc 1 16 5 is_stmt 1 view .LVU18
+  92              		.loc 1 16 18 is_stmt 0 view .LVU19
+  93 0006 C369     		ldr	r3, [r0, #28]	@ float
+  94              		.loc 1 16 15 view .LVU20
+  95 0008 0362     		str	r3, [r0, #32]	@ float
+  17:Core/Src/balance_car/pid.c ****     p->Error0 = p->Target - p->Actual;
+  96              		.loc 1 17 5 is_stmt 1 view .LVU21
+  97              		.loc 1 17 30 is_stmt 0 view .LVU22
+  98 000a 4668     		ldr	r6, [r0, #4]	@ float
+  99              		.loc 1 17 27 view .LVU23
+ 100 000c 3146     		mov	r1, r6
+ARM GAS  D:\TMP\cc1Idkyg.s 			page 3
+
+
+ 101 000e 0068     		ldr	r0, [r0]	@ float
+ 102              	.LVL2:
+ 103              		.loc 1 17 27 view .LVU24
+ 104 0010 FFF7FEFF 		bl	__aeabi_fsub
+ 105              	.LVL3:
+ 106 0014 0546     		mov	r5, r0
+ 107              		.loc 1 17 15 view .LVU25
+ 108 0016 E061     		str	r0, [r4, #28]	@ float
+  18:Core/Src/balance_car/pid.c **** 
+  19:Core/Src/balance_car/pid.c ****     if (p->Ki != 0.0f) {
+ 109              		.loc 1 19 5 is_stmt 1 view .LVU26
+ 110              		.loc 1 19 10 is_stmt 0 view .LVU27
+ 111 0018 6769     		ldr	r7, [r4, #20]	@ float
+ 112              		.loc 1 19 8 view .LVU28
+ 113 001a 0021     		movs	r1, #0
+ 114 001c 3846     		mov	r0, r7
+ 115 001e FFF7FEFF 		bl	__aeabi_fcmpeq
+ 116              	.LVL4:
+ 117 0022 B0B9     		cbnz	r0, .L24
+  20:Core/Src/balance_car/pid.c ****         p->ErrorInt += p->Error0;
+ 118              		.loc 1 20 9 is_stmt 1 view .LVU29
+ 119              		.loc 1 20 21 is_stmt 0 view .LVU30
+ 120 0024 616A     		ldr	r1, [r4, #36]	@ float
+ 121 0026 2846     		mov	r0, r5
+ 122 0028 FFF7FEFF 		bl	__aeabi_fadd
+ 123              	.LVL5:
+ 124 002c 6062     		str	r0, [r4, #36]	@ float
+  21:Core/Src/balance_car/pid.c ****         if (p->ErrorInt > p->ErrorIntMax) {
+ 125              		.loc 1 21 9 is_stmt 1 view .LVU31
+ 126              		.loc 1 21 28 is_stmt 0 view .LVU32
+ 127 002e D4F82880 		ldr	r8, [r4, #40]	@ float
+ 128              		.loc 1 21 12 view .LVU33
+ 129 0032 4146     		mov	r1, r8
+ 130 0034 FFF7FEFF 		bl	__aeabi_fcmpgt
+ 131              	.LVL6:
+ 132 0038 08B1     		cbz	r0, .L5
+  22:Core/Src/balance_car/pid.c ****             p->ErrorInt = p->ErrorIntMax;
+ 133              		.loc 1 22 13 is_stmt 1 view .LVU34
+ 134              		.loc 1 22 25 is_stmt 0 view .LVU35
+ 135 003a C4F82480 		str	r8, [r4, #36]	@ float
+ 136              	.L5:
+  23:Core/Src/balance_car/pid.c ****         }
+  24:Core/Src/balance_car/pid.c ****         if (p->ErrorInt < p->ErrorIntMin) {
+ 137              		.loc 1 24 9 is_stmt 1 view .LVU36
+ 138              		.loc 1 24 28 is_stmt 0 view .LVU37
+ 139 003e D4F82C80 		ldr	r8, [r4, #44]	@ float
+ 140              		.loc 1 24 12 view .LVU38
+ 141 0042 4146     		mov	r1, r8
+ 142 0044 606A     		ldr	r0, [r4, #36]	@ float
+ 143 0046 FFF7FEFF 		bl	__aeabi_fcmplt
+ 144              	.LVL7:
+ 145 004a 20B1     		cbz	r0, .L7
+  25:Core/Src/balance_car/pid.c ****             p->ErrorInt = p->ErrorIntMin;
+ 146              		.loc 1 25 13 is_stmt 1 view .LVU39
+ 147              		.loc 1 25 25 is_stmt 0 view .LVU40
+ 148 004c C4F82480 		str	r8, [r4, #36]	@ float
+ 149 0050 01E0     		b	.L7
+ARM GAS  D:\TMP\cc1Idkyg.s 			page 4
+
+
+ 150              	.L24:
+  26:Core/Src/balance_car/pid.c ****         }
+  27:Core/Src/balance_car/pid.c ****     } else {
+  28:Core/Src/balance_car/pid.c ****         p->ErrorInt = 0.0f;
+ 151              		.loc 1 28 9 is_stmt 1 view .LVU41
+ 152              		.loc 1 28 21 is_stmt 0 view .LVU42
+ 153 0052 0023     		movs	r3, #0
+ 154 0054 6362     		str	r3, [r4, #36]	@ float
+ 155              	.L7:
+  29:Core/Src/balance_car/pid.c ****     }
+  30:Core/Src/balance_car/pid.c **** 
+  31:Core/Src/balance_car/pid.c ****     p->Out = p->Kp * p->Error0
+ 156              		.loc 1 31 5 is_stmt 1 view .LVU43
+ 157              		.loc 1 31 20 is_stmt 0 view .LVU44
+ 158 0056 2169     		ldr	r1, [r4, #16]	@ float
+ 159 0058 2846     		mov	r0, r5
+ 160 005a FFF7FEFF 		bl	__aeabi_fmul
+ 161              	.LVL8:
+ 162 005e 0546     		mov	r5, r0
+  32:Core/Src/balance_car/pid.c ****            + p->Ki * p->ErrorInt
+ 163              		.loc 1 32 20 view .LVU45
+ 164 0060 616A     		ldr	r1, [r4, #36]	@ float
+ 165 0062 3846     		mov	r0, r7
+ 166 0064 FFF7FEFF 		bl	__aeabi_fmul
+ 167              	.LVL9:
+ 168 0068 0146     		mov	r1, r0
+ 169              		.loc 1 32 12 view .LVU46
+ 170 006a 2846     		mov	r0, r5
+ 171 006c FFF7FEFF 		bl	__aeabi_fadd
+ 172              	.LVL10:
+ 173 0070 0546     		mov	r5, r0
+  33:Core/Src/balance_car/pid.c ****            - p->Kd * (p->Actual - p->Actual1);
+ 174              		.loc 1 33 15 view .LVU47
+ 175 0072 A769     		ldr	r7, [r4, #24]	@ float
+ 176              		.loc 1 33 33 view .LVU48
+ 177 0074 A168     		ldr	r1, [r4, #8]	@ float
+ 178 0076 3046     		mov	r0, r6
+ 179 0078 FFF7FEFF 		bl	__aeabi_fsub
+ 180              	.LVL11:
+ 181 007c 0146     		mov	r1, r0
+ 182              		.loc 1 33 20 view .LVU49
+ 183 007e 3846     		mov	r0, r7
+ 184 0080 FFF7FEFF 		bl	__aeabi_fmul
+ 185              	.LVL12:
+ 186 0084 0146     		mov	r1, r0
+ 187              		.loc 1 33 12 view .LVU50
+ 188 0086 2846     		mov	r0, r5
+ 189 0088 FFF7FEFF 		bl	__aeabi_fsub
+ 190              	.LVL13:
+ 191 008c 0546     		mov	r5, r0
+  31:Core/Src/balance_car/pid.c ****            + p->Ki * p->ErrorInt
+ 192              		.loc 1 31 12 view .LVU51
+ 193 008e E060     		str	r0, [r4, #12]	@ float
+  34:Core/Src/balance_car/pid.c **** 
+  35:Core/Src/balance_car/pid.c ****     if (p->Out > 0.0f) {
+ 194              		.loc 1 35 5 is_stmt 1 view .LVU52
+ 195              		.loc 1 35 8 is_stmt 0 view .LVU53
+ARM GAS  D:\TMP\cc1Idkyg.s 			page 5
+
+
+ 196 0090 0021     		movs	r1, #0
+ 197 0092 FFF7FEFF 		bl	__aeabi_fcmpgt
+ 198              	.LVL14:
+ 199 0096 20B1     		cbz	r0, .L9
+  36:Core/Src/balance_car/pid.c ****         p->Out += p->OutOffset;
+ 200              		.loc 1 36 9 is_stmt 1 view .LVU54
+ 201              		.loc 1 36 16 is_stmt 0 view .LVU55
+ 202 0098 A16B     		ldr	r1, [r4, #56]	@ float
+ 203 009a 2846     		mov	r0, r5
+ 204 009c FFF7FEFF 		bl	__aeabi_fadd
+ 205              	.LVL15:
+ 206 00a0 E060     		str	r0, [r4, #12]	@ float
+ 207              	.L9:
+  37:Core/Src/balance_car/pid.c ****     }
+  38:Core/Src/balance_car/pid.c ****     if (p->Out < 0.0f) {
+ 208              		.loc 1 38 5 is_stmt 1 view .LVU56
+ 209              		.loc 1 38 10 is_stmt 0 view .LVU57
+ 210 00a2 E568     		ldr	r5, [r4, #12]	@ float
+ 211              		.loc 1 38 8 view .LVU58
+ 212 00a4 0021     		movs	r1, #0
+ 213 00a6 2846     		mov	r0, r5
+ 214 00a8 FFF7FEFF 		bl	__aeabi_fcmplt
+ 215              	.LVL16:
+ 216 00ac 80B9     		cbnz	r0, .L26
+ 217              	.L11:
+  39:Core/Src/balance_car/pid.c ****         p->Out -= p->OutOffset;
+  40:Core/Src/balance_car/pid.c ****     }
+  41:Core/Src/balance_car/pid.c **** 
+  42:Core/Src/balance_car/pid.c ****     if (p->Out > p->OutMax) {
+ 218              		.loc 1 42 5 is_stmt 1 view .LVU59
+ 219              		.loc 1 42 19 is_stmt 0 view .LVU60
+ 220 00ae 256B     		ldr	r5, [r4, #48]	@ float
+ 221              		.loc 1 42 8 view .LVU61
+ 222 00b0 2946     		mov	r1, r5
+ 223 00b2 E068     		ldr	r0, [r4, #12]	@ float
+ 224 00b4 FFF7FEFF 		bl	__aeabi_fcmpgt
+ 225              	.LVL17:
+ 226 00b8 00B1     		cbz	r0, .L13
+  43:Core/Src/balance_car/pid.c ****         p->Out = p->OutMax;
+ 227              		.loc 1 43 9 is_stmt 1 view .LVU62
+ 228              		.loc 1 43 16 is_stmt 0 view .LVU63
+ 229 00ba E560     		str	r5, [r4, #12]	@ float
+ 230              	.L13:
+  44:Core/Src/balance_car/pid.c ****     }
+  45:Core/Src/balance_car/pid.c ****     if (p->Out < p->OutMin) {
+ 231              		.loc 1 45 5 is_stmt 1 view .LVU64
+ 232              		.loc 1 45 19 is_stmt 0 view .LVU65
+ 233 00bc 656B     		ldr	r5, [r4, #52]	@ float
+ 234              		.loc 1 45 8 view .LVU66
+ 235 00be 2946     		mov	r1, r5
+ 236 00c0 E068     		ldr	r0, [r4, #12]	@ float
+ 237 00c2 FFF7FEFF 		bl	__aeabi_fcmplt
+ 238              	.LVL18:
+ 239 00c6 00B1     		cbz	r0, .L15
+  46:Core/Src/balance_car/pid.c ****         p->Out = p->OutMin;
+ 240              		.loc 1 46 9 is_stmt 1 view .LVU67
+ 241              		.loc 1 46 16 is_stmt 0 view .LVU68
+ARM GAS  D:\TMP\cc1Idkyg.s 			page 6
+
+
+ 242 00c8 E560     		str	r5, [r4, #12]	@ float
+ 243              	.L15:
+  47:Core/Src/balance_car/pid.c ****     }
+  48:Core/Src/balance_car/pid.c **** 
+  49:Core/Src/balance_car/pid.c ****     p->Actual1 = p->Actual;
+ 244              		.loc 1 49 5 is_stmt 1 view .LVU69
+ 245              		.loc 1 49 16 is_stmt 0 view .LVU70
+ 246 00ca A660     		str	r6, [r4, #8]	@ float
+  50:Core/Src/balance_car/pid.c **** }
+ 247              		.loc 1 50 1 view .LVU71
+ 248 00cc BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 249              	.LVL19:
+ 250              	.L26:
+  39:Core/Src/balance_car/pid.c ****     }
+ 251              		.loc 1 39 9 is_stmt 1 view .LVU72
+  39:Core/Src/balance_car/pid.c ****     }
+ 252              		.loc 1 39 16 is_stmt 0 view .LVU73
+ 253 00d0 A16B     		ldr	r1, [r4, #56]	@ float
+ 254 00d2 2846     		mov	r0, r5
+ 255 00d4 FFF7FEFF 		bl	__aeabi_fsub
+ 256              	.LVL20:
+ 257 00d8 E060     		str	r0, [r4, #12]	@ float
+ 258 00da E8E7     		b	.L11
+ 259              		.cfi_endproc
+ 260              	.LFE1:
+ 262              		.text
+ 263              	.Letext0:
+ 264              		.file 2 "Core/Inc/balance_car/pid.h"
+ARM GAS  D:\TMP\cc1Idkyg.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 pid.c
+   D:\TMP\cc1Idkyg.s:19     .text.PID_Init:00000000 $t
+   D:\TMP\cc1Idkyg.s:25     .text.PID_Init:00000000 PID_Init
+   D:\TMP\cc1Idkyg.s:67     .text.PID_Update:00000000 $t
+   D:\TMP\cc1Idkyg.s:73     .text.PID_Update:00000000 PID_Update
+
+UNDEFINED SYMBOLS
+__aeabi_fsub
+__aeabi_fcmpeq
+__aeabi_fadd
+__aeabi_fcmpgt
+__aeabi_fcmplt
+__aeabi_fmul

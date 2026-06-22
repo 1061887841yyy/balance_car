@@ -1,0 +1,723 @@
+ARM GAS  D:\TMP\ccujHz20.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"line_tracker.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "Core/Src/balance_car/line_tracker.c"
+  18              		.section	.text.LineTracker_Update,"ax",%progbits
+  19              		.align	1
+  20              		.global	LineTracker_Update
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  25              	LineTracker_Update:
+  26              	.LFB66:
+   1:Core/Src/balance_car/line_tracker.c **** #include "balance_car/line_tracker.h"
+   2:Core/Src/balance_car/line_tracker.c **** 
+   3:Core/Src/balance_car/line_tracker.c **** volatile LineTracker_t g_line = {
+   4:Core/Src/balance_car/line_tracker.c ****     .raw_mask = 0U,
+   5:Core/Src/balance_car/line_tracker.c ****     .active_mask = 0U,
+   6:Core/Src/balance_car/line_tracker.c ****     .active_count = 0U,
+   7:Core/Src/balance_car/line_tracker.c ****     .line_seen = 0U,
+   8:Core/Src/balance_car/line_tracker.c ****     .active_low = 0U,
+   9:Core/Src/balance_car/line_tracker.c ****     .position = 0,
+  10:Core/Src/balance_car/line_tracker.c ****     .error = 0,
+  11:Core/Src/balance_car/line_tracker.c ****     .sample_tick = 0U,
+  12:Core/Src/balance_car/line_tracker.c ****     .right_angle_enable = 1U,
+  13:Core/Src/balance_car/line_tracker.c ****     .right_angle_detected = 0U,
+  14:Core/Src/balance_car/line_tracker.c ****     .right_angle_direction = 0,
+  15:Core/Src/balance_car/line_tracker.c ****     .right_angle_error = 50,
+  16:Core/Src/balance_car/line_tracker.c **** };
+  17:Core/Src/balance_car/line_tracker.c **** 
+  18:Core/Src/balance_car/line_tracker.c **** static GPIO_TypeDef * const s_line_ports[LINE_TRACKER_CHANNELS] = {
+  19:Core/Src/balance_car/line_tracker.c ****     GPIOB, GPIOA, GPIOA, GPIOA, GPIOA, GPIOB, GPIOB, GPIOB,
+  20:Core/Src/balance_car/line_tracker.c **** };
+  21:Core/Src/balance_car/line_tracker.c **** 
+  22:Core/Src/balance_car/line_tracker.c **** static const uint16_t s_line_pins[LINE_TRACKER_CHANNELS] = {
+  23:Core/Src/balance_car/line_tracker.c ****     GPIO_PIN_15, GPIO_PIN_10, GPIO_PIN_11, GPIO_PIN_12,
+  24:Core/Src/balance_car/line_tracker.c ****     GPIO_PIN_15, GPIO_PIN_3, GPIO_PIN_4, GPIO_PIN_5,
+  25:Core/Src/balance_car/line_tracker.c **** };
+  26:Core/Src/balance_car/line_tracker.c **** 
+  27:Core/Src/balance_car/line_tracker.c **** static const int16_t s_line_weights[LINE_TRACKER_CHANNELS] = {
+  28:Core/Src/balance_car/line_tracker.c ****     50, 36, 21, 7, -7, -21, -36, -50,
+  29:Core/Src/balance_car/line_tracker.c **** };
+  30:Core/Src/balance_car/line_tracker.c **** 
+  31:Core/Src/balance_car/line_tracker.c **** void LineTracker_Init(void)
+  32:Core/Src/balance_car/line_tracker.c **** {
+ARM GAS  D:\TMP\ccujHz20.s 			page 2
+
+
+  33:Core/Src/balance_car/line_tracker.c ****     GPIO_InitTypeDef gpio = {0};
+  34:Core/Src/balance_car/line_tracker.c **** 
+  35:Core/Src/balance_car/line_tracker.c ****     __HAL_RCC_GPIOA_CLK_ENABLE();
+  36:Core/Src/balance_car/line_tracker.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
+  37:Core/Src/balance_car/line_tracker.c **** 
+  38:Core/Src/balance_car/line_tracker.c ****     gpio.Mode = GPIO_MODE_INPUT;
+  39:Core/Src/balance_car/line_tracker.c ****     gpio.Pull = GPIO_PULLUP;
+  40:Core/Src/balance_car/line_tracker.c ****     gpio.Speed = GPIO_SPEED_FREQ_LOW;
+  41:Core/Src/balance_car/line_tracker.c **** 
+  42:Core/Src/balance_car/line_tracker.c ****     gpio.Pin = GPIO_PIN_10 | GPIO_PIN_11 | GPIO_PIN_12 | GPIO_PIN_15;
+  43:Core/Src/balance_car/line_tracker.c ****     HAL_GPIO_Init(GPIOA, &gpio);
+  44:Core/Src/balance_car/line_tracker.c **** 
+  45:Core/Src/balance_car/line_tracker.c ****     gpio.Pin = GPIO_PIN_3 | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_15;
+  46:Core/Src/balance_car/line_tracker.c ****     HAL_GPIO_Init(GPIOB, &gpio);
+  47:Core/Src/balance_car/line_tracker.c **** 
+  48:Core/Src/balance_car/line_tracker.c ****     LineTracker_Update();
+  49:Core/Src/balance_car/line_tracker.c **** }
+  50:Core/Src/balance_car/line_tracker.c **** 
+  51:Core/Src/balance_car/line_tracker.c **** void LineTracker_Update(void)
+  52:Core/Src/balance_car/line_tracker.c **** {
+  27              		.loc 1 52 1 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 24
+  34              		.cfi_offset 4, -24
+  35              		.cfi_offset 5, -20
+  36              		.cfi_offset 6, -16
+  37              		.cfi_offset 7, -12
+  38              		.cfi_offset 8, -8
+  39              		.cfi_offset 14, -4
+  53:Core/Src/balance_car/line_tracker.c ****     uint8_t raw_mask = 0U;
+  40              		.loc 1 53 5 view .LVU1
+  41              	.LVL0:
+  54:Core/Src/balance_car/line_tracker.c ****     uint8_t active_mask = 0U;
+  42              		.loc 1 54 5 view .LVU2
+  55:Core/Src/balance_car/line_tracker.c ****     uint8_t active_count = 0U;
+  43              		.loc 1 55 5 view .LVU3
+  56:Core/Src/balance_car/line_tracker.c ****     int16_t error = 0;
+  44              		.loc 1 56 5 view .LVU4
+  57:Core/Src/balance_car/line_tracker.c ****     int32_t weighted_sum = 0;
+  45              		.loc 1 57 5 view .LVU5
+  58:Core/Src/balance_car/line_tracker.c **** 
+  59:Core/Src/balance_car/line_tracker.c ****     for (uint32_t index = 0U; index < LINE_TRACKER_CHANNELS; index++) {
+  46              		.loc 1 59 5 view .LVU6
+  47              	.LBB2:
+  48              		.loc 1 59 10 view .LVU7
+  49              		.loc 1 59 19 is_stmt 0 view .LVU8
+  50 0004 0024     		movs	r4, #0
+  51              	.LBE2:
+  57:Core/Src/balance_car/line_tracker.c ****     int32_t weighted_sum = 0;
+  52              		.loc 1 57 13 view .LVU9
+  53 0006 2646     		mov	r6, r4
+  55:Core/Src/balance_car/line_tracker.c ****     int16_t error = 0;
+  54              		.loc 1 55 13 view .LVU10
+ARM GAS  D:\TMP\ccujHz20.s 			page 3
+
+
+  55 0008 2546     		mov	r5, r4
+  54:Core/Src/balance_car/line_tracker.c ****     uint8_t active_count = 0U;
+  56              		.loc 1 54 13 view .LVU11
+  57 000a 2746     		mov	r7, r4
+  53:Core/Src/balance_car/line_tracker.c ****     uint8_t active_mask = 0U;
+  58              		.loc 1 53 13 view .LVU12
+  59 000c A046     		mov	r8, r4
+  60              	.LBB5:
+  61              		.loc 1 59 5 view .LVU13
+  62 000e 06E0     		b	.L2
+  63              	.LVL1:
+  64              	.L21:
+  65              	.LBB3:
+  60:Core/Src/balance_car/line_tracker.c ****         GPIO_PinState pin_state = HAL_GPIO_ReadPin(s_line_ports[index], s_line_pins[index]);
+  61:Core/Src/balance_car/line_tracker.c ****         uint8_t is_set = (pin_state == GPIO_PIN_SET) ? 1U : 0U;
+  62:Core/Src/balance_car/line_tracker.c ****         uint8_t is_active = 0U;
+  66              		.loc 1 62 9 is_stmt 1 view .LVU14
+  63:Core/Src/balance_car/line_tracker.c **** 
+  64:Core/Src/balance_car/line_tracker.c ****         if (is_set != 0U) {
+  67              		.loc 1 64 9 view .LVU15
+  65:Core/Src/balance_car/line_tracker.c ****             raw_mask |= (uint8_t)(1U << index);
+  68              		.loc 1 65 13 view .LVU16
+  69              		.loc 1 65 38 is_stmt 0 view .LVU17
+  70 0010 0123     		movs	r3, #1
+  71 0012 A340     		lsls	r3, r3, r4
+  72              		.loc 1 65 25 view .LVU18
+  73 0014 DBB2     		uxtb	r3, r3
+  74              		.loc 1 65 22 view .LVU19
+  75 0016 43EA0808 		orr	r8, r3, r8
+  76              	.LVL2:
+  77              		.loc 1 65 22 view .LVU20
+  78 001a 0DE0     		b	.L3
+  79              	.LVL3:
+  80              	.L5:
+  81              		.loc 1 65 22 view .LVU21
+  82              	.LBE3:
+  59:Core/Src/balance_car/line_tracker.c ****         GPIO_PinState pin_state = HAL_GPIO_ReadPin(s_line_ports[index], s_line_pins[index]);
+  83              		.loc 1 59 67 is_stmt 1 discriminator 2 view .LVU22
+  84 001c 0134     		adds	r4, r4, #1
+  85              	.LVL4:
+  86              	.L2:
+  59:Core/Src/balance_car/line_tracker.c ****         GPIO_PinState pin_state = HAL_GPIO_ReadPin(s_line_ports[index], s_line_pins[index]);
+  87              		.loc 1 59 37 discriminator 1 view .LVU23
+  88 001e 072C     		cmp	r4, #7
+  89 0020 1DD8     		bhi	.L20
+  90              	.LBB4:
+  60:Core/Src/balance_car/line_tracker.c ****         uint8_t is_set = (pin_state == GPIO_PIN_SET) ? 1U : 0U;
+  91              		.loc 1 60 9 view .LVU24
+  60:Core/Src/balance_car/line_tracker.c ****         uint8_t is_set = (pin_state == GPIO_PIN_SET) ? 1U : 0U;
+  92              		.loc 1 60 35 is_stmt 0 view .LVU25
+  93 0022 324B     		ldr	r3, .L24
+  94 0024 33F81410 		ldrh	r1, [r3, r4, lsl #1]
+  95 0028 314B     		ldr	r3, .L24+4
+  96 002a 53F82400 		ldr	r0, [r3, r4, lsl #2]
+  97 002e FFF7FEFF 		bl	HAL_GPIO_ReadPin
+  98              	.LVL5:
+  61:Core/Src/balance_car/line_tracker.c ****         uint8_t is_active = 0U;
+ARM GAS  D:\TMP\ccujHz20.s 			page 4
+
+
+  99              		.loc 1 61 9 is_stmt 1 view .LVU26
+  61:Core/Src/balance_car/line_tracker.c ****         uint8_t is_active = 0U;
+ 100              		.loc 1 61 17 is_stmt 0 view .LVU27
+ 101 0032 0128     		cmp	r0, #1
+ 102 0034 ECD0     		beq	.L21
+  61:Core/Src/balance_car/line_tracker.c ****         uint8_t is_active = 0U;
+ 103              		.loc 1 61 17 discriminator 2 view .LVU28
+ 104 0036 0020     		movs	r0, #0
+ 105              	.LVL6:
+ 106              	.L3:
+  66:Core/Src/balance_car/line_tracker.c ****         }
+  67:Core/Src/balance_car/line_tracker.c **** 
+  68:Core/Src/balance_car/line_tracker.c ****         is_active = (g_line.active_low != 0U) ? (uint8_t)(is_set == 0U) : is_set;
+ 107              		.loc 1 68 9 is_stmt 1 view .LVU29
+ 108              		.loc 1 68 28 is_stmt 0 view .LVU30
+ 109 0038 2E4B     		ldr	r3, .L24+8
+ 110 003a 1B79     		ldrb	r3, [r3, #4]	@ zero_extendqisi2
+ 111              		.loc 1 68 19 view .LVU31
+ 112 003c 13B1     		cbz	r3, .L4
+ 113              		.loc 1 68 49 discriminator 1 view .LVU32
+ 114 003e B0FA80F0 		clz	r0, r0
+ 115 0042 4009     		lsrs	r0, r0, #5
+ 116              	.L4:
+ 117              	.LVL7:
+  69:Core/Src/balance_car/line_tracker.c ****         if (is_active != 0U) {
+ 118              		.loc 1 69 9 is_stmt 1 view .LVU33
+ 119              		.loc 1 69 12 is_stmt 0 view .LVU34
+ 120 0044 0028     		cmp	r0, #0
+ 121 0046 E9D0     		beq	.L5
+  70:Core/Src/balance_car/line_tracker.c ****             active_mask |= (uint8_t)(1U << index);
+ 122              		.loc 1 70 13 is_stmt 1 view .LVU35
+ 123              		.loc 1 70 41 is_stmt 0 view .LVU36
+ 124 0048 0123     		movs	r3, #1
+ 125 004a A340     		lsls	r3, r3, r4
+ 126              		.loc 1 70 28 view .LVU37
+ 127 004c DBB2     		uxtb	r3, r3
+ 128              		.loc 1 70 25 view .LVU38
+ 129 004e 1F43     		orrs	r7, r7, r3
+ 130              	.LVL8:
+  71:Core/Src/balance_car/line_tracker.c ****             weighted_sum += s_line_weights[index];
+ 131              		.loc 1 71 13 is_stmt 1 view .LVU39
+ 132              		.loc 1 71 43 is_stmt 0 view .LVU40
+ 133 0050 294B     		ldr	r3, .L24+12
+ 134 0052 33F91430 		ldrsh	r3, [r3, r4, lsl #1]
+ 135              		.loc 1 71 26 view .LVU41
+ 136 0056 1E44     		add	r6, r6, r3
+ 137              	.LVL9:
+  72:Core/Src/balance_car/line_tracker.c ****             active_count++;
+ 138              		.loc 1 72 13 is_stmt 1 view .LVU42
+ 139              		.loc 1 72 25 is_stmt 0 view .LVU43
+ 140 0058 0135     		adds	r5, r5, #1
+ 141              	.LVL10:
+ 142              		.loc 1 72 25 view .LVU44
+ 143 005a EDB2     		uxtb	r5, r5
+ 144              	.LVL11:
+ 145              		.loc 1 72 25 view .LVU45
+ 146 005c DEE7     		b	.L5
+ARM GAS  D:\TMP\ccujHz20.s 			page 5
+
+
+ 147              	.LVL12:
+ 148              	.L20:
+ 149              		.loc 1 72 25 view .LVU46
+ 150              	.LBE4:
+ 151              	.LBE5:
+  73:Core/Src/balance_car/line_tracker.c ****         }
+  74:Core/Src/balance_car/line_tracker.c ****     }
+  75:Core/Src/balance_car/line_tracker.c **** 
+  76:Core/Src/balance_car/line_tracker.c ****     g_line.raw_mask = raw_mask;
+ 152              		.loc 1 76 5 is_stmt 1 view .LVU47
+ 153              		.loc 1 76 21 is_stmt 0 view .LVU48
+ 154 005e 254B     		ldr	r3, .L24+8
+ 155 0060 83F80080 		strb	r8, [r3]
+  77:Core/Src/balance_car/line_tracker.c ****     g_line.active_mask = active_mask;
+ 156              		.loc 1 77 5 is_stmt 1 view .LVU49
+ 157              		.loc 1 77 24 is_stmt 0 view .LVU50
+ 158 0064 5F70     		strb	r7, [r3, #1]
+  78:Core/Src/balance_car/line_tracker.c ****     g_line.active_count = active_count;
+ 159              		.loc 1 78 5 is_stmt 1 view .LVU51
+ 160              		.loc 1 78 25 is_stmt 0 view .LVU52
+ 161 0066 9D70     		strb	r5, [r3, #2]
+  79:Core/Src/balance_car/line_tracker.c ****     g_line.line_seen = (active_count > 0U) ? 1U : 0U;
+ 162              		.loc 1 79 5 is_stmt 1 view .LVU53
+ 163              		.loc 1 79 22 is_stmt 0 view .LVU54
+ 164 0068 3DB3     		cbz	r5, .L16
+ 165              		.loc 1 79 22 discriminator 1 view .LVU55
+ 166 006a 0122     		movs	r2, #1
+ 167              	.L7:
+ 168              		.loc 1 79 22 discriminator 4 view .LVU56
+ 169 006c 214B     		ldr	r3, .L24+8
+ 170 006e DA70     		strb	r2, [r3, #3]
+  80:Core/Src/balance_car/line_tracker.c **** 
+  81:Core/Src/balance_car/line_tracker.c ****     if (active_count > 0U) {
+ 171              		.loc 1 81 5 is_stmt 1 view .LVU57
+ 172              		.loc 1 81 8 is_stmt 0 view .LVU58
+ 173 0070 002D     		cmp	r5, #0
+ 174 0072 36D0     		beq	.L8
+  82:Core/Src/balance_car/line_tracker.c ****         error = (int16_t)(weighted_sum / (int32_t)active_count);
+ 175              		.loc 1 82 9 is_stmt 1 view .LVU59
+ 176              		.loc 1 82 40 is_stmt 0 view .LVU60
+ 177 0074 96FBF5F6 		sdiv	r6, r6, r5
+ 178              	.LVL13:
+ 179              		.loc 1 82 15 view .LVU61
+ 180 0078 36B2     		sxth	r6, r6
+ 181              	.LVL14:
+  83:Core/Src/balance_car/line_tracker.c **** 
+  84:Core/Src/balance_car/line_tracker.c ****         g_line.right_angle_detected = 0U;
+ 182              		.loc 1 84 9 is_stmt 1 view .LVU62
+ 183              		.loc 1 84 37 is_stmt 0 view .LVU63
+ 184 007a 0022     		movs	r2, #0
+ 185 007c 5A74     		strb	r2, [r3, #17]
+  85:Core/Src/balance_car/line_tracker.c ****         g_line.right_angle_direction = 0;
+ 186              		.loc 1 85 9 is_stmt 1 view .LVU64
+ 187              		.loc 1 85 38 is_stmt 0 view .LVU65
+ 188 007e 9A74     		strb	r2, [r3, #18]
+  86:Core/Src/balance_car/line_tracker.c **** 
+  87:Core/Src/balance_car/line_tracker.c ****         if (g_line.right_angle_enable != 0U) {
+ARM GAS  D:\TMP\ccujHz20.s 			page 6
+
+
+ 189              		.loc 1 87 9 is_stmt 1 view .LVU66
+ 190              		.loc 1 87 19 is_stmt 0 view .LVU67
+ 191 0080 1B7C     		ldrb	r3, [r3, #16]	@ zero_extendqisi2
+ 192              		.loc 1 87 12 view .LVU68
+ 193 0082 8BB1     		cbz	r3, .L9
+ 194              	.LBB6:
+  88:Core/Src/balance_car/line_tracker.c ****             uint8_t left_right_angle = ((active_mask & 0x0FU) == 0x0FU) ? 1U : 0U;
+ 195              		.loc 1 88 13 is_stmt 1 view .LVU69
+ 196              		.loc 1 88 21 is_stmt 0 view .LVU70
+ 197 0084 07F00F03 		and	r3, r7, #15
+ 198 0088 0F2B     		cmp	r3, #15
+ 199 008a 18D0     		beq	.L22
+ 200              		.loc 1 88 21 discriminator 2 view .LVU71
+ 201 008c 0023     		movs	r3, #0
+ 202              	.L10:
+ 203              	.LVL15:
+  89:Core/Src/balance_car/line_tracker.c ****             uint8_t right_right_angle = ((active_mask & 0xF0U) == 0xF0U) ? 1U : 0U;
+ 204              		.loc 1 89 13 is_stmt 1 view .LVU72
+ 205              		.loc 1 89 21 is_stmt 0 view .LVU73
+ 206 008e 07F0F007 		and	r7, r7, #240
+ 207              	.LVL16:
+ 208              		.loc 1 89 21 view .LVU74
+ 209 0092 F02F     		cmp	r7, #240
+ 210 0094 15D0     		beq	.L23
+ 211              		.loc 1 89 21 discriminator 2 view .LVU75
+ 212 0096 0022     		movs	r2, #0
+ 213              	.L11:
+ 214              	.LVL17:
+  90:Core/Src/balance_car/line_tracker.c **** 
+  91:Core/Src/balance_car/line_tracker.c ****             if ((left_right_angle != 0U) && (right_right_angle == 0U)) {
+ 215              		.loc 1 91 13 is_stmt 1 view .LVU76
+ 216              		.loc 1 91 16 is_stmt 0 view .LVU77
+ 217 0098 ABB1     		cbz	r3, .L12
+ 218              		.loc 1 91 42 discriminator 1 view .LVU78
+ 219 009a B2B9     		cbnz	r2, .L13
+  92:Core/Src/balance_car/line_tracker.c ****                 error = g_line.right_angle_error;
+ 220              		.loc 1 92 17 is_stmt 1 view .LVU79
+ 221              		.loc 1 92 23 is_stmt 0 view .LVU80
+ 222 009c 154B     		ldr	r3, .L24+8
+ 223              	.LVL18:
+ 224              		.loc 1 92 23 view .LVU81
+ 225 009e 9E8A     		ldrh	r6, [r3, #20]
+ 226              	.LVL19:
+ 227              		.loc 1 92 23 view .LVU82
+ 228 00a0 36B2     		sxth	r6, r6
+ 229              	.LVL20:
+  93:Core/Src/balance_car/line_tracker.c ****                 g_line.right_angle_detected = 1U;
+ 230              		.loc 1 93 17 is_stmt 1 view .LVU83
+ 231              		.loc 1 93 45 is_stmt 0 view .LVU84
+ 232 00a2 0122     		movs	r2, #1
+ 233              	.LVL21:
+ 234              		.loc 1 93 45 view .LVU85
+ 235 00a4 5A74     		strb	r2, [r3, #17]
+  94:Core/Src/balance_car/line_tracker.c ****                 g_line.right_angle_direction = 1;
+ 236              		.loc 1 94 17 is_stmt 1 view .LVU86
+ 237              		.loc 1 94 46 is_stmt 0 view .LVU87
+ 238 00a6 9A74     		strb	r2, [r3, #18]
+ARM GAS  D:\TMP\ccujHz20.s 			page 7
+
+
+ 239              	.LVL22:
+ 240              	.L9:
+ 241              		.loc 1 94 46 view .LVU88
+ 242              	.LBE6:
+  95:Core/Src/balance_car/line_tracker.c ****             } else if ((right_right_angle != 0U) && (left_right_angle == 0U)) {
+  96:Core/Src/balance_car/line_tracker.c ****                 error = (int16_t)-g_line.right_angle_error;
+  97:Core/Src/balance_car/line_tracker.c ****                 g_line.right_angle_detected = 1U;
+  98:Core/Src/balance_car/line_tracker.c ****                 g_line.right_angle_direction = -1;
+  99:Core/Src/balance_car/line_tracker.c ****             }
+ 100:Core/Src/balance_car/line_tracker.c ****         }
+ 101:Core/Src/balance_car/line_tracker.c **** 
+ 102:Core/Src/balance_car/line_tracker.c ****         g_line.position = error;
+ 243              		.loc 1 102 9 is_stmt 1 view .LVU89
+ 244              		.loc 1 102 25 is_stmt 0 view .LVU90
+ 245 00a8 124B     		ldr	r3, .L24+8
+ 246 00aa DE80     		strh	r6, [r3, #6]	@ movhi
+ 103:Core/Src/balance_car/line_tracker.c ****         g_line.error = error;
+ 247              		.loc 1 103 9 is_stmt 1 view .LVU91
+ 248              		.loc 1 103 22 is_stmt 0 view .LVU92
+ 249 00ac 1E81     		strh	r6, [r3, #8]	@ movhi
+ 250              	.LVL23:
+ 251              	.L14:
+ 104:Core/Src/balance_car/line_tracker.c ****     } else {
+ 105:Core/Src/balance_car/line_tracker.c ****         g_line.right_angle_detected = 0U;
+ 106:Core/Src/balance_car/line_tracker.c ****         g_line.right_angle_direction = 0;
+ 107:Core/Src/balance_car/line_tracker.c ****     }
+ 108:Core/Src/balance_car/line_tracker.c **** 
+ 109:Core/Src/balance_car/line_tracker.c ****     g_line.sample_tick++;
+ 252              		.loc 1 109 5 is_stmt 1 view .LVU93
+ 253              		.loc 1 109 11 is_stmt 0 view .LVU94
+ 254 00ae 114A     		ldr	r2, .L24+8
+ 255 00b0 D368     		ldr	r3, [r2, #12]
+ 256              		.loc 1 109 23 view .LVU95
+ 257 00b2 0133     		adds	r3, r3, #1
+ 258 00b4 D360     		str	r3, [r2, #12]
+ 110:Core/Src/balance_car/line_tracker.c **** }
+ 259              		.loc 1 110 1 view .LVU96
+ 260 00b6 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 261              	.LVL24:
+ 262              	.L16:
+  79:Core/Src/balance_car/line_tracker.c **** 
+ 263              		.loc 1 79 22 discriminator 2 view .LVU97
+ 264 00ba 2A46     		mov	r2, r5
+ 265 00bc D6E7     		b	.L7
+ 266              	.LVL25:
+ 267              	.L22:
+ 268              	.LBB7:
+  88:Core/Src/balance_car/line_tracker.c ****             uint8_t right_right_angle = ((active_mask & 0xF0U) == 0xF0U) ? 1U : 0U;
+ 269              		.loc 1 88 21 discriminator 1 view .LVU98
+ 270 00be 0123     		movs	r3, #1
+ 271 00c0 E5E7     		b	.L10
+ 272              	.LVL26:
+ 273              	.L23:
+  89:Core/Src/balance_car/line_tracker.c **** 
+ 274              		.loc 1 89 21 discriminator 1 view .LVU99
+ 275 00c2 0122     		movs	r2, #1
+ 276 00c4 E8E7     		b	.L11
+ARM GAS  D:\TMP\ccujHz20.s 			page 8
+
+
+ 277              	.LVL27:
+ 278              	.L12:
+  95:Core/Src/balance_car/line_tracker.c ****                 error = (int16_t)-g_line.right_angle_error;
+ 279              		.loc 1 95 20 is_stmt 1 view .LVU100
+  95:Core/Src/balance_car/line_tracker.c ****                 error = (int16_t)-g_line.right_angle_error;
+ 280              		.loc 1 95 23 is_stmt 0 view .LVU101
+ 281 00c6 002A     		cmp	r2, #0
+ 282 00c8 EED0     		beq	.L9
+ 283              	.L13:
+  95:Core/Src/balance_car/line_tracker.c ****                 error = (int16_t)-g_line.right_angle_error;
+ 284              		.loc 1 95 50 discriminator 1 view .LVU102
+ 285 00ca 002B     		cmp	r3, #0
+ 286 00cc ECD1     		bne	.L9
+  96:Core/Src/balance_car/line_tracker.c ****                 g_line.right_angle_detected = 1U;
+ 287              		.loc 1 96 17 is_stmt 1 view .LVU103
+  96:Core/Src/balance_car/line_tracker.c ****                 g_line.right_angle_detected = 1U;
+ 288              		.loc 1 96 41 is_stmt 0 view .LVU104
+ 289 00ce 094B     		ldr	r3, .L24+8
+ 290              	.LVL28:
+  96:Core/Src/balance_car/line_tracker.c ****                 g_line.right_angle_detected = 1U;
+ 291              		.loc 1 96 41 view .LVU105
+ 292 00d0 9E8A     		ldrh	r6, [r3, #20]
+ 293              	.LVL29:
+  96:Core/Src/balance_car/line_tracker.c ****                 g_line.right_angle_detected = 1U;
+ 294              		.loc 1 96 41 view .LVU106
+ 295 00d2 B6B2     		uxth	r6, r6
+  96:Core/Src/balance_car/line_tracker.c ****                 g_line.right_angle_detected = 1U;
+ 296              		.loc 1 96 25 view .LVU107
+ 297 00d4 7642     		rsbs	r6, r6, #0
+  96:Core/Src/balance_car/line_tracker.c ****                 g_line.right_angle_detected = 1U;
+ 298              		.loc 1 96 23 view .LVU108
+ 299 00d6 36B2     		sxth	r6, r6
+ 300              	.LVL30:
+  97:Core/Src/balance_car/line_tracker.c ****                 g_line.right_angle_direction = -1;
+ 301              		.loc 1 97 17 is_stmt 1 view .LVU109
+  97:Core/Src/balance_car/line_tracker.c ****                 g_line.right_angle_direction = -1;
+ 302              		.loc 1 97 45 is_stmt 0 view .LVU110
+ 303 00d8 0122     		movs	r2, #1
+ 304              	.LVL31:
+  97:Core/Src/balance_car/line_tracker.c ****                 g_line.right_angle_direction = -1;
+ 305              		.loc 1 97 45 view .LVU111
+ 306 00da 5A74     		strb	r2, [r3, #17]
+  98:Core/Src/balance_car/line_tracker.c ****             }
+ 307              		.loc 1 98 17 is_stmt 1 view .LVU112
+  98:Core/Src/balance_car/line_tracker.c ****             }
+ 308              		.loc 1 98 46 is_stmt 0 view .LVU113
+ 309 00dc FF22     		movs	r2, #255
+ 310 00de 9A74     		strb	r2, [r3, #18]
+ 311 00e0 E2E7     		b	.L9
+ 312              	.LVL32:
+ 313              	.L8:
+  98:Core/Src/balance_car/line_tracker.c ****             }
+ 314              		.loc 1 98 46 view .LVU114
+ 315              	.LBE7:
+ 105:Core/Src/balance_car/line_tracker.c ****         g_line.right_angle_direction = 0;
+ 316              		.loc 1 105 9 is_stmt 1 view .LVU115
+ 105:Core/Src/balance_car/line_tracker.c ****         g_line.right_angle_direction = 0;
+ARM GAS  D:\TMP\ccujHz20.s 			page 9
+
+
+ 317              		.loc 1 105 37 is_stmt 0 view .LVU116
+ 318 00e2 044B     		ldr	r3, .L24+8
+ 319 00e4 0022     		movs	r2, #0
+ 320 00e6 5A74     		strb	r2, [r3, #17]
+ 106:Core/Src/balance_car/line_tracker.c ****     }
+ 321              		.loc 1 106 9 is_stmt 1 view .LVU117
+ 106:Core/Src/balance_car/line_tracker.c ****     }
+ 322              		.loc 1 106 38 is_stmt 0 view .LVU118
+ 323 00e8 9A74     		strb	r2, [r3, #18]
+ 324 00ea E0E7     		b	.L14
+ 325              	.L25:
+ 326              		.align	2
+ 327              	.L24:
+ 328 00ec 00000000 		.word	s_line_pins
+ 329 00f0 00000000 		.word	s_line_ports
+ 330 00f4 00000000 		.word	g_line
+ 331 00f8 00000000 		.word	s_line_weights
+ 332              		.cfi_endproc
+ 333              	.LFE66:
+ 335              		.section	.text.LineTracker_Init,"ax",%progbits
+ 336              		.align	1
+ 337              		.global	LineTracker_Init
+ 338              		.syntax unified
+ 339              		.thumb
+ 340              		.thumb_func
+ 342              	LineTracker_Init:
+ 343              	.LFB65:
+  32:Core/Src/balance_car/line_tracker.c ****     GPIO_InitTypeDef gpio = {0};
+ 344              		.loc 1 32 1 is_stmt 1 view -0
+ 345              		.cfi_startproc
+ 346              		@ args = 0, pretend = 0, frame = 24
+ 347              		@ frame_needed = 0, uses_anonymous_args = 0
+ 348 0000 00B5     		push	{lr}
+ 349              	.LCFI1:
+ 350              		.cfi_def_cfa_offset 4
+ 351              		.cfi_offset 14, -4
+ 352 0002 87B0     		sub	sp, sp, #28
+ 353              	.LCFI2:
+ 354              		.cfi_def_cfa_offset 32
+  33:Core/Src/balance_car/line_tracker.c **** 
+ 355              		.loc 1 33 5 view .LVU120
+  33:Core/Src/balance_car/line_tracker.c **** 
+ 356              		.loc 1 33 22 is_stmt 0 view .LVU121
+ 357 0004 0023     		movs	r3, #0
+ 358 0006 0293     		str	r3, [sp, #8]
+ 359 0008 0393     		str	r3, [sp, #12]
+ 360 000a 0493     		str	r3, [sp, #16]
+ 361 000c 0593     		str	r3, [sp, #20]
+  35:Core/Src/balance_car/line_tracker.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
+ 362              		.loc 1 35 5 is_stmt 1 view .LVU122
+ 363              	.LBB8:
+  35:Core/Src/balance_car/line_tracker.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
+ 364              		.loc 1 35 5 view .LVU123
+  35:Core/Src/balance_car/line_tracker.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
+ 365              		.loc 1 35 5 view .LVU124
+ 366 000e 03F18043 		add	r3, r3, #1073741824
+ 367 0012 03F50433 		add	r3, r3, #135168
+ARM GAS  D:\TMP\ccujHz20.s 			page 10
+
+
+ 368 0016 9A69     		ldr	r2, [r3, #24]
+ 369 0018 42F00402 		orr	r2, r2, #4
+ 370 001c 9A61     		str	r2, [r3, #24]
+  35:Core/Src/balance_car/line_tracker.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
+ 371              		.loc 1 35 5 view .LVU125
+ 372 001e 9A69     		ldr	r2, [r3, #24]
+ 373 0020 02F00402 		and	r2, r2, #4
+ 374 0024 0092     		str	r2, [sp]
+  35:Core/Src/balance_car/line_tracker.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
+ 375              		.loc 1 35 5 view .LVU126
+ 376 0026 009A     		ldr	r2, [sp]
+ 377              	.LBE8:
+  35:Core/Src/balance_car/line_tracker.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
+ 378              		.loc 1 35 5 view .LVU127
+  36:Core/Src/balance_car/line_tracker.c **** 
+ 379              		.loc 1 36 5 view .LVU128
+ 380              	.LBB9:
+  36:Core/Src/balance_car/line_tracker.c **** 
+ 381              		.loc 1 36 5 view .LVU129
+  36:Core/Src/balance_car/line_tracker.c **** 
+ 382              		.loc 1 36 5 view .LVU130
+ 383 0028 9A69     		ldr	r2, [r3, #24]
+ 384 002a 42F00802 		orr	r2, r2, #8
+ 385 002e 9A61     		str	r2, [r3, #24]
+  36:Core/Src/balance_car/line_tracker.c **** 
+ 386              		.loc 1 36 5 view .LVU131
+ 387 0030 9B69     		ldr	r3, [r3, #24]
+ 388 0032 03F00803 		and	r3, r3, #8
+ 389 0036 0193     		str	r3, [sp, #4]
+  36:Core/Src/balance_car/line_tracker.c **** 
+ 390              		.loc 1 36 5 view .LVU132
+ 391 0038 019B     		ldr	r3, [sp, #4]
+ 392              	.LBE9:
+  36:Core/Src/balance_car/line_tracker.c **** 
+ 393              		.loc 1 36 5 view .LVU133
+  38:Core/Src/balance_car/line_tracker.c ****     gpio.Pull = GPIO_PULLUP;
+ 394              		.loc 1 38 5 view .LVU134
+  39:Core/Src/balance_car/line_tracker.c ****     gpio.Speed = GPIO_SPEED_FREQ_LOW;
+ 395              		.loc 1 39 5 view .LVU135
+  39:Core/Src/balance_car/line_tracker.c ****     gpio.Speed = GPIO_SPEED_FREQ_LOW;
+ 396              		.loc 1 39 15 is_stmt 0 view .LVU136
+ 397 003a 0123     		movs	r3, #1
+ 398 003c 0493     		str	r3, [sp, #16]
+  40:Core/Src/balance_car/line_tracker.c **** 
+ 399              		.loc 1 40 5 is_stmt 1 view .LVU137
+  40:Core/Src/balance_car/line_tracker.c **** 
+ 400              		.loc 1 40 16 is_stmt 0 view .LVU138
+ 401 003e 0223     		movs	r3, #2
+ 402 0040 0593     		str	r3, [sp, #20]
+  42:Core/Src/balance_car/line_tracker.c ****     HAL_GPIO_Init(GPIOA, &gpio);
+ 403              		.loc 1 42 5 is_stmt 1 view .LVU139
+  42:Core/Src/balance_car/line_tracker.c ****     HAL_GPIO_Init(GPIOA, &gpio);
+ 404              		.loc 1 42 14 is_stmt 0 view .LVU140
+ 405 0042 4FF41C43 		mov	r3, #39936
+ 406 0046 0293     		str	r3, [sp, #8]
+  43:Core/Src/balance_car/line_tracker.c **** 
+ 407              		.loc 1 43 5 is_stmt 1 view .LVU141
+ARM GAS  D:\TMP\ccujHz20.s 			page 11
+
+
+ 408 0048 02A9     		add	r1, sp, #8
+ 409 004a 0748     		ldr	r0, .L28
+ 410 004c FFF7FEFF 		bl	HAL_GPIO_Init
+ 411              	.LVL33:
+  45:Core/Src/balance_car/line_tracker.c ****     HAL_GPIO_Init(GPIOB, &gpio);
+ 412              		.loc 1 45 5 view .LVU142
+  45:Core/Src/balance_car/line_tracker.c ****     HAL_GPIO_Init(GPIOB, &gpio);
+ 413              		.loc 1 45 14 is_stmt 0 view .LVU143
+ 414 0050 48F23803 		movw	r3, #32824
+ 415 0054 0293     		str	r3, [sp, #8]
+  46:Core/Src/balance_car/line_tracker.c **** 
+ 416              		.loc 1 46 5 is_stmt 1 view .LVU144
+ 417 0056 02A9     		add	r1, sp, #8
+ 418 0058 0448     		ldr	r0, .L28+4
+ 419 005a FFF7FEFF 		bl	HAL_GPIO_Init
+ 420              	.LVL34:
+  48:Core/Src/balance_car/line_tracker.c **** }
+ 421              		.loc 1 48 5 view .LVU145
+ 422 005e FFF7FEFF 		bl	LineTracker_Update
+ 423              	.LVL35:
+  49:Core/Src/balance_car/line_tracker.c **** 
+ 424              		.loc 1 49 1 is_stmt 0 view .LVU146
+ 425 0062 07B0     		add	sp, sp, #28
+ 426              	.LCFI3:
+ 427              		.cfi_def_cfa_offset 4
+ 428              		@ sp needed
+ 429 0064 5DF804FB 		ldr	pc, [sp], #4
+ 430              	.L29:
+ 431              		.align	2
+ 432              	.L28:
+ 433 0068 00080140 		.word	1073809408
+ 434 006c 000C0140 		.word	1073810432
+ 435              		.cfi_endproc
+ 436              	.LFE65:
+ 438              		.section	.rodata.s_line_weights,"a"
+ 439              		.align	2
+ 442              	s_line_weights:
+ 443 0000 3200     		.short	50
+ 444 0002 2400     		.short	36
+ 445 0004 1500     		.short	21
+ 446 0006 0700     		.short	7
+ 447 0008 F9FF     		.short	-7
+ 448 000a EBFF     		.short	-21
+ 449 000c DCFF     		.short	-36
+ 450 000e CEFF     		.short	-50
+ 451              		.section	.rodata.s_line_pins,"a"
+ 452              		.align	2
+ 455              	s_line_pins:
+ 456 0000 0080     		.short	-32768
+ 457 0002 0004     		.short	1024
+ 458 0004 0008     		.short	2048
+ 459 0006 0010     		.short	4096
+ 460 0008 0080     		.short	-32768
+ 461 000a 0800     		.short	8
+ 462 000c 1000     		.short	16
+ 463 000e 2000     		.short	32
+ 464              		.section	.rodata.s_line_ports,"a"
+ARM GAS  D:\TMP\ccujHz20.s 			page 12
+
+
+ 465              		.align	2
+ 468              	s_line_ports:
+ 469 0000 000C0140 		.word	1073810432
+ 470 0004 00080140 		.word	1073809408
+ 471 0008 00080140 		.word	1073809408
+ 472 000c 00080140 		.word	1073809408
+ 473 0010 00080140 		.word	1073809408
+ 474 0014 000C0140 		.word	1073810432
+ 475 0018 000C0140 		.word	1073810432
+ 476 001c 000C0140 		.word	1073810432
+ 477              		.global	g_line
+ 478              		.section	.data.g_line,"aw"
+ 479              		.align	2
+ 482              	g_line:
+ 483 0000 00       		.byte	0
+ 484 0001 00       		.byte	0
+ 485 0002 00       		.byte	0
+ 486 0003 00       		.byte	0
+ 487 0004 00       		.byte	0
+ 488 0005 00       		.space	1
+ 489 0006 0000     		.short	0
+ 490 0008 0000     		.short	0
+ 491 000a 0000     		.space	2
+ 492 000c 00000000 		.word	0
+ 493 0010 01       		.byte	1
+ 494 0011 00       		.byte	0
+ 495 0012 00       		.byte	0
+ 496 0013 00       		.space	1
+ 497 0014 3200     		.short	50
+ 498 0016 0000     		.space	2
+ 499              		.text
+ 500              	.Letext0:
+ 501              		.file 2 "F:/Msys2/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 502              		.file 3 "F:/Msys2/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 503              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ 504              		.file 5 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h"
+ 505              		.file 6 "Core/Inc/balance_car/line_tracker.h"
+ARM GAS  D:\TMP\ccujHz20.s 			page 13
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 line_tracker.c
+   D:\TMP\ccujHz20.s:19     .text.LineTracker_Update:00000000 $t
+   D:\TMP\ccujHz20.s:25     .text.LineTracker_Update:00000000 LineTracker_Update
+   D:\TMP\ccujHz20.s:328    .text.LineTracker_Update:000000ec $d
+   D:\TMP\ccujHz20.s:455    .rodata.s_line_pins:00000000 s_line_pins
+   D:\TMP\ccujHz20.s:468    .rodata.s_line_ports:00000000 s_line_ports
+   D:\TMP\ccujHz20.s:482    .data.g_line:00000000 g_line
+   D:\TMP\ccujHz20.s:442    .rodata.s_line_weights:00000000 s_line_weights
+   D:\TMP\ccujHz20.s:336    .text.LineTracker_Init:00000000 $t
+   D:\TMP\ccujHz20.s:342    .text.LineTracker_Init:00000000 LineTracker_Init
+   D:\TMP\ccujHz20.s:433    .text.LineTracker_Init:00000068 $d
+   D:\TMP\ccujHz20.s:439    .rodata.s_line_weights:00000000 $d
+   D:\TMP\ccujHz20.s:452    .rodata.s_line_pins:00000000 $d
+   D:\TMP\ccujHz20.s:465    .rodata.s_line_ports:00000000 $d
+   D:\TMP\ccujHz20.s:479    .data.g_line:00000000 $d
+
+UNDEFINED SYMBOLS
+HAL_GPIO_ReadPin
+HAL_GPIO_Init

@@ -1,0 +1,624 @@
+ARM GAS  D:\TMP\cck3Yfop.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"encoder_hal.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "Core/Src/balance_car/encoder_hal.c"
+  18              		.section	.text.Encoder_InitTimer,"ax",%progbits
+  19              		.align	1
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	Encoder_InitTimer:
+  25              	.LVL0:
+  26              	.LFB65:
+   1:Core/Src/balance_car/encoder_hal.c **** #include "balance_car/encoder_hal.h"
+   2:Core/Src/balance_car/encoder_hal.c **** 
+   3:Core/Src/balance_car/encoder_hal.c **** static TIM_HandleTypeDef s_htim1;
+   4:Core/Src/balance_car/encoder_hal.c **** static TIM_HandleTypeDef s_htim2;
+   5:Core/Src/balance_car/encoder_hal.c **** 
+   6:Core/Src/balance_car/encoder_hal.c **** static HAL_StatusTypeDef Encoder_InitTimer(TIM_HandleTypeDef *htim, TIM_TypeDef *instance)
+   7:Core/Src/balance_car/encoder_hal.c **** {
+  27              		.loc 1 7 1 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 48
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              		.loc 1 7 1 is_stmt 0 view .LVU1
+  32 0000 30B5     		push	{r4, r5, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 12
+  35              		.cfi_offset 4, -12
+  36              		.cfi_offset 5, -8
+  37              		.cfi_offset 14, -4
+  38 0002 8DB0     		sub	sp, sp, #52
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_offset 64
+  41 0004 0446     		mov	r4, r0
+  42 0006 0D46     		mov	r5, r1
+   8:Core/Src/balance_car/encoder_hal.c ****     TIM_Encoder_InitTypeDef config = {0};
+  43              		.loc 1 8 5 is_stmt 1 view .LVU2
+  44              		.loc 1 8 29 is_stmt 0 view .LVU3
+  45 0008 2422     		movs	r2, #36
+  46 000a 0021     		movs	r1, #0
+  47              	.LVL1:
+  48              		.loc 1 8 29 view .LVU4
+  49 000c 03A8     		add	r0, sp, #12
+  50              	.LVL2:
+ARM GAS  D:\TMP\cck3Yfop.s 			page 2
+
+
+  51              		.loc 1 8 29 view .LVU5
+  52 000e FFF7FEFF 		bl	memset
+  53              	.LVL3:
+   9:Core/Src/balance_car/encoder_hal.c ****     TIM_MasterConfigTypeDef master = {0};
+  54              		.loc 1 9 5 is_stmt 1 view .LVU6
+  55              		.loc 1 9 29 is_stmt 0 view .LVU7
+  56 0012 0023     		movs	r3, #0
+  57 0014 0193     		str	r3, [sp, #4]
+  58 0016 0293     		str	r3, [sp, #8]
+  10:Core/Src/balance_car/encoder_hal.c **** 
+  11:Core/Src/balance_car/encoder_hal.c ****     htim->Instance = instance;
+  59              		.loc 1 11 5 is_stmt 1 view .LVU8
+  60              		.loc 1 11 20 is_stmt 0 view .LVU9
+  61 0018 2560     		str	r5, [r4]
+  12:Core/Src/balance_car/encoder_hal.c ****     htim->Init.Prescaler = 0U;
+  62              		.loc 1 12 5 is_stmt 1 view .LVU10
+  63              		.loc 1 12 26 is_stmt 0 view .LVU11
+  64 001a 6360     		str	r3, [r4, #4]
+  13:Core/Src/balance_car/encoder_hal.c ****     htim->Init.CounterMode = TIM_COUNTERMODE_UP;
+  65              		.loc 1 13 5 is_stmt 1 view .LVU12
+  66              		.loc 1 13 28 is_stmt 0 view .LVU13
+  67 001c A360     		str	r3, [r4, #8]
+  14:Core/Src/balance_car/encoder_hal.c ****     htim->Init.Period = 65535U;
+  68              		.loc 1 14 5 is_stmt 1 view .LVU14
+  69              		.loc 1 14 23 is_stmt 0 view .LVU15
+  70 001e 4FF6FF72 		movw	r2, #65535
+  71 0022 E260     		str	r2, [r4, #12]
+  15:Core/Src/balance_car/encoder_hal.c ****     htim->Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  72              		.loc 1 15 5 is_stmt 1 view .LVU16
+  73              		.loc 1 15 30 is_stmt 0 view .LVU17
+  74 0024 2361     		str	r3, [r4, #16]
+  16:Core/Src/balance_car/encoder_hal.c ****     htim->Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  75              		.loc 1 16 5 is_stmt 1 view .LVU18
+  76              		.loc 1 16 34 is_stmt 0 view .LVU19
+  77 0026 A361     		str	r3, [r4, #24]
+  17:Core/Src/balance_car/encoder_hal.c **** 
+  18:Core/Src/balance_car/encoder_hal.c ****     config.EncoderMode = TIM_ENCODERMODE_TI12;
+  78              		.loc 1 18 5 is_stmt 1 view .LVU20
+  79              		.loc 1 18 24 is_stmt 0 view .LVU21
+  80 0028 0322     		movs	r2, #3
+  81 002a 0392     		str	r2, [sp, #12]
+  19:Core/Src/balance_car/encoder_hal.c ****     config.IC1Polarity = TIM_ICPOLARITY_RISING;
+  82              		.loc 1 19 5 is_stmt 1 view .LVU22
+  83              		.loc 1 19 24 is_stmt 0 view .LVU23
+  84 002c 0493     		str	r3, [sp, #16]
+  20:Core/Src/balance_car/encoder_hal.c ****     config.IC1Selection = TIM_ICSELECTION_DIRECTTI;
+  85              		.loc 1 20 5 is_stmt 1 view .LVU24
+  86              		.loc 1 20 25 is_stmt 0 view .LVU25
+  87 002e 0121     		movs	r1, #1
+  88 0030 0591     		str	r1, [sp, #20]
+  21:Core/Src/balance_car/encoder_hal.c ****     config.IC1Prescaler = TIM_ICPSC_DIV1;
+  89              		.loc 1 21 5 is_stmt 1 view .LVU26
+  90              		.loc 1 21 25 is_stmt 0 view .LVU27
+  91 0032 0693     		str	r3, [sp, #24]
+  22:Core/Src/balance_car/encoder_hal.c ****     config.IC1Filter = 0x0FU;
+  92              		.loc 1 22 5 is_stmt 1 view .LVU28
+  93              		.loc 1 22 22 is_stmt 0 view .LVU29
+ARM GAS  D:\TMP\cck3Yfop.s 			page 3
+
+
+  94 0034 0F22     		movs	r2, #15
+  95 0036 0792     		str	r2, [sp, #28]
+  23:Core/Src/balance_car/encoder_hal.c ****     config.IC2Polarity = TIM_ICPOLARITY_RISING;
+  96              		.loc 1 23 5 is_stmt 1 view .LVU30
+  97              		.loc 1 23 24 is_stmt 0 view .LVU31
+  98 0038 0893     		str	r3, [sp, #32]
+  24:Core/Src/balance_car/encoder_hal.c ****     config.IC2Selection = TIM_ICSELECTION_DIRECTTI;
+  99              		.loc 1 24 5 is_stmt 1 view .LVU32
+ 100              		.loc 1 24 25 is_stmt 0 view .LVU33
+ 101 003a 0991     		str	r1, [sp, #36]
+  25:Core/Src/balance_car/encoder_hal.c ****     config.IC2Prescaler = TIM_ICPSC_DIV1;
+ 102              		.loc 1 25 5 is_stmt 1 view .LVU34
+ 103              		.loc 1 25 25 is_stmt 0 view .LVU35
+ 104 003c 0A93     		str	r3, [sp, #40]
+  26:Core/Src/balance_car/encoder_hal.c ****     config.IC2Filter = 0x0FU;
+ 105              		.loc 1 26 5 is_stmt 1 view .LVU36
+ 106              		.loc 1 26 22 is_stmt 0 view .LVU37
+ 107 003e 0B92     		str	r2, [sp, #44]
+  27:Core/Src/balance_car/encoder_hal.c **** 
+  28:Core/Src/balance_car/encoder_hal.c ****     if (HAL_TIM_Encoder_Init(htim, &config) != HAL_OK) {
+ 108              		.loc 1 28 5 is_stmt 1 view .LVU38
+ 109              		.loc 1 28 9 is_stmt 0 view .LVU39
+ 110 0040 03A9     		add	r1, sp, #12
+ 111 0042 2046     		mov	r0, r4
+ 112 0044 FFF7FEFF 		bl	HAL_TIM_Encoder_Init
+ 113              	.LVL4:
+ 114              		.loc 1 28 8 discriminator 1 view .LVU40
+ 115 0048 10B1     		cbz	r0, .L6
+  29:Core/Src/balance_car/encoder_hal.c ****         return HAL_ERROR;
+ 116              		.loc 1 29 16 view .LVU41
+ 117 004a 0120     		movs	r0, #1
+ 118              	.L2:
+  30:Core/Src/balance_car/encoder_hal.c ****     }
+  31:Core/Src/balance_car/encoder_hal.c **** 
+  32:Core/Src/balance_car/encoder_hal.c ****     master.MasterOutputTrigger = TIM_TRGO_RESET;
+  33:Core/Src/balance_car/encoder_hal.c ****     master.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  34:Core/Src/balance_car/encoder_hal.c ****     if (HAL_TIMEx_MasterConfigSynchronization(htim, &master) != HAL_OK) {
+  35:Core/Src/balance_car/encoder_hal.c ****         return HAL_ERROR;
+  36:Core/Src/balance_car/encoder_hal.c ****     }
+  37:Core/Src/balance_car/encoder_hal.c **** 
+  38:Core/Src/balance_car/encoder_hal.c ****     return HAL_TIM_Encoder_Start(htim, TIM_CHANNEL_ALL);
+  39:Core/Src/balance_car/encoder_hal.c **** }
+ 119              		.loc 1 39 1 view .LVU42
+ 120 004c 0DB0     		add	sp, sp, #52
+ 121              	.LCFI2:
+ 122              		.cfi_remember_state
+ 123              		.cfi_def_cfa_offset 12
+ 124              		@ sp needed
+ 125 004e 30BD     		pop	{r4, r5, pc}
+ 126              	.LVL5:
+ 127              	.L6:
+ 128              	.LCFI3:
+ 129              		.cfi_restore_state
+  32:Core/Src/balance_car/encoder_hal.c ****     master.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+ 130              		.loc 1 32 5 is_stmt 1 view .LVU43
+  32:Core/Src/balance_car/encoder_hal.c ****     master.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+ 131              		.loc 1 32 32 is_stmt 0 view .LVU44
+ARM GAS  D:\TMP\cck3Yfop.s 			page 4
+
+
+ 132 0050 0023     		movs	r3, #0
+ 133 0052 0193     		str	r3, [sp, #4]
+  33:Core/Src/balance_car/encoder_hal.c ****     if (HAL_TIMEx_MasterConfigSynchronization(htim, &master) != HAL_OK) {
+ 134              		.loc 1 33 5 is_stmt 1 view .LVU45
+  33:Core/Src/balance_car/encoder_hal.c ****     if (HAL_TIMEx_MasterConfigSynchronization(htim, &master) != HAL_OK) {
+ 135              		.loc 1 33 28 is_stmt 0 view .LVU46
+ 136 0054 0293     		str	r3, [sp, #8]
+  34:Core/Src/balance_car/encoder_hal.c ****         return HAL_ERROR;
+ 137              		.loc 1 34 5 is_stmt 1 view .LVU47
+  34:Core/Src/balance_car/encoder_hal.c ****         return HAL_ERROR;
+ 138              		.loc 1 34 9 is_stmt 0 view .LVU48
+ 139 0056 01A9     		add	r1, sp, #4
+ 140 0058 2046     		mov	r0, r4
+ 141 005a FFF7FEFF 		bl	HAL_TIMEx_MasterConfigSynchronization
+ 142              	.LVL6:
+  34:Core/Src/balance_car/encoder_hal.c ****         return HAL_ERROR;
+ 143              		.loc 1 34 8 discriminator 1 view .LVU49
+ 144 005e 08B1     		cbz	r0, .L7
+  35:Core/Src/balance_car/encoder_hal.c ****     }
+ 145              		.loc 1 35 16 view .LVU50
+ 146 0060 0120     		movs	r0, #1
+ 147 0062 F3E7     		b	.L2
+ 148              	.L7:
+  38:Core/Src/balance_car/encoder_hal.c **** }
+ 149              		.loc 1 38 5 is_stmt 1 view .LVU51
+  38:Core/Src/balance_car/encoder_hal.c **** }
+ 150              		.loc 1 38 12 is_stmt 0 view .LVU52
+ 151 0064 3C21     		movs	r1, #60
+ 152 0066 2046     		mov	r0, r4
+ 153 0068 FFF7FEFF 		bl	HAL_TIM_Encoder_Start
+ 154              	.LVL7:
+ 155 006c EEE7     		b	.L2
+ 156              		.cfi_endproc
+ 157              	.LFE65:
+ 159              		.section	.text.Encoder_Init,"ax",%progbits
+ 160              		.align	1
+ 161              		.global	Encoder_Init
+ 162              		.syntax unified
+ 163              		.thumb
+ 164              		.thumb_func
+ 166              	Encoder_Init:
+ 167              	.LFB66:
+  40:Core/Src/balance_car/encoder_hal.c **** 
+  41:Core/Src/balance_car/encoder_hal.c **** HAL_StatusTypeDef Encoder_Init(void)
+  42:Core/Src/balance_car/encoder_hal.c **** {
+ 168              		.loc 1 42 1 is_stmt 1 view -0
+ 169              		.cfi_startproc
+ 170              		@ args = 0, pretend = 0, frame = 0
+ 171              		@ frame_needed = 0, uses_anonymous_args = 0
+ 172 0000 08B5     		push	{r3, lr}
+ 173              	.LCFI4:
+ 174              		.cfi_def_cfa_offset 8
+ 175              		.cfi_offset 3, -8
+ 176              		.cfi_offset 14, -4
+  43:Core/Src/balance_car/encoder_hal.c ****     if (Encoder_InitTimer(&s_htim1, TIM1) != HAL_OK) {
+ 177              		.loc 1 43 5 view .LVU54
+ 178              		.loc 1 43 9 is_stmt 0 view .LVU55
+ARM GAS  D:\TMP\cck3Yfop.s 			page 5
+
+
+ 179 0002 0B49     		ldr	r1, .L14
+ 180 0004 0B48     		ldr	r0, .L14+4
+ 181 0006 FFF7FEFF 		bl	Encoder_InitTimer
+ 182              	.LVL8:
+ 183              		.loc 1 43 8 discriminator 1 view .LVU56
+ 184 000a 08B1     		cbz	r0, .L13
+  44:Core/Src/balance_car/encoder_hal.c ****         return HAL_ERROR;
+ 185              		.loc 1 44 16 view .LVU57
+ 186 000c 0120     		movs	r0, #1
+ 187              	.L9:
+  45:Core/Src/balance_car/encoder_hal.c ****     }
+  46:Core/Src/balance_car/encoder_hal.c ****     if (Encoder_InitTimer(&s_htim2, TIM2) != HAL_OK) {
+  47:Core/Src/balance_car/encoder_hal.c ****         return HAL_ERROR;
+  48:Core/Src/balance_car/encoder_hal.c ****     }
+  49:Core/Src/balance_car/encoder_hal.c ****     __HAL_TIM_SET_COUNTER(&s_htim1, 0U);
+  50:Core/Src/balance_car/encoder_hal.c ****     __HAL_TIM_SET_COUNTER(&s_htim2, 0U);
+  51:Core/Src/balance_car/encoder_hal.c ****     return HAL_OK;
+  52:Core/Src/balance_car/encoder_hal.c **** }
+ 188              		.loc 1 52 1 view .LVU58
+ 189 000e 08BD     		pop	{r3, pc}
+ 190              	.L13:
+  46:Core/Src/balance_car/encoder_hal.c ****         return HAL_ERROR;
+ 191              		.loc 1 46 5 is_stmt 1 view .LVU59
+  46:Core/Src/balance_car/encoder_hal.c ****         return HAL_ERROR;
+ 192              		.loc 1 46 9 is_stmt 0 view .LVU60
+ 193 0010 4FF08041 		mov	r1, #1073741824
+ 194 0014 0848     		ldr	r0, .L14+8
+ 195 0016 FFF7FEFF 		bl	Encoder_InitTimer
+ 196              	.LVL9:
+  46:Core/Src/balance_car/encoder_hal.c ****         return HAL_ERROR;
+ 197              		.loc 1 46 8 discriminator 1 view .LVU61
+ 198 001a 38B9     		cbnz	r0, .L11
+  49:Core/Src/balance_car/encoder_hal.c ****     __HAL_TIM_SET_COUNTER(&s_htim2, 0U);
+ 199              		.loc 1 49 5 is_stmt 1 view .LVU62
+ 200 001c 054B     		ldr	r3, .L14+4
+ 201 001e 1A68     		ldr	r2, [r3]
+ 202 0020 0023     		movs	r3, #0
+ 203 0022 5362     		str	r3, [r2, #36]
+  50:Core/Src/balance_car/encoder_hal.c ****     return HAL_OK;
+ 204              		.loc 1 50 5 view .LVU63
+ 205 0024 044A     		ldr	r2, .L14+8
+ 206 0026 1268     		ldr	r2, [r2]
+ 207 0028 5362     		str	r3, [r2, #36]
+  51:Core/Src/balance_car/encoder_hal.c **** }
+ 208              		.loc 1 51 5 view .LVU64
+  51:Core/Src/balance_car/encoder_hal.c **** }
+ 209              		.loc 1 51 12 is_stmt 0 view .LVU65
+ 210 002a F0E7     		b	.L9
+ 211              	.L11:
+  47:Core/Src/balance_car/encoder_hal.c ****     }
+ 212              		.loc 1 47 16 view .LVU66
+ 213 002c 0120     		movs	r0, #1
+ 214 002e EEE7     		b	.L9
+ 215              	.L15:
+ 216              		.align	2
+ 217              	.L14:
+ 218 0030 002C0140 		.word	1073818624
+ARM GAS  D:\TMP\cck3Yfop.s 			page 6
+
+
+ 219 0034 00000000 		.word	s_htim1
+ 220 0038 00000000 		.word	s_htim2
+ 221              		.cfi_endproc
+ 222              	.LFE66:
+ 224              		.section	.text.Encoder_GetLeftDelta,"ax",%progbits
+ 225              		.align	1
+ 226              		.global	Encoder_GetLeftDelta
+ 227              		.syntax unified
+ 228              		.thumb
+ 229              		.thumb_func
+ 231              	Encoder_GetLeftDelta:
+ 232              	.LFB67:
+  53:Core/Src/balance_car/encoder_hal.c **** 
+  54:Core/Src/balance_car/encoder_hal.c **** int16_t Encoder_GetLeftDelta(void)
+  55:Core/Src/balance_car/encoder_hal.c **** {
+ 233              		.loc 1 55 1 is_stmt 1 view -0
+ 234              		.cfi_startproc
+ 235              		@ args = 0, pretend = 0, frame = 0
+ 236              		@ frame_needed = 0, uses_anonymous_args = 0
+ 237              		@ link register save eliminated.
+  56:Core/Src/balance_car/encoder_hal.c ****     int16_t delta = (int16_t)__HAL_TIM_GET_COUNTER(&s_htim1);
+ 238              		.loc 1 56 5 view .LVU68
+ 239              		.loc 1 56 30 is_stmt 0 view .LVU69
+ 240 0000 034B     		ldr	r3, .L17
+ 241 0002 1B68     		ldr	r3, [r3]
+ 242 0004 586A     		ldr	r0, [r3, #36]
+ 243              	.LVL10:
+  57:Core/Src/balance_car/encoder_hal.c ****     __HAL_TIM_SET_COUNTER(&s_htim1, 0U);
+ 244              		.loc 1 57 5 is_stmt 1 view .LVU70
+ 245 0006 0022     		movs	r2, #0
+ 246 0008 5A62     		str	r2, [r3, #36]
+  58:Core/Src/balance_car/encoder_hal.c ****     return -delta;
+ 247              		.loc 1 58 5 view .LVU71
+ 248              		.loc 1 58 12 is_stmt 0 view .LVU72
+ 249 000a 4042     		rsbs	r0, r0, #0
+ 250              	.LVL11:
+  59:Core/Src/balance_car/encoder_hal.c **** }
+ 251              		.loc 1 59 1 view .LVU73
+ 252 000c 00B2     		sxth	r0, r0
+ 253              	.LVL12:
+ 254              		.loc 1 59 1 view .LVU74
+ 255 000e 7047     		bx	lr
+ 256              	.L18:
+ 257              		.align	2
+ 258              	.L17:
+ 259 0010 00000000 		.word	s_htim1
+ 260              		.cfi_endproc
+ 261              	.LFE67:
+ 263              		.section	.text.Encoder_GetRightDelta,"ax",%progbits
+ 264              		.align	1
+ 265              		.global	Encoder_GetRightDelta
+ 266              		.syntax unified
+ 267              		.thumb
+ 268              		.thumb_func
+ 270              	Encoder_GetRightDelta:
+ 271              	.LFB68:
+  60:Core/Src/balance_car/encoder_hal.c **** 
+ARM GAS  D:\TMP\cck3Yfop.s 			page 7
+
+
+  61:Core/Src/balance_car/encoder_hal.c **** int16_t Encoder_GetRightDelta(void)
+  62:Core/Src/balance_car/encoder_hal.c **** {
+ 272              		.loc 1 62 1 is_stmt 1 view -0
+ 273              		.cfi_startproc
+ 274              		@ args = 0, pretend = 0, frame = 0
+ 275              		@ frame_needed = 0, uses_anonymous_args = 0
+ 276              		@ link register save eliminated.
+  63:Core/Src/balance_car/encoder_hal.c ****     int16_t delta = (int16_t)__HAL_TIM_GET_COUNTER(&s_htim2);
+ 277              		.loc 1 63 5 view .LVU76
+ 278              		.loc 1 63 30 is_stmt 0 view .LVU77
+ 279 0000 034B     		ldr	r3, .L20
+ 280 0002 1B68     		ldr	r3, [r3]
+ 281 0004 586A     		ldr	r0, [r3, #36]
+ 282              	.LVL13:
+  64:Core/Src/balance_car/encoder_hal.c ****     __HAL_TIM_SET_COUNTER(&s_htim2, 0U);
+ 283              		.loc 1 64 5 is_stmt 1 view .LVU78
+ 284 0006 0022     		movs	r2, #0
+ 285 0008 5A62     		str	r2, [r3, #36]
+  65:Core/Src/balance_car/encoder_hal.c ****     return delta;
+ 286              		.loc 1 65 5 view .LVU79
+  66:Core/Src/balance_car/encoder_hal.c **** }
+ 287              		.loc 1 66 1 is_stmt 0 view .LVU80
+ 288 000a 00B2     		sxth	r0, r0
+ 289              		.loc 1 66 1 view .LVU81
+ 290 000c 7047     		bx	lr
+ 291              	.L21:
+ 292 000e 00BF     		.align	2
+ 293              	.L20:
+ 294 0010 00000000 		.word	s_htim2
+ 295              		.cfi_endproc
+ 296              	.LFE68:
+ 298              		.section	.text.HAL_TIM_Encoder_MspInit,"ax",%progbits
+ 299              		.align	1
+ 300              		.global	HAL_TIM_Encoder_MspInit
+ 301              		.syntax unified
+ 302              		.thumb
+ 303              		.thumb_func
+ 305              	HAL_TIM_Encoder_MspInit:
+ 306              	.LVL14:
+ 307              	.LFB69:
+  67:Core/Src/balance_car/encoder_hal.c **** 
+  68:Core/Src/balance_car/encoder_hal.c **** void HAL_TIM_Encoder_MspInit(TIM_HandleTypeDef *htim_encoder)
+  69:Core/Src/balance_car/encoder_hal.c **** {
+ 308              		.loc 1 69 1 is_stmt 1 view -0
+ 309              		.cfi_startproc
+ 310              		@ args = 0, pretend = 0, frame = 32
+ 311              		@ frame_needed = 0, uses_anonymous_args = 0
+ 312              		.loc 1 69 1 is_stmt 0 view .LVU83
+ 313 0000 00B5     		push	{lr}
+ 314              	.LCFI5:
+ 315              		.cfi_def_cfa_offset 4
+ 316              		.cfi_offset 14, -4
+ 317 0002 89B0     		sub	sp, sp, #36
+ 318              	.LCFI6:
+ 319              		.cfi_def_cfa_offset 40
+  70:Core/Src/balance_car/encoder_hal.c ****     GPIO_InitTypeDef gpio = {0};
+ 320              		.loc 1 70 5 is_stmt 1 view .LVU84
+ARM GAS  D:\TMP\cck3Yfop.s 			page 8
+
+
+ 321              		.loc 1 70 22 is_stmt 0 view .LVU85
+ 322 0004 0023     		movs	r3, #0
+ 323 0006 0493     		str	r3, [sp, #16]
+ 324 0008 0593     		str	r3, [sp, #20]
+ 325 000a 0693     		str	r3, [sp, #24]
+ 326 000c 0793     		str	r3, [sp, #28]
+  71:Core/Src/balance_car/encoder_hal.c **** 
+  72:Core/Src/balance_car/encoder_hal.c ****     __HAL_RCC_GPIOA_CLK_ENABLE();
+ 327              		.loc 1 72 5 is_stmt 1 view .LVU86
+ 328              	.LBB2:
+ 329              		.loc 1 72 5 view .LVU87
+ 330              		.loc 1 72 5 view .LVU88
+ 331 000e 03F18043 		add	r3, r3, #1073741824
+ 332 0012 03F50433 		add	r3, r3, #135168
+ 333 0016 9A69     		ldr	r2, [r3, #24]
+ 334 0018 42F00402 		orr	r2, r2, #4
+ 335 001c 9A61     		str	r2, [r3, #24]
+ 336              		.loc 1 72 5 view .LVU89
+ 337 001e 9B69     		ldr	r3, [r3, #24]
+ 338 0020 03F00403 		and	r3, r3, #4
+ 339 0024 0193     		str	r3, [sp, #4]
+ 340              		.loc 1 72 5 view .LVU90
+ 341 0026 019B     		ldr	r3, [sp, #4]
+ 342              	.LBE2:
+ 343              		.loc 1 72 5 view .LVU91
+  73:Core/Src/balance_car/encoder_hal.c **** 
+  74:Core/Src/balance_car/encoder_hal.c ****     if (htim_encoder->Instance == TIM1) {
+ 344              		.loc 1 74 5 view .LVU92
+ 345              		.loc 1 74 21 is_stmt 0 view .LVU93
+ 346 0028 0368     		ldr	r3, [r0]
+ 347              		.loc 1 74 8 view .LVU94
+ 348 002a 164A     		ldr	r2, .L29
+ 349 002c 9342     		cmp	r3, r2
+ 350 002e 1AD0     		beq	.L28
+  75:Core/Src/balance_car/encoder_hal.c ****         __HAL_RCC_TIM1_CLK_ENABLE();
+  76:Core/Src/balance_car/encoder_hal.c ****         gpio.Pin = GPIO_PIN_8 | GPIO_PIN_9;
+  77:Core/Src/balance_car/encoder_hal.c ****     } else if (htim_encoder->Instance == TIM2) {
+ 351              		.loc 1 77 12 is_stmt 1 view .LVU95
+ 352              		.loc 1 77 15 is_stmt 0 view .LVU96
+ 353 0030 B3F1804F 		cmp	r3, #1073741824
+ 354 0034 14D1     		bne	.L22
+  78:Core/Src/balance_car/encoder_hal.c ****         __HAL_RCC_TIM2_CLK_ENABLE();
+ 355              		.loc 1 78 9 is_stmt 1 view .LVU97
+ 356              	.LBB3:
+ 357              		.loc 1 78 9 view .LVU98
+ 358              		.loc 1 78 9 view .LVU99
+ 359 0036 03F50433 		add	r3, r3, #135168
+ 360 003a DA69     		ldr	r2, [r3, #28]
+ 361 003c 42F00102 		orr	r2, r2, #1
+ 362 0040 DA61     		str	r2, [r3, #28]
+ 363              		.loc 1 78 9 view .LVU100
+ 364 0042 DB69     		ldr	r3, [r3, #28]
+ 365 0044 03F00103 		and	r3, r3, #1
+ 366 0048 0393     		str	r3, [sp, #12]
+ 367              		.loc 1 78 9 view .LVU101
+ 368 004a 039B     		ldr	r3, [sp, #12]
+ 369              	.LBE3:
+ARM GAS  D:\TMP\cck3Yfop.s 			page 9
+
+
+ 370              		.loc 1 78 9 view .LVU102
+  79:Core/Src/balance_car/encoder_hal.c ****         gpio.Pin = GPIO_PIN_0 | GPIO_PIN_1;
+ 371              		.loc 1 79 9 view .LVU103
+ 372              		.loc 1 79 18 is_stmt 0 view .LVU104
+ 373 004c 0323     		movs	r3, #3
+ 374 004e 0493     		str	r3, [sp, #16]
+ 375              	.L24:
+  80:Core/Src/balance_car/encoder_hal.c ****     } else {
+  81:Core/Src/balance_car/encoder_hal.c ****         return;
+  82:Core/Src/balance_car/encoder_hal.c ****     }
+  83:Core/Src/balance_car/encoder_hal.c **** 
+  84:Core/Src/balance_car/encoder_hal.c ****     gpio.Mode = GPIO_MODE_INPUT;
+ 376              		.loc 1 84 5 is_stmt 1 view .LVU105
+  85:Core/Src/balance_car/encoder_hal.c ****     gpio.Pull = GPIO_PULLUP;
+ 377              		.loc 1 85 5 view .LVU106
+ 378              		.loc 1 85 15 is_stmt 0 view .LVU107
+ 379 0050 0123     		movs	r3, #1
+ 380 0052 0693     		str	r3, [sp, #24]
+  86:Core/Src/balance_car/encoder_hal.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+ 381              		.loc 1 86 5 is_stmt 1 view .LVU108
+ 382              		.loc 1 86 16 is_stmt 0 view .LVU109
+ 383 0054 0323     		movs	r3, #3
+ 384 0056 0793     		str	r3, [sp, #28]
+  87:Core/Src/balance_car/encoder_hal.c ****     HAL_GPIO_Init(GPIOA, &gpio);
+ 385              		.loc 1 87 5 is_stmt 1 view .LVU110
+ 386 0058 04A9     		add	r1, sp, #16
+ 387 005a 0B48     		ldr	r0, .L29+4
+ 388              	.LVL15:
+ 389              		.loc 1 87 5 is_stmt 0 view .LVU111
+ 390 005c FFF7FEFF 		bl	HAL_GPIO_Init
+ 391              	.LVL16:
+ 392              	.L22:
+  88:Core/Src/balance_car/encoder_hal.c **** }
+ 393              		.loc 1 88 1 view .LVU112
+ 394 0060 09B0     		add	sp, sp, #36
+ 395              	.LCFI7:
+ 396              		.cfi_remember_state
+ 397              		.cfi_def_cfa_offset 4
+ 398              		@ sp needed
+ 399 0062 5DF804FB 		ldr	pc, [sp], #4
+ 400              	.LVL17:
+ 401              	.L28:
+ 402              	.LCFI8:
+ 403              		.cfi_restore_state
+  75:Core/Src/balance_car/encoder_hal.c ****         gpio.Pin = GPIO_PIN_8 | GPIO_PIN_9;
+ 404              		.loc 1 75 9 is_stmt 1 view .LVU113
+ 405              	.LBB4:
+  75:Core/Src/balance_car/encoder_hal.c ****         gpio.Pin = GPIO_PIN_8 | GPIO_PIN_9;
+ 406              		.loc 1 75 9 view .LVU114
+  75:Core/Src/balance_car/encoder_hal.c ****         gpio.Pin = GPIO_PIN_8 | GPIO_PIN_9;
+ 407              		.loc 1 75 9 view .LVU115
+ 408 0066 094B     		ldr	r3, .L29+8
+ 409 0068 9A69     		ldr	r2, [r3, #24]
+ 410 006a 42F40062 		orr	r2, r2, #2048
+ 411 006e 9A61     		str	r2, [r3, #24]
+  75:Core/Src/balance_car/encoder_hal.c ****         gpio.Pin = GPIO_PIN_8 | GPIO_PIN_9;
+ 412              		.loc 1 75 9 view .LVU116
+ARM GAS  D:\TMP\cck3Yfop.s 			page 10
+
+
+ 413 0070 9B69     		ldr	r3, [r3, #24]
+ 414 0072 03F40063 		and	r3, r3, #2048
+ 415 0076 0293     		str	r3, [sp, #8]
+  75:Core/Src/balance_car/encoder_hal.c ****         gpio.Pin = GPIO_PIN_8 | GPIO_PIN_9;
+ 416              		.loc 1 75 9 view .LVU117
+ 417 0078 029B     		ldr	r3, [sp, #8]
+ 418              	.LBE4:
+  75:Core/Src/balance_car/encoder_hal.c ****         gpio.Pin = GPIO_PIN_8 | GPIO_PIN_9;
+ 419              		.loc 1 75 9 view .LVU118
+  76:Core/Src/balance_car/encoder_hal.c ****     } else if (htim_encoder->Instance == TIM2) {
+ 420              		.loc 1 76 9 view .LVU119
+  76:Core/Src/balance_car/encoder_hal.c ****     } else if (htim_encoder->Instance == TIM2) {
+ 421              		.loc 1 76 18 is_stmt 0 view .LVU120
+ 422 007a 4FF44073 		mov	r3, #768
+ 423 007e 0493     		str	r3, [sp, #16]
+ 424 0080 E6E7     		b	.L24
+ 425              	.L30:
+ 426 0082 00BF     		.align	2
+ 427              	.L29:
+ 428 0084 002C0140 		.word	1073818624
+ 429 0088 00080140 		.word	1073809408
+ 430 008c 00100240 		.word	1073876992
+ 431              		.cfi_endproc
+ 432              	.LFE69:
+ 434              		.section	.bss.s_htim2,"aw",%nobits
+ 435              		.align	2
+ 438              	s_htim2:
+ 439 0000 00000000 		.space	72
+ 439      00000000 
+ 439      00000000 
+ 439      00000000 
+ 439      00000000 
+ 440              		.section	.bss.s_htim1,"aw",%nobits
+ 441              		.align	2
+ 444              	s_htim1:
+ 445 0000 00000000 		.space	72
+ 445      00000000 
+ 445      00000000 
+ 445      00000000 
+ 445      00000000 
+ 446              		.text
+ 447              	.Letext0:
+ 448              		.file 2 "F:/Msys2/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 449              		.file 3 "F:/Msys2/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 450              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ 451              		.file 5 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 452              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h"
+ 453              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
+ 454              		.file 8 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h"
+ 455              		.file 9 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h"
+ 456              		.file 10 "<built-in>"
+ARM GAS  D:\TMP\cck3Yfop.s 			page 11
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 encoder_hal.c
+   D:\TMP\cck3Yfop.s:19     .text.Encoder_InitTimer:00000000 $t
+   D:\TMP\cck3Yfop.s:24     .text.Encoder_InitTimer:00000000 Encoder_InitTimer
+   D:\TMP\cck3Yfop.s:160    .text.Encoder_Init:00000000 $t
+   D:\TMP\cck3Yfop.s:166    .text.Encoder_Init:00000000 Encoder_Init
+   D:\TMP\cck3Yfop.s:218    .text.Encoder_Init:00000030 $d
+   D:\TMP\cck3Yfop.s:444    .bss.s_htim1:00000000 s_htim1
+   D:\TMP\cck3Yfop.s:438    .bss.s_htim2:00000000 s_htim2
+   D:\TMP\cck3Yfop.s:225    .text.Encoder_GetLeftDelta:00000000 $t
+   D:\TMP\cck3Yfop.s:231    .text.Encoder_GetLeftDelta:00000000 Encoder_GetLeftDelta
+   D:\TMP\cck3Yfop.s:259    .text.Encoder_GetLeftDelta:00000010 $d
+   D:\TMP\cck3Yfop.s:264    .text.Encoder_GetRightDelta:00000000 $t
+   D:\TMP\cck3Yfop.s:270    .text.Encoder_GetRightDelta:00000000 Encoder_GetRightDelta
+   D:\TMP\cck3Yfop.s:294    .text.Encoder_GetRightDelta:00000010 $d
+   D:\TMP\cck3Yfop.s:299    .text.HAL_TIM_Encoder_MspInit:00000000 $t
+   D:\TMP\cck3Yfop.s:305    .text.HAL_TIM_Encoder_MspInit:00000000 HAL_TIM_Encoder_MspInit
+   D:\TMP\cck3Yfop.s:428    .text.HAL_TIM_Encoder_MspInit:00000084 $d
+   D:\TMP\cck3Yfop.s:435    .bss.s_htim2:00000000 $d
+   D:\TMP\cck3Yfop.s:441    .bss.s_htim1:00000000 $d
+
+UNDEFINED SYMBOLS
+memset
+HAL_TIM_Encoder_Init
+HAL_TIMEx_MasterConfigSynchronization
+HAL_TIM_Encoder_Start
+HAL_GPIO_Init
