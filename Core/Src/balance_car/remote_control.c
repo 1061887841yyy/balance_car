@@ -164,12 +164,12 @@ static void RemoteControl_SendTelemetry(void)
     int len;
 
     len = snprintf(line, sizeof(line),
-                   "OLED Temp:%d.%d C|Humi:%d %%|Weight:%d g|ADC:%u\n",
+                   "OLED Temp:%d.%d C|Humi:%d %%|Weight:%d g|HX:%ld\n",
                    temp10 / 10,
                    temp10 < 0 ? -(temp10 % 10) : temp10 % 10,
                    humi,
                    weight,
-                   (unsigned)g_sensor_state.fsr_adc_raw);
+                   (long)g_sensor_state.hx711_raw);
     if (len >= (int)sizeof(line)) {
         len = (int)sizeof(line) - 1;
     }
