@@ -29,6 +29,7 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,6 +63,28 @@ public class MainActivity extends Activity {
     private static final int COLOR_PURPLE = Color.rgb(122, 91, 227);
     private static final int COLOR_GREEN = Color.rgb(72, 224, 93);
     private static final int COLOR_RED = Color.rgb(226, 72, 55);
+    private static final int COLOR_BLUE = Color.rgb(77, 197, 255);
+    private static final int COLOR_AMBER = Color.rgb(255, 184, 77);
+    private static final int LOOP_SPEED = 0;
+    private static final int LOOP_ANGLE = 1;
+    private static final int LOOP_TURN = 2;
+    private static final int PID_KP = 0;
+    private static final int PID_KI = 1;
+    private static final int PID_KD = 2;
+    private static final int WAVE_POINTS = 140;
+    private static final String[] LOOP_COMMANDS = {"SPD", "ANG", "TURN"};
+    private static final String[] LOOP_LABELS = {"速度环", "角度环", "转向环"};
+    private static final String[] PID_LABELS = {"Kp", "Ki", "Kd"};
+    private static final float[][] PID_MAX = {
+        {3.0f, 2.0f, 1.0f},
+        {30.0f, 2.0f, 20.0f},
+        {10.0f, 2.0f, 5.0f}
+    };
+    private static final float[][] PID_DEFAULTS = {
+        {0.8f, 0.3f, 0.0f},
+        {11.0f, 0.25f, 8.0f},
+        {0.0f, 0.0f, 0.0f}
+    };
 
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final List<BluetoothDevice> devices = new ArrayList<>();
@@ -74,14 +97,30 @@ public class MainActivity extends Activity {
     private Spinner deviceSpinner;
     private TextView statusText;
     private TextView commandText;
+    private LinearLayout bodyContainer;
+    private Button screenSwitchButton;
     private TelemetryDisplayView telemetryView;
+    private DebugWaveView debugWaveView;
+    private final float[][] waveTargets = new float[3][WAVE_POINTS];
+    private final float[][] waveActuals = new float[3][WAVE_POINTS];
+    private final float[][] pidValues = new float[3][3];
+    private TextView[] pidValueTexts;
     private TextView speedValueText;
     private TextView turnValueText;
     private boolean running;
+    private boolean debugMode;
+    private int selectedLoop = LOOP_SPEED;
     private float currentSpeed;
     private float currentTurn;
     private float lastSentSpeed = Float.NaN;
     private float lastSentTurn = Float.NaN;
+
+    private final Runnable pidSendTask = new Runnable() {
+        @Override
+        public void run() {
+            sendSelectedPid();
+        }
+    };
 
     private final Runnable controlTask = new Runnable() {
         @Override
@@ -105,6 +144,7 @@ public class MainActivity extends Activity {
             View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        resetPidValues();
         setContentView(createUi());
         requestBluetoothPermission();
         loadPairedDevices();
@@ -125,13 +165,13 @@ public class MainActivity extends Activity {
         title.setTextSize(21);
         title.setTypeface(Typeface.DEFAULT_BOLD);
         title.setTextColor(COLOR_TEXT);
-        topBar.addView(title, new LinearLayout.LayoutParams(dp(130), LinearLayout.LayoutParams.WRAP_CONTENT));
+        topBar.addView(title, new LinearLayout.LayoutParams(dp(120), LinearLayout.LayoutParams.WRAP_CONTENT));
 
         statusText = new TextView(this);
         statusText.setText("未连接");
         statusText.setTextSize(13);
         statusText.setTextColor(COLOR_CYAN);
-        topBar.addView(statusText, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.8f));
+        topBar.addView(statusText, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.75f));
 
         deviceSpinner = new Spinner(this);
         deviceSpinner.setBackground(panelBackground(COLOR_PANEL_ALT));
@@ -139,7 +179,28 @@ public class MainActivity extends Activity {
 
         topBar.addView(button("刷新", COLOR_PANEL_ALT, v -> loadPairedDevices()), smallButtonParams());
         topBar.addView(button("连接", COLOR_PURPLE, v -> connectSelectedDevice()), smallButtonParams());
+        screenSwitchButton = button("调试", COLOR_PANEL_ALT, v -> toggleScreen());
+        topBar.addView(screenSwitchButton, smallButtonParams());
         root.addView(topBar);
+
+        bodyContainer = new LinearLayout(this);
+        bodyContainer.setOrientation(LinearLayout.VERTICAL);
+        root.addView(bodyContainer, new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            0,
+            1f));
+
+        showControlScreen();
+        return root;
+    }
+
+    private void showControlScreen() {
+        debugMode = false;
+        if (screenSwitchButton != null) {
+            screenSwitchButton.setText("调试");
+        }
+        bodyContainer.removeAllViews();
+        debugWaveView = null;
 
         LinearLayout main = row();
         main.setPadding(0, dp(8), 0, 0);
@@ -158,7 +219,7 @@ public class MainActivity extends Activity {
         leftPanel.addView(speedStick, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f));
         TextView backwardLabel = padLabel("BACKWARD");
         leftPanel.addView(backwardLabel);
-        speedValueText = smallValueText("SPD 0.00");
+        speedValueText = smallValueText(String.format(Locale.US, "SPD %.2f", currentSpeed));
         leftPanel.addView(speedValueText);
         main.addView(leftPanel, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.05f));
 
@@ -214,15 +275,202 @@ public class MainActivity extends Activity {
         rightPanel.addView(turnStick, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f));
         TextView turnRightLabel = padLabel("TURN RIGHT");
         rightPanel.addView(turnRightLabel);
-        turnValueText = smallValueText("TURN 0.00");
+        turnValueText = smallValueText(String.format(Locale.US, "TURN %.2f", currentTurn));
         rightPanel.addView(turnValueText);
         main.addView(rightPanel, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1.05f));
 
-        root.addView(main, new LinearLayout.LayoutParams(
+        bodyContainer.addView(main, new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             0,
             1f));
-        return root;
+    }
+
+    private void showDebugScreen() {
+        debugMode = true;
+        if (screenSwitchButton != null) {
+            screenSwitchButton.setText("控制");
+        }
+        bodyContainer.removeAllViews();
+        telemetryView = null;
+
+        LinearLayout debugRoot = new LinearLayout(this);
+        debugRoot.setOrientation(LinearLayout.VERTICAL);
+        debugRoot.setPadding(0, dp(8), 0, 0);
+
+        LinearLayout wavePanel = panel("");
+        LinearLayout waveHeader = row();
+        waveHeader.setGravity(Gravity.CENTER_VERTICAL);
+        TextView title = padLabel("PID 调试波形");
+        waveHeader.addView(title, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        TextView legend = smallValueText("目标 " + LOOP_LABELS[selectedLoop] + "  /  实际");
+        legend.setTextColor(COLOR_MUTED);
+        waveHeader.addView(legend, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.2f));
+        wavePanel.addView(waveHeader);
+
+        debugWaveView = new DebugWaveView(this);
+        debugWaveView.setLoop(selectedLoop);
+        wavePanel.addView(debugWaveView, new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            0,
+            1f));
+        debugRoot.addView(wavePanel, new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            0,
+            1f));
+
+        LinearLayout pidPanel = panel("");
+        pidPanel.addView(createLoopTabs());
+        pidPanel.addView(createPidSliders(), new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            0,
+            1f));
+
+        LinearLayout actionRow = row();
+        actionRow.setGravity(Gravity.CENTER);
+        actionRow.addView(button("发送当前PID", COLOR_PURPLE, v -> sendSelectedPid()), actionButtonParams());
+        actionRow.addView(button("清PID历史", COLOR_PANEL_ALT, v -> sendCommand("PIDRST", true)), actionButtonParams());
+        commandText = smallValueText("等待调试命令");
+        commandText.setTextSize(13);
+        commandText.setTextColor(COLOR_MUTED);
+        actionRow.addView(commandText, new LinearLayout.LayoutParams(0, dp(48), 1.6f));
+        pidPanel.addView(actionRow, new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            dp(54)));
+
+        debugRoot.addView(pidPanel, new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            0,
+            1f));
+
+        bodyContainer.addView(debugRoot, new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT));
+    }
+
+    private void toggleScreen() {
+        if (debugMode) {
+            showControlScreen();
+        } else {
+            showDebugScreen();
+        }
+    }
+
+    private LinearLayout createLoopTabs() {
+        LinearLayout tabs = row();
+        tabs.setGravity(Gravity.CENTER);
+        for (int i = 0; i < LOOP_LABELS.length; i++) {
+            final int loop = i;
+            int color = selectedLoop == loop ? COLOR_PURPLE : COLOR_PANEL_ALT;
+            Button tab = button(LOOP_LABELS[i], color, v -> {
+                selectedLoop = loop;
+                showDebugScreen();
+            });
+            tabs.addView(tab, actionButtonParams());
+        }
+        return tabs;
+    }
+
+    private LinearLayout createPidSliders() {
+        LinearLayout sliders = new LinearLayout(this);
+        sliders.setOrientation(LinearLayout.VERTICAL);
+        sliders.setPadding(0, dp(6), 0, 0);
+        pidValueTexts = new TextView[3];
+        for (int i = 0; i < PID_LABELS.length; i++) {
+            sliders.addView(createPidSlider(i), new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                0,
+                1f));
+        }
+        return sliders;
+    }
+
+    private View createPidSlider(int pidIndex) {
+        LinearLayout row = new LinearLayout(this);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        row.setPadding(0, dp(3), 0, dp(3));
+
+        TextView name = padLabel(PID_LABELS[pidIndex]);
+        row.addView(name, new LinearLayout.LayoutParams(dp(48), LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        SeekBar seekBar = new SeekBar(this);
+        seekBar.setMax(1000);
+        seekBar.setProgress(valueToProgress(selectedLoop, pidIndex, pidValues[selectedLoop][pidIndex]));
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                pidValues[selectedLoop][pidIndex] = progressToValue(selectedLoop, pidIndex, progress);
+                updatePidValueText(pidIndex);
+                if (fromUser) {
+                    schedulePidSend();
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                sendSelectedPid();
+            }
+        });
+        row.addView(seekBar, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+
+        TextView value = smallValueText("");
+        value.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+        pidValueTexts[pidIndex] = value;
+        updatePidValueText(pidIndex);
+        row.addView(value, new LinearLayout.LayoutParams(dp(78), LinearLayout.LayoutParams.WRAP_CONTENT));
+        return row;
+    }
+
+    private void resetPidValues() {
+        for (int loop = 0; loop < PID_DEFAULTS.length; loop++) {
+            System.arraycopy(PID_DEFAULTS[loop], 0, pidValues[loop], 0, PID_DEFAULTS[loop].length);
+        }
+    }
+
+    private int valueToProgress(int loop, int pidIndex, float value) {
+        float max = PID_MAX[loop][pidIndex];
+        if (max <= 0.0f) {
+            return 0;
+        }
+        int progress = Math.round(value / max * 1000.0f);
+        if (progress < 0) {
+            return 0;
+        }
+        if (progress > 1000) {
+            return 1000;
+        }
+        return progress;
+    }
+
+    private float progressToValue(int loop, int pidIndex, int progress) {
+        return PID_MAX[loop][pidIndex] * progress / 1000.0f;
+    }
+
+    private void updatePidValueText(int pidIndex) {
+        if (pidValueTexts == null || pidValueTexts[pidIndex] == null) {
+            return;
+        }
+        float value = pidValues[selectedLoop][pidIndex];
+        pidValueTexts[pidIndex].setText(String.format(Locale.US, "%.3f", value));
+    }
+
+    private void schedulePidSend() {
+        handler.removeCallbacks(pidSendTask);
+        handler.postDelayed(pidSendTask, 140L);
+    }
+
+    private void sendSelectedPid() {
+        handler.removeCallbacks(pidSendTask);
+        sendCommand(String.format(Locale.US,
+            "PID %s %.3f %.3f %.3f",
+            LOOP_COMMANDS[selectedLoop],
+            pidValues[selectedLoop][PID_KP],
+            pidValues[selectedLoop][PID_KI],
+            pidValues[selectedLoop][PID_KD]), true);
     }
 
     private void setSpeedTarget(float speed) {
@@ -476,6 +724,10 @@ public class MainActivity extends Activity {
     }
 
     private void handleTelemetry(String line) {
+        if (line.startsWith("DBG ")) {
+            handleDebugTelemetry(line.substring(4));
+            return;
+        }
         if (!line.startsWith("OLED ")) {
             return;
         }
@@ -490,8 +742,46 @@ public class MainActivity extends Activity {
         }
     }
 
+    private void handleDebugTelemetry(String payload) {
+        String[] parts = payload.split("\\s+");
+        if (parts.length < 3) {
+            return;
+        }
+        int loop = loopFromCommand(parts[0]);
+        if (loop < 0) {
+            return;
+        }
+        try {
+            float target = Float.parseFloat(parts[1]);
+            float actual = Float.parseFloat(parts[2]);
+            pushWaveSample(loop, target, actual);
+        } catch (NumberFormatException ignored) {
+        }
+    }
+
+    private int loopFromCommand(String command) {
+        for (int i = 0; i < LOOP_COMMANDS.length; i++) {
+            if (LOOP_COMMANDS[i].equals(command)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void pushWaveSample(int loop, float target, float actual) {
+        System.arraycopy(waveTargets[loop], 1, waveTargets[loop], 0, WAVE_POINTS - 1);
+        System.arraycopy(waveActuals[loop], 1, waveActuals[loop], 0, WAVE_POINTS - 1);
+        waveTargets[loop][WAVE_POINTS - 1] = target;
+        waveActuals[loop][WAVE_POINTS - 1] = actual;
+        if (debugWaveView != null) {
+            debugWaveView.invalidate();
+        }
+    }
+
     private synchronized void sendCommand(String command, boolean showToastWhenDisconnected) {
-        commandText.setText("发送: " + command);
+        if (commandText != null) {
+            commandText.setText("发送: " + command);
+        }
         OutputStream out = outputStream;
         if (out == null) {
             if (showToastWhenDisconnected) {
@@ -539,8 +829,112 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         handler.removeCallbacks(controlTask);
+        handler.removeCallbacks(pidSendTask);
         closeSocket();
         super.onDestroy();
+    }
+
+    private final class DebugWaveView extends View {
+        private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        private int loop;
+
+        DebugWaveView(Activity activity) {
+            super(activity);
+            setMinimumHeight(activity.getResources().getDisplayMetrics().densityDpi / 2);
+        }
+
+        void setLoop(int loop) {
+            this.loop = loop;
+            invalidate();
+        }
+
+        @Override
+        protected void onDraw(Canvas canvas) {
+            super.onDraw(canvas);
+            float w = getWidth();
+            float h = getHeight();
+            float left = dp(34);
+            float top = dp(10);
+            float right = w - dp(12);
+            float bottom = h - dp(24);
+            RectF plot = new RectF(left, top, right, bottom);
+
+            paint.setStyle(Paint.Style.FILL);
+            paint.setColor(COLOR_SCREEN);
+            canvas.drawRoundRect(plot, dp(8), dp(8), paint);
+
+            drawGrid(canvas, plot);
+
+            float scale = maxAbs(loop);
+            drawWave(canvas, plot, waveTargets[loop], scale, COLOR_AMBER, 3.0f);
+            drawWave(canvas, plot, waveActuals[loop], scale, COLOR_BLUE, 3.0f);
+
+            paint.setStyle(Paint.Style.FILL);
+            paint.setTypeface(Typeface.DEFAULT_BOLD);
+            paint.setTextSize(22.0f);
+            paint.setTextAlign(Paint.Align.LEFT);
+            paint.setColor(COLOR_AMBER);
+            canvas.drawText("Target", plot.left + dp(10), plot.top + dp(26), paint);
+            paint.setColor(COLOR_BLUE);
+            canvas.drawText("Actual", plot.left + dp(104), plot.top + dp(26), paint);
+
+            paint.setTextAlign(Paint.Align.RIGHT);
+            paint.setTextSize(18.0f);
+            paint.setColor(COLOR_MUTED);
+            canvas.drawText(String.format(Locale.US, "+%.2f", scale), plot.left - dp(4), plot.top + dp(6), paint);
+            canvas.drawText("0", plot.left - dp(4), plot.centerY() + dp(6), paint);
+            canvas.drawText(String.format(Locale.US, "-%.2f", scale), plot.left - dp(4), plot.bottom, paint);
+        }
+
+        private void drawGrid(Canvas canvas, RectF plot) {
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(1.0f);
+            for (int i = 0; i <= 4; i++) {
+                float y = plot.top + plot.height() * i / 4.0f;
+                paint.setColor(i == 2 ? Color.rgb(88, 96, 112) : Color.rgb(38, 43, 52));
+                canvas.drawLine(plot.left, y, plot.right, y, paint);
+            }
+            paint.setColor(Color.rgb(34, 39, 48));
+            for (int i = 1; i < 8; i++) {
+                float x = plot.left + plot.width() * i / 8.0f;
+                canvas.drawLine(x, plot.top, x, plot.bottom, paint);
+            }
+            paint.setStrokeWidth(2.0f);
+            paint.setColor(COLOR_STROKE);
+            canvas.drawRoundRect(plot, dp(8), dp(8), paint);
+        }
+
+        private float maxAbs(int loop) {
+            float max = 0.2f;
+            for (int i = 0; i < WAVE_POINTS; i++) {
+                max = Math.max(max, Math.abs(waveTargets[loop][i]));
+                max = Math.max(max, Math.abs(waveActuals[loop][i]));
+            }
+            return max * 1.15f;
+        }
+
+        private void drawWave(Canvas canvas, RectF plot, float[] values, float scale, int color, float strokeWidth) {
+            Path path = new Path();
+            for (int i = 0; i < WAVE_POINTS; i++) {
+                float x = plot.left + plot.width() * i / (WAVE_POINTS - 1.0f);
+                float normalized = values[i] / scale;
+                if (normalized > 1.0f) {
+                    normalized = 1.0f;
+                } else if (normalized < -1.0f) {
+                    normalized = -1.0f;
+                }
+                float y = plot.centerY() - normalized * plot.height() * 0.46f;
+                if (i == 0) {
+                    path.moveTo(x, y);
+                } else {
+                    path.lineTo(x, y);
+                }
+            }
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(strokeWidth);
+            paint.setColor(color);
+            canvas.drawPath(path, paint);
+        }
     }
 
     private static final class JoystickView extends View {
