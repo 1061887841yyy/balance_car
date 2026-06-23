@@ -35,9 +35,9 @@ typedef struct {
     uint8_t imu_ready;          /* Ozone观察: 1=MPU6050可用；0=初始化或读取失败 */
     uint8_t timer_error_flag;   /* Ozone观察: 1=控制节拍处理堆积，主循环跑不过来 */
     uint8_t mpu_id;             /* Ozone观察: MPU6050 WHO_AM_I，正常应为0x68 */
-    uint8_t button_raw;         /* Ozone观察: PB6按键原始状态，1=当前按下，0=当前松开 */
-    uint8_t button_stable;      /* Ozone观察: PB6按键消抖后状态，1=确认按下，0=确认松开 */
-    uint8_t button_toggle;      /* Ozone观察: 每次按键触发后翻转一次，用来确认按键事件产生 */
+    uint8_t button_raw;         /* 保留字段: PB6已让给蓝牙USART1_TX，固定为0 */
+    uint8_t button_stable;      /* 保留字段: PB6按键已移除，固定为0 */
+    uint8_t button_toggle;      /* 保留字段: PB6按键已移除，固定为0 */
     uint8_t reserved0;          /* 保留占位 */
 
     int16_t ax;                 /* Ozone观察: MPU6050加速度X原始值 */
