@@ -1,0 +1,1357 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/ix5s2o",
+    "id": "ix5s2o",
+    "slide": 2,
+    "layoutId": "714bc859-76e9-4af3-bd7d-d15e62273672",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "d1db3968-f0ae-431a-9487-ecca19e1aea9",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#060708",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "714bc859-76e9-4af3-bd7d-d15e62273672",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "d1db3968-f0ae-431a-9487-ecca19e1aea9",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "d1db3968-f0ae-431a-9487-ecca19e1aea9",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/tcj6tova",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "alt": "dark polygon network background",
+      "contentType": "image/png",
+      "imageCrop": {
+        "left": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "imageFit": "cover",
+      "asset": {
+        "assetId": "07dee795-b844-437d-886e-5dac0d42fa37",
+        "contentType": "image/png",
+        "byteLength": 1526724
+      }
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/j6tovaho",
+      "id": "2",
+      "bbox": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(0, 0, 0, 0.28)",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ulwval87",
+      "id": "3",
+      "bbox": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(0, 0, 0, 0.18)",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1kre1w7m",
+      "id": "4",
+      "bbox": [
+        46,
+        34,
+        104,
+        74
+      ],
+      "geometry": "rect",
+      "text": "02",
+      "textPreview": "02",
+      "resolvedFontSize": 54,
+      "resolvedTextStyle": {
+        "fontSize": 54,
+        "typeface": "+mn-lt",
+        "color": "#E1162D",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "02"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "02",
+          "resolvedTextStyle": {
+            "fontSize": 54,
+            "color": "#E1162D",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "02",
+              "fontSize": 54,
+              "color": "#E1162D",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/c3ylc7u5",
+      "id": "5",
+      "bbox": [
+        160,
+        72,
+        192,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#E1162D",
+      "lineWidth": 4
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ji5snelo",
+      "id": "6",
+      "bbox": [
+        360,
+        72,
+        820,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "rgba(245, 247, 250, 0.42)",
+      "lineWidth": 1
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/uxc3ylc7",
+      "id": "7",
+      "bbox": [
+        64,
+        95,
+        760,
+        52
+      ],
+      "geometry": "rect",
+      "text": "场景定位与项目目标",
+      "textPreview": "场景定位与项目目标",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "fontSize": 34,
+        "typeface": "+mn-lt",
+        "color": "#F5F7FA",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "场景定位与项目目标"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "场景定位与项目目标",
+          "resolvedTextStyle": {
+            "fontSize": 34,
+            "color": "#F5F7FA",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "场景定位与项目目标",
+              "fontSize": 34,
+              "color": "#F5F7FA",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1w7mp0bi",
+      "id": "8",
+      "bbox": [
+        66,
+        144,
+        850,
+        28
+      ],
+      "geometry": "rect",
+      "text": "面向食品供应链末端搬运，关注足称、环境与远程调度",
+      "textPreview": "面向食品供应链末端搬运，关注足称、环境与远程调度",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#AEB6C2",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "面向食品供应链末端搬运，关注足称、环境与远程调度"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "面向食品供应链末端搬运，关注足称、环境与远程调度",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#AEB6C2",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "面向食品供应链末端搬运，关注足称、环境与远程调度",
+              "fontSize": 17,
+              "color": "#AEB6C2",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8bat47y1",
+      "id": "9",
+      "bbox": [
+        1164,
+        64,
+        12,
+        12
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#E1162D",
+      "lineColor": "#E1162D",
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ytsvu9kn",
+      "id": "10",
+      "bbox": [
+        1197,
+        99,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#F5F7FA",
+      "lineColor": "#F5F7FA",
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/neloj2t8",
+      "id": "11",
+      "bbox": [
+        80,
+        210,
+        330,
+        308
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(9, 12, 16, 0.7)",
+      "lineColor": "rgba(245, 247, 250, 0.45)",
+      "lineWidth": 1
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/czed8v6p",
+      "id": "12",
+      "bbox": [
+        80,
+        210,
+        64,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#E1162D",
+      "lineWidth": 4
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5kb6xkf6",
+      "id": "13",
+      "bbox": [
+        102,
+        228,
+        286,
+        28
+      ],
+      "geometry": "rect",
+      "text": "为什么是双轮底盘",
+      "textPreview": "为什么是双轮底盘",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "+mn-lt",
+        "color": "#F5F7FA",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "为什么是双轮底盘"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "为什么是双轮底盘",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "color": "#F5F7FA",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "为什么是双轮底盘",
+              "fontSize": 22,
+              "color": "#F5F7FA",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u54zidon",
+      "id": "14",
+      "bbox": [
+        104,
+        278,
+        8,
+        8
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#E1162D",
+      "lineColor": "#E1162D",
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nqxs72x4",
+      "id": "15",
+      "bbox": [
+        124,
+        272,
+        268,
+        34
+      ],
+      "geometry": "rect",
+      "text": "减少宽度和转弯空间",
+      "textPreview": "减少宽度和转弯空间",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#AEB6C2",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "减少宽度和转弯空间"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "减少宽度和转弯空间",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#AEB6C2",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "减少宽度和转弯空间",
+              "fontSize": 16,
+              "color": "#AEB6C2",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cbulwval",
+      "id": "16",
+      "bbox": [
+        104,
+        321,
+        8,
+        8
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#E1162D",
+      "lineColor": "#E1162D",
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5sneloj2",
+      "id": "17",
+      "bbox": [
+        124,
+        315,
+        268,
+        34
+      ],
+      "geometry": "rect",
+      "text": "适合厨房、仓储、通道等狭窄场景",
+      "textPreview": "适合厨房、仓储、通道等狭窄场景",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#AEB6C2",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "适合厨房、仓储、通道等狭窄场景"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "适合厨房、仓储、通道等狭窄场景",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#AEB6C2",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "适合厨房、仓储、通道等狭窄场景",
+              "fontSize": 16,
+              "color": "#AEB6C2",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/y90je9cv",
+      "id": "18",
+      "bbox": [
+        104,
+        364,
+        8,
+        8
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#E1162D",
+      "lineColor": "#E1162D",
+      "lineWidth": 0
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nuxc3ylc",
+      "id": "19",
+      "bbox": [
+        124,
+        358,
+        268,
+        34
+      ],
+      "geometry": "rect",
+      "text": "左右轮差速实现灵活转向",
+      "textPreview": "左右轮差速实现灵活转向",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#AEB6C2",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "左右轮差速实现灵活转向"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "左右轮差速实现灵活转向",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#AEB6C2",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "左右轮差速实现灵活转向",
+              "fontSize": 16,
+              "color": "#AEB6C2",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fmlkjm1c",
+      "id": "20",
+      "bbox": [
+        474,
+        210,
+        330,
+        308
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(9, 12, 16, 0.7)",
+      "lineColor": "rgba(245, 247, 250, 0.45)",
+      "lineWidth": 1
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/q1orytsv",
+      "id": "21",
+      "bbox": [
+        474,
+        210,
+        64,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#F5F7FA",
+      "lineWidth": 4
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xs72x4na",
+      "id": "22",
+      "bbox": [
+        496,
+        228,
+        286,
+        28
+      ],
+      "geometry": "rect",
+      "text": "为什么要测量",
+      "textPreview": "为什么要测量",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "+mn-lt",
+        "color": "#F5F7FA",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "为什么要测量"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "为什么要测量",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "color": "#F5F7FA",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "为什么要测量",
+              "fontSize": 22,
+              "color": "#F5F7FA",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/87ed8bat",
+      "id": "23",
+      "bbox": [
+        498,
+        278,
+        8,
+        8
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#F5F7FA",
+      "lineColor": "#F5F7FA",
+      "lineWidth": 0
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/je9cvixc",
+      "id": "24",
+      "bbox": [
+        518,
+        272,
+        268,
+        34
+      ],
+      "geometry": "rect",
+      "text": "重量用于检查食材是否足称",
+      "textPreview": "重量用于检查食材是否足称",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#AEB6C2",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "重量用于检查食材是否足称"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "重量用于检查食材是否足称",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#AEB6C2",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "重量用于检查食材是否足称",
+              "fontSize": 16,
+              "color": "#AEB6C2",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qtcj6tov",
+      "id": "25",
+      "bbox": [
+        498,
+        321,
+        8,
+        8
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#F5F7FA",
+      "lineColor": "#F5F7FA",
+      "lineWidth": 0
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1gvy90je",
+      "id": "26",
+      "bbox": [
+        518,
+        315,
+        268,
+        34
+      ],
+      "geometry": "rect",
+      "text": "温湿度用于判断环境是否适合放置",
+      "textPreview": "温湿度用于判断环境是否适合放置",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#AEB6C2",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "温湿度用于判断环境是否适合放置"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "温湿度用于判断环境是否适合放置",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#AEB6C2",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "温湿度用于判断环境是否适合放置",
+              "fontSize": 16,
+              "color": "#AEB6C2",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/8z25kb6x",
+      "id": "27",
+      "bbox": [
+        498,
+        364,
+        8,
+        8
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#F5F7FA",
+      "lineColor": "#F5F7FA",
+      "lineWidth": 0
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fa9w3m94",
+      "id": "28",
+      "bbox": [
+        518,
+        358,
+        268,
+        34
+      ],
+      "geometry": "rect",
+      "text": "OLED现场反馈关键数据",
+      "textPreview": "OLED现场反馈关键数据",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#AEB6C2",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "OLED现场反馈关键数据"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "OLED现场反馈关键数据",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#AEB6C2",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "OLED现场反馈关键数据",
+              "fontSize": 16,
+              "color": "#AEB6C2",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qpg3ex0n",
+      "id": "29",
+      "bbox": [
+        868,
+        210,
+        330,
+        308
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(9, 12, 16, 0.7)",
+      "lineColor": "rgba(245, 247, 250, 0.45)",
+      "lineWidth": 1
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kzupwb2h",
+      "id": "30",
+      "bbox": [
+        868,
+        210,
+        64,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#E1162D",
+      "lineWidth": 4
+    },
+    {
+      "order": 31,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9knih4by",
+      "id": "31",
+      "bbox": [
+        890,
+        228,
+        286,
+        28
+      ],
+      "geometry": "rect",
+      "text": "当前可实现",
+      "textPreview": "当前可实现",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "+mn-lt",
+        "color": "#F5F7FA",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "当前可实现"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "当前可实现",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "color": "#F5F7FA",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "当前可实现",
+              "fontSize": 22,
+              "color": "#F5F7FA",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2t83itgf",
+      "id": "32",
+      "bbox": [
+        892,
+        278,
+        8,
+        8
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#E1162D",
+      "lineColor": "#E1162D",
+      "lineWidth": 0
+    },
+    {
+      "order": 33,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/re1w7mp0",
+      "id": "33",
+      "bbox": [
+        912,
+        272,
+        268,
+        34
+      ],
+      "geometry": "rect",
+      "text": "蓝牙APP远程控制运动",
+      "textPreview": "蓝牙APP远程控制运动",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#AEB6C2",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "蓝牙APP远程控制运动"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "蓝牙APP远程控制运动",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#AEB6C2",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "蓝牙APP远程控制运动",
+              "fontSize": 16,
+              "color": "#AEB6C2",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 34,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kb6xkf6d",
+      "id": "34",
+      "bbox": [
+        892,
+        321,
+        8,
+        8
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#E1162D",
+      "lineColor": "#E1162D",
+      "lineWidth": 0
+    },
+    {
+      "order": 35,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9w3m94fu",
+      "id": "35",
+      "bbox": [
+        912,
+        315,
+        268,
+        34
+      ],
+      "geometry": "rect",
+      "text": "温湿度与重量估算显示",
+      "textPreview": "温湿度与重量估算显示",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#AEB6C2",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "温湿度与重量估算显示"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "温湿度与重量估算显示",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#AEB6C2",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "温湿度与重量估算显示",
+              "fontSize": 16,
+              "color": "#AEB6C2",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 36,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/25kb6xkf",
+      "id": "36",
+      "bbox": [
+        892,
+        364,
+        8,
+        8
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#E1162D",
+      "lineColor": "#E1162D",
+      "lineWidth": 0
+    },
+    {
+      "order": 37,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/rqd4vmtw",
+      "id": "37",
+      "bbox": [
+        912,
+        358,
+        268,
+        34
+      ],
+      "geometry": "rect",
+      "text": "保留RFID/导航/视觉识别扩展方向",
+      "textPreview": "保留RFID/导航/视觉识别扩展方向",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#AEB6C2",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "保留RFID/导航/视觉识别扩展方向"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "保留RFID/导航/视觉识别扩展方向",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#AEB6C2",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "保留RFID/导航/视觉识别扩展方向",
+              "fontSize": 16,
+              "color": "#AEB6C2",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

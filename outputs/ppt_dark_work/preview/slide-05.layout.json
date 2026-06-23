@@ -1,0 +1,1068 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/hh4rv2",
+    "id": "hh4rv2",
+    "slide": 5,
+    "layoutId": "714bc859-76e9-4af3-bd7d-d15e62273672",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "d1db3968-f0ae-431a-9487-ecca19e1aea9",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#060708",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "714bc859-76e9-4af3-bd7d-d15e62273672",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "d1db3968-f0ae-431a-9487-ecca19e1aea9",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "d1db3968-f0ae-431a-9487-ecca19e1aea9",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/xc3ylc7u",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "alt": "dark polygon network background",
+      "contentType": "image/png",
+      "imageCrop": {
+        "left": 0.08,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "imageFit": "cover",
+      "asset": {
+        "assetId": "f9fe9d76-a855-433a-836a-dd78c3796700",
+        "contentType": "image/png",
+        "byteLength": 1526724
+      }
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/judg7ads",
+      "id": "2",
+      "bbox": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(0, 0, 0, 0.28)",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u9knih4b",
+      "id": "3",
+      "bbox": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(0, 0, 0, 0.18)",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1orytsvu",
+      "id": "4",
+      "bbox": [
+        46,
+        34,
+        104,
+        74
+      ],
+      "geometry": "rect",
+      "text": "05",
+      "textPreview": "05",
+      "resolvedFontSize": 54,
+      "resolvedTextStyle": {
+        "fontSize": 54,
+        "typeface": "+mn-lt",
+        "color": "#E1162D",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "05"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "05",
+          "resolvedTextStyle": {
+            "fontSize": 54,
+            "color": "#E1162D",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "05",
+              "fontSize": 54,
+              "color": "#E1162D",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/c7u54zid",
+      "id": "5",
+      "bbox": [
+        160,
+        72,
+        192,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#E1162D",
+      "lineWidth": 4
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/jm1cfa9w",
+      "id": "6",
+      "bbox": [
+        360,
+        72,
+        820,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "rgba(245, 247, 250, 0.42)",
+      "lineWidth": 1
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u18jqh0f",
+      "id": "7",
+      "bbox": [
+        64,
+        95,
+        760,
+        52
+      ],
+      "geometry": "rect",
+      "text": "蓝牙APP远程控制",
+      "textPreview": "蓝牙APP远程控制",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "fontSize": 34,
+        "typeface": "+mn-lt",
+        "color": "#F5F7FA",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "蓝牙APP远程控制"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "蓝牙APP远程控制",
+          "resolvedTextStyle": {
+            "fontSize": 34,
+            "color": "#F5F7FA",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "蓝牙APP远程控制",
+              "fontSize": 34,
+              "color": "#F5F7FA",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5gbq1ory",
+      "id": "8",
+      "bbox": [
+        66,
+        144,
+        850,
+        28
+      ],
+      "geometry": "rect",
+      "text": "当前操控系统采用手机APP下发运动指令",
+      "textPreview": "当前操控系统采用手机APP下发运动指令",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#AEB6C2",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "当前操控系统采用手机APP下发运动指令"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "当前操控系统采用手机APP下发运动指令",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#AEB6C2",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "当前操控系统采用手机APP下发运动指令",
+              "fontSize": 17,
+              "color": "#AEB6C2",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cvixczed",
+      "id": "9",
+      "bbox": [
+        1164,
+        64,
+        12,
+        12
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#E1162D",
+      "lineColor": "#E1162D",
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/m1cfa9w3",
+      "id": "10",
+      "bbox": [
+        1197,
+        99,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#F5F7FA",
+      "lineColor": "#F5F7FA",
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bm58z25k",
+      "id": "11",
+      "bbox": [
+        137,
+        202,
+        336,
+        294
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(8, 10, 14, 0.72)",
+      "lineColor": "rgba(245, 247, 250, 0.45)",
+      "lineWidth": 1
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/47y1kre1",
+      "id": "12",
+      "bbox": [
+        137,
+        202,
+        65,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#E1162D",
+      "lineWidth": 4
+    },
+    {
+      "order": 13,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/6psfil0r",
+      "id": "13",
+      "bbox": [
+        140,
+        205,
+        330,
+        260
+      ],
+      "alt": "bluetooth.jpg",
+      "contentType": "image/jpeg",
+      "imageFit": "cover",
+      "asset": {
+        "assetId": "052cc1a2-2d3d-4753-b3c4-5f2c11e4c811",
+        "contentType": "image/jpeg",
+        "byteLength": 156456
+      }
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mp0bi9s3",
+      "id": "14",
+      "bbox": [
+        140,
+        472,
+        330,
+        20
+      ],
+      "geometry": "rect",
+      "text": "蓝牙通信模块",
+      "textPreview": "蓝牙通信模块",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#AEB6C2",
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "蓝牙通信模块"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "蓝牙通信模块",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#AEB6C2",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "蓝牙通信模块",
+              "fontSize": 13,
+              "color": "#AEB6C2",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bat47y1k",
+      "id": "15",
+      "bbox": [
+        537,
+        202,
+        336,
+        294
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(8, 10, 14, 0.72)",
+      "lineColor": "rgba(245, 247, 250, 0.45)",
+      "lineWidth": 1
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4vmtwra5",
+      "id": "16",
+      "bbox": [
+        537,
+        202,
+        65,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#E1162D",
+      "lineWidth": 4
+    },
+    {
+      "order": 17,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/2x4nap4r",
+      "id": "17",
+      "bbox": [
+        540,
+        205,
+        330,
+        260
+      ],
+      "alt": "bluetooth-app.jpg",
+      "contentType": "image/jpeg",
+      "imageFit": "cover",
+      "asset": {
+        "assetId": "6d74245b-d037-45f7-b12e-80d2110bfc50",
+        "contentType": "image/jpeg",
+        "byteLength": 434382
+      }
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mhk3q5o7",
+      "id": "18",
+      "bbox": [
+        540,
+        472,
+        330,
+        20
+      ],
+      "geometry": "rect",
+      "text": "手机APP控制界面",
+      "textPreview": "手机APP控制界面",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#AEB6C2",
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "手机APP控制界面"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "手机APP控制界面",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#AEB6C2",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "手机APP控制界面",
+              "fontSize": 13,
+              "color": "#AEB6C2",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/b2hwfyxo",
+      "id": "19",
+      "bbox": [
+        920,
+        205,
+        260,
+        260
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(9, 12, 16, 0.7)",
+      "lineColor": "rgba(245, 247, 250, 0.45)",
+      "lineWidth": 1
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7u54zido",
+      "id": "20",
+      "bbox": [
+        920,
+        205,
+        64,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#E1162D",
+      "lineWidth": 4
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ed8bat47",
+      "id": "21",
+      "bbox": [
+        942,
+        223,
+        216,
+        28
+      ],
+      "geometry": "rect",
+      "text": "控制逻辑",
+      "textPreview": "控制逻辑",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "+mn-lt",
+        "color": "#F5F7FA",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "控制逻辑"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "控制逻辑",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "color": "#F5F7FA",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "控制逻辑",
+              "fontSize": 22,
+              "color": "#F5F7FA",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/l0rqd4vm",
+      "id": "22",
+      "bbox": [
+        944,
+        273,
+        8,
+        8
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#E1162D",
+      "lineColor": "#E1162D",
+      "lineWidth": 0
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wfyxobm5",
+      "id": "23",
+      "bbox": [
+        964,
+        267,
+        198,
+        34
+      ],
+      "geometry": "rect",
+      "text": "APP发送前进/后退/转向",
+      "textPreview": "APP发送前进/后退/转向",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#AEB6C2",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "APP发送前进/后退/转向"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "APP发送前进/后退/转向",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#AEB6C2",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "APP发送前进/后退/转向",
+              "fontSize": 16,
+              "color": "#AEB6C2",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/36hcrmhk",
+      "id": "24",
+      "bbox": [
+        944,
+        316,
+        8,
+        8
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#E1162D",
+      "lineColor": "#E1162D",
+      "lineWidth": 0
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/eloj2t83",
+      "id": "25",
+      "bbox": [
+        964,
+        310,
+        198,
+        34
+      ],
+      "geometry": "rect",
+      "text": "蓝牙模块传给STM32",
+      "textPreview": "蓝牙模块传给STM32",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#AEB6C2",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "蓝牙模块传给STM32"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "蓝牙模块传给STM32",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#AEB6C2",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "蓝牙模块传给STM32",
+              "fontSize": 16,
+              "color": "#AEB6C2",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/lc7u54zi",
+      "id": "26",
+      "bbox": [
+        944,
+        359,
+        8,
+        8
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#E1162D",
+      "lineColor": "#E1162D",
+      "lineWidth": 0
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wra5gbq1",
+      "id": "27",
+      "bbox": [
+        964,
+        353,
+        198,
+        34
+      ],
+      "geometry": "rect",
+      "text": "主控驱动左右轮差速",
+      "textPreview": "主控驱动左右轮差速",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#AEB6C2",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "主控驱动左右轮差速"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "主控驱动左右轮差速",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#AEB6C2",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "主控驱动左右轮差速",
+              "fontSize": 16,
+              "color": "#AEB6C2",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7adsji5s",
+      "id": "28",
+      "bbox": [
+        944,
+        402,
+        8,
+        8
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#E1162D",
+      "lineColor": "#E1162D",
+      "lineWidth": 0
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/epkzupwb",
+      "id": "29",
+      "bbox": [
+        964,
+        396,
+        198,
+        34
+      ],
+      "geometry": "rect",
+      "text": "必要时人工接管",
+      "textPreview": "必要时人工接管",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#AEB6C2",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "必要时人工接管"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "必要时人工接管",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#AEB6C2",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "必要时人工接管",
+              "fontSize": 16,
+              "color": "#AEB6C2",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/orytsvu9",
+      "id": "30",
+      "bbox": [
+        150,
+        560,
+        980,
+        30
+      ],
+      "geometry": "rect",
+      "text": "蓝牙控制适合原型阶段展示，也符合食品供应链末端人工辅助调度场景。",
+      "textPreview": "蓝牙控制适合原型阶段展示，也符合食品供应链末端人工辅助调度场景。",
+      "resolvedFontSize": 20,
+      "resolvedTextStyle": {
+        "fontSize": 20,
+        "typeface": "+mn-lt",
+        "color": "#AEB6C2",
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "蓝牙控制适合原型阶段展示，也符合食品供应链末端人工辅助调度场景。"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "蓝牙控制适合原型阶段展示，也符合食品供应链末端人工辅助调度场景。",
+          "resolvedTextStyle": {
+            "fontSize": 20,
+            "color": "#AEB6C2",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "蓝牙控制适合原型阶段展示，也符合食品供应链末端人工辅助调度场景。",
+              "fontSize": 20,
+              "color": "#AEB6C2",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

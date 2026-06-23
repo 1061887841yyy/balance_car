@@ -1,0 +1,1444 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/dthzxr",
+    "id": "dthzxr",
+    "slide": 4,
+    "layoutId": "76aff76d-5874-430e-9551-e3241d54499a",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "9bb08af6-bb5c-435f-a686-30abc1f9f8c1",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#F6F8FB",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "76aff76d-5874-430e-9551-e3241d54499a",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "9bb08af6-bb5c-435f-a686-30abc1f9f8c1",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "9bb08af6-bb5c-435f-a686-30abc1f9f8c1",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/61032lsz",
+      "id": "1",
+      "bbox": [
+        70,
+        44,
+        900,
+        58
+      ],
+      "geometry": "rect",
+      "text": "软件结构设计",
+      "textPreview": "软件结构设计",
+      "resolvedFontSize": 36,
+      "resolvedTextStyle": {
+        "fontSize": 36,
+        "typeface": "+mn-lt",
+        "color": "#172033",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "软件结构设计"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "软件结构设计",
+          "resolvedTextStyle": {
+            "fontSize": 36,
+            "color": "#172033",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "软件结构设计",
+              "fontSize": 36,
+              "color": "#172033",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/dsji5sne",
+      "id": "2",
+      "bbox": [
+        72,
+        96,
+        900,
+        32
+      ],
+      "geometry": "rect",
+      "text": "按驱动层、控制层、显示层分离，便于调试与维护",
+      "textPreview": "按驱动层、控制层、显示层分离，便于调试与维护",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "按驱动层、控制层、显示层分离，便于调试与维护"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "按驱动层、控制层、显示层分离，便于调试与维护",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "按驱动层、控制层、显示层分离，便于调试与维护",
+              "fontSize": 18,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/o7qpg3ex",
+      "id": "3",
+      "bbox": [
+        70,
+        132,
+        1140,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#1E5B9A",
+      "lineColor": "#1E5B9A",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/vy90je9c",
+      "id": "4",
+      "bbox": [
+        80,
+        170,
+        330,
+        360
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7DFEA",
+      "lineWidth": 1
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6dcbulwv",
+      "id": "5",
+      "bbox": [
+        80,
+        170,
+        8,
+        360
+      ],
+      "geometry": "rect",
+      "fillColor": "#1E5B9A",
+      "lineColor": "#1E5B9A",
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/d4vmtwra",
+      "id": "6",
+      "bbox": [
+        104,
+        188,
+        288,
+        30
+      ],
+      "geometry": "rect",
+      "text": "底层驱动",
+      "textPreview": "底层驱动",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "+mn-lt",
+        "color": "#172033",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "底层驱动"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "底层驱动",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "color": "#172033",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "底层驱动",
+              "fontSize": 22,
+              "color": "#172033",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/oj2t83it",
+      "id": "7",
+      "bbox": [
+        105,
+        240,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#1E5B9A",
+      "lineColor": "#1E5B9A",
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/z25kb6xk",
+      "id": "8",
+      "bbox": [
+        120,
+        232,
+        268,
+        40
+      ],
+      "geometry": "rect",
+      "text": "mpu6050_hal：读取加速度与陀螺仪",
+      "textPreview": "mpu6050_hal：读取加速度与陀螺仪",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "mpu6050_hal：读取加速度与陀螺"
+          },
+          {
+            "index": 2,
+            "text": "仪"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "mpu6050_hal：读取加速度与陀螺仪",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "mpu6050_hal：读取加速度与陀螺仪",
+              "fontSize": 16,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/6hcrmhk3",
+      "id": "9",
+      "bbox": [
+        105,
+        285,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#1E5B9A",
+      "lineColor": "#1E5B9A",
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/gr2p8nqx",
+      "id": "10",
+      "bbox": [
+        120,
+        277,
+        268,
+        40
+      ],
+      "geometry": "rect",
+      "text": "encoder_hal：TIM1/TIM2 编码器测速",
+      "textPreview": "encoder_hal：TIM1/TIM2 编码器测速",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "encoder_hal：TIM1/TIM2"
+          },
+          {
+            "index": 2,
+            "text": "编码器测速"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "encoder_hal：TIM1/TIM2 编码器测速",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "encoder_hal：TIM1/TIM2 编码器测速",
+              "fontSize": 16,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9cvixcze",
+      "id": "11",
+      "bbox": [
+        105,
+        330,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#1E5B9A",
+      "lineColor": "#1E5B9A",
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ylc7u54z",
+      "id": "12",
+      "bbox": [
+        120,
+        322,
+        268,
+        40
+      ],
+      "geometry": "rect",
+      "text": "motor_tb6612：方向与PWM输出",
+      "textPreview": "motor_tb6612：方向与PWM输出",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "motor_tb6612：方向与PWM输出"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "motor_tb6612：方向与PWM输出",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "motor_tb6612：方向与PWM输出",
+              "fontSize": 16,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/r65wjudg",
+      "id": "13",
+      "bbox": [
+        105,
+        375,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#1E5B9A",
+      "lineColor": "#1E5B9A",
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/g3ex0nux",
+      "id": "14",
+      "bbox": [
+        120,
+        367,
+        268,
+        40
+      ],
+      "geometry": "rect",
+      "text": "dht11 / fsr_adc / oled_ssd1306",
+      "textPreview": "dht11 / fsr_adc / oled_ssd1306",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "dht11 / fsr_adc / oled_ssd1306"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "dht11 / fsr_adc / oled_ssd1306",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "dht11 / fsr_adc / oled_ssd1306",
+              "fontSize": 16,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/5o7qpg3e",
+      "id": "15",
+      "bbox": [
+        475,
+        170,
+        330,
+        360
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7DFEA",
+      "lineWidth": 1
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/yxobm58z",
+      "id": "16",
+      "bbox": [
+        475,
+        170,
+        8,
+        360
+      ],
+      "geometry": "rect",
+      "fillColor": "#2E8B57",
+      "lineColor": "#2E8B57",
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nih4byhg",
+      "id": "17",
+      "bbox": [
+        499,
+        188,
+        288,
+        30
+      ],
+      "geometry": "rect",
+      "text": "控制核心",
+      "textPreview": "控制核心",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "+mn-lt",
+        "color": "#172033",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "控制核心"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "控制核心",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "color": "#172033",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "控制核心",
+              "fontSize": 22,
+              "color": "#172033",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/g7adsji5",
+      "id": "18",
+      "bbox": [
+        500,
+        240,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#2E8B57",
+      "lineColor": "#2E8B57",
+      "lineWidth": 0
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/9s36hcrm",
+      "id": "19",
+      "bbox": [
+        515,
+        232,
+        268,
+        40
+      ],
+      "geometry": "rect",
+      "text": "balance_control：10ms角度环",
+      "textPreview": "balance_control：10ms角度环",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "balance_control：10ms角度环"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "balance_control：10ms角度环",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "balance_control：10ms角度环",
+              "fontSize": 16,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/twra5gbq",
+      "id": "20",
+      "bbox": [
+        500,
+        285,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#2E8B57",
+      "lineColor": "#2E8B57",
+      "lineWidth": 0
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4byhgn29",
+      "id": "21",
+      "bbox": [
+        515,
+        277,
+        268,
+        40
+      ],
+      "geometry": "rect",
+      "text": "50ms速度环与转向环",
+      "textPreview": "50ms速度环与转向环",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "50ms速度环与转向环"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "50ms速度环与转向环",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "50ms速度环与转向环",
+              "fontSize": 16,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bq1oryts",
+      "id": "22",
+      "bbox": [
+        500,
+        330,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#2E8B57",
+      "lineColor": "#2E8B57",
+      "lineWidth": 0
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/m58z25kb",
+      "id": "23",
+      "bbox": [
+        515,
+        322,
+        268,
+        40
+      ],
+      "geometry": "rect",
+      "text": "PID带积分限幅、微分先行、死区补偿",
+      "textPreview": "PID带积分限幅、微分先行、死区补偿",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "PID带积分限幅、微分先行、死区补"
+          },
+          {
+            "index": 2,
+            "text": "偿"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "PID带积分限幅、微分先行、死区补偿",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "PID带积分限幅、微分先行、死区补偿",
+              "fontSize": 16,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/t83itgfm",
+      "id": "24",
+      "bbox": [
+        500,
+        375,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#2E8B57",
+      "lineColor": "#2E8B57",
+      "lineWidth": 0
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4nap4r65",
+      "id": "25",
+      "bbox": [
+        515,
+        367,
+        268,
+        40
+      ],
+      "geometry": "rect",
+      "text": "跌倒保护与停机逻辑",
+      "textPreview": "跌倒保护与停机逻辑",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "跌倒保护与停机逻辑"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "跌倒保护与停机逻辑",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "跌倒保护与停机逻辑",
+              "fontSize": 16,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/b2hwfyxo",
+      "id": "26",
+      "bbox": [
+        870,
+        170,
+        330,
+        360
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7DFEA",
+      "lineWidth": 1
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mhk3q5o7",
+      "id": "27",
+      "bbox": [
+        870,
+        170,
+        8,
+        360
+      ],
+      "geometry": "rect",
+      "fillColor": "#2AA8C8",
+      "lineColor": "#2AA8C8",
+      "lineWidth": 0
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/tgfmlkjm",
+      "id": "28",
+      "bbox": [
+        894,
+        188,
+        288,
+        30
+      ],
+      "geometry": "rect",
+      "text": "调试与显示",
+      "textPreview": "调试与显示",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "+mn-lt",
+        "color": "#172033",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "调试与显示"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "调试与显示",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "color": "#172033",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "调试与显示",
+              "fontSize": 22,
+              "color": "#172033",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4vmtwra5",
+      "id": "29",
+      "bbox": [
+        895,
+        240,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#2AA8C8",
+      "lineColor": "#2AA8C8",
+      "lineWidth": 0
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/epkzupwb",
+      "id": "30",
+      "bbox": [
+        910,
+        232,
+        268,
+        40
+      ],
+      "geometry": "rect",
+      "text": "g_balance_debug：启停、目标和校准",
+      "textPreview": "g_balance_debug：启停、目标和校准",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "g_balance_debug：启停、目标和校"
+          },
+          {
+            "index": 2,
+            "text": "准"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "g_balance_debug：启停、目标和校准",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "g_balance_debug：启停、目标和校准",
+              "fontSize": 16,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 31,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7adsji5s",
+      "id": "31",
+      "bbox": [
+        895,
+        285,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#2AA8C8",
+      "lineColor": "#2AA8C8",
+      "lineWidth": 0
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wval87ed",
+      "id": "32",
+      "bbox": [
+        910,
+        277,
+        268,
+        40
+      ],
+      "geometry": "rect",
+      "text": "g_balance_state：角度、速度、PWM",
+      "textPreview": "g_balance_state：角度、速度、PWM",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "g_balance_state：角度、速度、PW"
+          },
+          {
+            "index": 2,
+            "text": "M"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "g_balance_state：角度、速度、PWM",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "g_balance_state：角度、速度、PWM",
+              "fontSize": 16,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 33,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/pg3ex0nu",
+      "id": "33",
+      "bbox": [
+        895,
+        330,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#2AA8C8",
+      "lineColor": "#2AA8C8",
+      "lineWidth": 0
+    },
+    {
+      "order": 34,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/e1w7mp0b",
+      "id": "34",
+      "bbox": [
+        910,
+        322,
+        268,
+        40
+      ],
+      "geometry": "rect",
+      "text": "g_sensor_state：温湿度、ADC、OLED状态",
+      "textPreview": "g_sensor_state：温湿度、ADC、OLED状态",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "g_sensor_state：温湿度、ADC、OLE"
+          },
+          {
+            "index": 2,
+            "text": "D状态"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "g_sensor_state：温湿度、ADC、OLED状态",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "g_sensor_state：温湿度、ADC、OLED状态",
+              "fontSize": 16,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 35,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7mp0bi9s",
+      "id": "35",
+      "bbox": [
+        895,
+        375,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#2AA8C8",
+      "lineColor": "#2AA8C8",
+      "lineWidth": 0
+    },
+    {
+      "order": 36,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/w7mp0bi9",
+      "id": "36",
+      "bbox": [
+        910,
+        367,
+        268,
+        40
+      ],
+      "geometry": "rect",
+      "text": "display_ui：OLED分页刷新",
+      "textPreview": "display_ui：OLED分页刷新",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "display_ui：OLED分页刷新"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "display_ui：OLED分页刷新",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "display_ui：OLED分页刷新",
+              "fontSize": 16,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

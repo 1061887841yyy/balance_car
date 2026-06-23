@@ -1,0 +1,251 @@
+{"kind":"deck","id":"pr/lpsaaa","name":"Deck"}
+{"kind":"layout","layoutId":"9bb08af6-bb5c-435f-a686-30abc1f9f8c1","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"76aff76d-5874-430e-9551-e3241d54499a","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/ihf7et","slide":1,"title":"基于 STM32F103C8T6 的","textShapes":9}
+{"kind":"textbox","id":"sh/je9cvixc","slide":1,"text":"基于 STM32F103C8T6 的\n多传感器自平衡小车","textPreview":"基于 STM32F103C8T6 的 | 多传感器自平衡小车","textChars":28,"textLines":2,"bbox":[80,92,760,150]}
+{"kind":"textbox","id":"sh/8z25kb6x","slide":1,"text":"《传感与测量技术》Z1期末项目简报","textPreview":"《传感与测量技术》Z1期末项目简报","textChars":17,"textLines":1,"bbox":[84,270,650,34]}
+{"kind":"textbox","id":"sh/1gvy90je","slide":1,"text":"姿态测量 · 速度反馈 · 温湿度采集 · 压力/重量估算 · OLED现场显示","textPreview":"姿态测量 · 速度反馈 · 温湿度采集 · 压力/重量估算 · OLED现场显示","textChars":40,"textLines":1,"bbox":[84,322,760,34]}
+{"kind":"shape","id":"sh/q1orytsv","slide":1,"bbox":[850,96,320,420]}
+{"kind":"textbox","id":"sh/fmlkjm1c","slide":1,"text":"项目核心","textPreview":"项目核心","textChars":4,"textLines":1,"bbox":[890,140,240,36]}
+{"kind":"shape","id":"sh/87ed8bat","slide":1,"bbox":[890,210,240,42]}
+{"kind":"textbox","id":"sh/xs72x4na","slide":1,"text":"MPU6050 姿态采样","textPreview":"MPU6050 姿态采样","textChars":12,"textLines":1,"bbox":[904,220,212,24]}
+{"kind":"shape","id":"sh/qd4vmtwr","slide":1,"bbox":[890,270,240,42]}
+{"kind":"textbox","id":"sh/fyxobm58","slide":1,"text":"双编码器测速","textPreview":"双编码器测速","textChars":6,"textLines":1,"bbox":[904,280,212,24]}
+{"kind":"shape","id":"sh/7mp0bi9s","slide":1,"bbox":[890,330,240,42]}
+{"kind":"textbox","id":"sh/e1w7mp0b","slide":1,"text":"DHT11 + FSR402","textPreview":"DHT11 + FSR402","textChars":14,"textLines":1,"bbox":[904,340,212,24]}
+{"kind":"shape","id":"sh/psfil0rq","slide":1,"bbox":[890,390,240,42]}
+{"kind":"textbox","id":"sh/w7mp0bi9","slide":1,"text":"SSD1306 OLED显示","textPreview":"SSD1306 OLED显示","textChars":14,"textLines":1,"bbox":[904,400,212,24]}
+{"kind":"textbox","id":"sh/7adsji5s","slide":1,"text":"第XX组","textPreview":"第XX组","textChars":4,"textLines":1,"bbox":[84,596,300,32]}
+{"kind":"notes","id":"nt/ihf7et","slide":1,"text":""}
+{"kind":"slide","id":"sl/euahqa","slide":2,"title":"制作动机与项目目标","textShapes":14}
+{"kind":"textbox","id":"sh/t83itgfm","slide":2,"text":"制作动机与项目目标","textPreview":"制作动机与项目目标","textChars":9,"textLines":1,"bbox":[70,44,900,58]}
+{"kind":"textbox","id":"sh/mhk3q5o7","slide":2,"text":"从单一传感器实验走向完整的测量与控制系统","textPreview":"从单一传感器实验走向完整的测量与控制系统","textChars":20,"textLines":1,"bbox":[72,96,900,32]}
+{"kind":"shape","id":"sh/b2hwfyxo","slide":2,"bbox":[70,132,1140,2]}
+{"kind":"shape","id":"sh/4byhgn29","slide":2,"bbox":[80,170,340,380]}
+{"kind":"shape","id":"sh/twra5gbq","slide":2,"bbox":[80,170,8,380]}
+{"kind":"textbox","id":"sh/m58z25kb","slide":2,"text":"为什么选择自平衡小车","textPreview":"为什么选择自平衡小车","textChars":10,"textLines":1,"bbox":[104,188,298,30]}
+{"kind":"shape","id":"sh/bq1oryts","slide":2,"bbox":[105,240,6,6]}
+{"kind":"textbox","id":"sh/47y1kre1","slide":2,"text":"两轮结构天然不稳定，能体现实时测量的重要性","textPreview":"两轮结构天然不稳定，能体现实时测量的重要性","textChars":21,"textLines":1,"bbox":[120,232,278,40]}
+{"kind":"shape","id":"sh/tsvu9kni","slide":2,"bbox":[105,285,6,6]}
+{"kind":"textbox","id":"sh/90je9cvi","slide":2,"text":"需要姿态、速度、压力、温湿度等多源数据","textPreview":"需要姿态、速度、压力、温湿度等多源数据","textChars":19,"textLines":1,"bbox":[120,277,278,40]}
+{"kind":"shape","id":"sh/gfmlkjm1","slide":2,"bbox":[105,330,6,6]}
+{"kind":"textbox","id":"sh/rytsvu9k","slide":2,"text":"覆盖传感器选型、采样、滤波、校准和显示","textPreview":"覆盖传感器选型、采样、滤波、校准和显示","textChars":19,"textLines":1,"bbox":[120,322,278,40]}
+{"kind":"shape","id":"sh/yd0z6103","slide":2,"bbox":[470,170,340,380]}
+{"kind":"shape","id":"sh/9s36hcrm","slide":2,"bbox":[470,170,8,380]}
+{"kind":"textbox","id":"sh/g7adsji5","slide":2,"text":"项目实现目标","textPreview":"项目实现目标","textChars":6,"textLines":1,"bbox":[494,188,298,30]}
+{"kind":"shape","id":"sh/rmhk3q5o","slide":2,"bbox":[495,240,6,6]}
+{"kind":"textbox","id":"sh/y1kre1w7","slide":2,"text":"完成自平衡控制基础框架","textPreview":"完成自平衡控制基础框架","textChars":11,"textLines":1,"bbox":[510,232,278,40]}
+{"kind":"shape","id":"sh/5o7qpg3e","slide":2,"bbox":[495,285,6,6]}
+{"kind":"textbox","id":"sh/g3ex0nux","slide":2,"text":"通过OLED显示温湿度和重量估算","textPreview":"通过OLED显示温湿度和重量估算","textChars":16,"textLines":1,"bbox":[510,277,278,40]}
+{"kind":"shape","id":"sh/cfa9w3m9","slide":2,"bbox":[495,330,6,6]}
+{"kind":"textbox","id":"sh/1032lszq","slide":2,"text":"用Ozone实时观察关键变量并在线调参","textPreview":"用Ozone实时观察关键变量并在线调参","textChars":19,"textLines":1,"bbox":[510,322,278,40]}
+{"kind":"shape","id":"sh/u9knih4b","slide":2,"bbox":[860,170,340,380]}
+{"kind":"shape","id":"sh/judg7ads","slide":2,"bbox":[860,170,8,380]}
+{"kind":"textbox","id":"sh/c7u54zid","slide":2,"text":"课程知识对应","textPreview":"课程知识对应","textChars":6,"textLines":1,"bbox":[884,188,298,30]}
+{"kind":"shape","id":"sh/1orytsvu","slide":2,"bbox":[885,240,6,6]}
+{"kind":"textbox","id":"sh/u18jqh0f","slide":2,"text":"惯性测量：角度与角速度","textPreview":"惯性测量：角度与角速度","textChars":11,"textLines":1,"bbox":[900,232,278,40]}
+{"kind":"shape","id":"sh/jm1cfa9w","slide":2,"bbox":[885,285,6,6]}
+{"kind":"textbox","id":"sh/cvixczed","slide":2,"text":"力学测量：压力与重量估算","textPreview":"力学测量：压力与重量估算","textChars":12,"textLines":1,"bbox":[900,277,278,40]}
+{"kind":"shape","id":"sh/5gbq1ory","slide":2,"bbox":[885,330,6,6]}
+{"kind":"textbox","id":"sh/val87ed8","slide":2,"text":"数字/模拟接口：I2C、GPIO、ADC、TIM","textPreview":"数字/模拟接口：I2C、GPIO、ADC、TIM","textChars":24,"textLines":1,"bbox":[900,322,278,40]}
+{"kind":"notes","id":"nt/euahqa","slide":2,"text":""}
+{"kind":"slide","id":"sl/20veae","slide":3,"title":"硬件组成与接口分配","textShapes":15}
+{"kind":"textbox","id":"sh/d8bat47y","slide":3,"text":"硬件组成与接口分配","textPreview":"硬件组成与接口分配","textChars":9,"textLines":1,"bbox":[70,44,900,58]}
+{"kind":"textbox","id":"sh/2lszqtcj","slide":3,"text":"各模块分工明确，避免关键总线冲突","textPreview":"各模块分工明确，避免关键总线冲突","textChars":16,"textLines":1,"bbox":[72,96,900,32]}
+{"kind":"shape","id":"sh/v6psfil0","slide":3,"bbox":[70,132,1140,2]}
+{"kind":"shape","id":"sh/kf6dcbul","slide":3,"bbox":[90,160,320,42]}
+{"kind":"textbox","id":"sh/d0z61032","slide":3,"text":"STM32F103C8T6","textPreview":"STM32F103C8T6","textChars":13,"textLines":1,"bbox":[104,170,292,24]}
+{"kind":"textbox","id":"sh/29gr2p8n","slide":3,"text":"主控与控制算法运行平台","textPreview":"主控与控制算法运行平台","textChars":11,"textLines":1,"bbox":[450,168,680,28]}
+{"kind":"shape","id":"sh/vu9knih4","slide":3,"bbox":[90,230,320,42]}
+{"kind":"textbox","id":"sh/k3q5o7qp","slide":3,"text":"MPU6050 / PB8 PB9","textPreview":"MPU6050 / PB8 PB9","textChars":17,"textLines":1,"bbox":[104,240,292,24]}
+{"kind":"textbox","id":"sh/donyd0z6","slide":3,"text":"I2C1 姿态采样，地址 0x68","textPreview":"I2C1 姿态采样，地址 0x68","textChars":17,"textLines":1,"bbox":[450,238,680,28]}
+{"kind":"shape","id":"sh/p0bi9s36","slide":3,"bbox":[90,300,320,42]}
+{"kind":"textbox","id":"sh/0fepkzup","slide":3,"text":"OLED / PB10 PB11","textPreview":"OLED / PB10 PB11","textChars":16,"textLines":1,"bbox":[104,310,292,24]}
+{"kind":"textbox","id":"sh/bulwval8","slide":3,"text":"I2C2 显示温湿度、重量和ADC","textPreview":"I2C2 显示温湿度、重量和ADC","textChars":17,"textLines":1,"bbox":[450,308,680,28]}
+{"kind":"shape","id":"sh/i9s36hcr","slide":3,"bbox":[90,370,320,42]}
+{"kind":"textbox","id":"sh/tovahoza","slide":3,"text":"DHT11 / PC14","textPreview":"DHT11 / PC14","textChars":12,"textLines":1,"bbox":[104,380,292,24]}
+{"kind":"textbox","id":"sh/032lszqt","slide":3,"text":"单总线温湿度采集","textPreview":"单总线温湿度采集","textChars":8,"textLines":1,"bbox":[450,378,680,28]}
+{"kind":"shape","id":"sh/bi9s36hc","slide":3,"bbox":[90,440,320,42]}
+{"kind":"textbox","id":"sh/ixczed8v","slide":3,"text":"FSR402+RFP602 / PA2","textPreview":"FSR402+RFP602 / PA2","textChars":19,"textLines":1,"bbox":[104,450,292,24]}
+{"kind":"textbox","id":"sh/tcj6tova","slide":3,"text":"ADC1_IN2 采集压力模拟电压","textPreview":"ADC1_IN2 采集压力模拟电压","textChars":17,"textLines":1,"bbox":[450,448,680,28]}
+{"kind":"shape","id":"sh/0rqd4vmt","slide":3,"bbox":[90,510,320,42]}
+{"kind":"textbox","id":"sh/gfmlkjm1","slide":3,"text":"TB6612 + 编码器","textPreview":"TB6612 + 编码器","textChars":12,"textLines":1,"bbox":[104,520,292,24]}
+{"kind":"textbox","id":"sh/90je9cvi","slide":3,"text":"电机驱动与左右轮速度反馈","textPreview":"电机驱动与左右轮速度反馈","textChars":12,"textLines":1,"bbox":[450,518,680,28]}
+{"kind":"textbox","id":"sh/yd0z6103","slide":3,"text":"设计要点：OLED 改用 I2C2，避免与 MPU6050 的 I2C1 PB8/PB9 引脚冲突。","textPreview":"设计要点：OLED 改用 I2C2，避免与 MPU6050 的 I2C1 PB8/PB9 引脚冲突。","textChars":50,"textLines":1,"bbox":[92,610,1000,32]}
+{"kind":"notes","id":"nt/20veae","slide":3,"text":""}
+{"kind":"slide","id":"sl/dthzxr","slide":4,"title":"软件结构设计","textShapes":17}
+{"kind":"textbox","id":"sh/61032lsz","slide":4,"text":"软件结构设计","textPreview":"软件结构设计","textChars":6,"textLines":1,"bbox":[70,44,900,58]}
+{"kind":"textbox","id":"sh/dsji5sne","slide":4,"text":"按驱动层、控制层、显示层分离，便于调试与维护","textPreview":"按驱动层、控制层、显示层分离，便于调试与维护","textChars":22,"textLines":1,"bbox":[72,96,900,32]}
+{"kind":"shape","id":"sh/o7qpg3ex","slide":4,"bbox":[70,132,1140,2]}
+{"kind":"shape","id":"sh/vy90je9c","slide":4,"bbox":[80,170,330,360]}
+{"kind":"shape","id":"sh/6dcbulwv","slide":4,"bbox":[80,170,8,360]}
+{"kind":"textbox","id":"sh/d4vmtwra","slide":4,"text":"底层驱动","textPreview":"底层驱动","textChars":4,"textLines":1,"bbox":[104,188,288,30]}
+{"kind":"shape","id":"sh/oj2t83it","slide":4,"bbox":[105,240,6,6]}
+{"kind":"textbox","id":"sh/z25kb6xk","slide":4,"text":"mpu6050_hal：读取加速度与陀螺仪","textPreview":"mpu6050_hal：读取加速度与陀螺仪","textChars":21,"textLines":1,"bbox":[120,232,268,40]}
+{"kind":"shape","id":"sh/6hcrmhk3","slide":4,"bbox":[105,285,6,6]}
+{"kind":"textbox","id":"sh/gr2p8nqx","slide":4,"text":"encoder_hal：TIM1/TIM2 编码器测速","textPreview":"encoder_hal：TIM1/TIM2 编码器测速","textChars":27,"textLines":1,"bbox":[120,277,268,40]}
+{"kind":"shape","id":"sh/9cvixcze","slide":4,"bbox":[105,330,6,6]}
+{"kind":"textbox","id":"sh/ylc7u54z","slide":4,"text":"motor_tb6612：方向与PWM输出","textPreview":"motor_tb6612：方向与PWM输出","textChars":21,"textLines":1,"bbox":[120,322,268,40]}
+{"kind":"shape","id":"sh/r65wjudg","slide":4,"bbox":[105,375,6,6]}
+{"kind":"textbox","id":"sh/g3ex0nux","slide":4,"text":"dht11 / fsr_adc / oled_ssd1306","textPreview":"dht11 / fsr_adc / oled_ssd1306","textChars":30,"textLines":1,"bbox":[120,367,268,40]}
+{"kind":"shape","id":"sh/5o7qpg3e","slide":4,"bbox":[475,170,330,360]}
+{"kind":"shape","id":"sh/yxobm58z","slide":4,"bbox":[475,170,8,360]}
+{"kind":"textbox","id":"sh/nih4byhg","slide":4,"text":"控制核心","textPreview":"控制核心","textChars":4,"textLines":1,"bbox":[499,188,288,30]}
+{"kind":"shape","id":"sh/g7adsji5","slide":4,"bbox":[500,240,6,6]}
+{"kind":"textbox","id":"sh/9s36hcrm","slide":4,"text":"balance_control：10ms角度环","textPreview":"balance_control：10ms角度环","textChars":23,"textLines":1,"bbox":[515,232,268,40]}
+{"kind":"shape","id":"sh/twra5gbq","slide":4,"bbox":[500,285,6,6]}
+{"kind":"textbox","id":"sh/4byhgn29","slide":4,"text":"50ms速度环与转向环","textPreview":"50ms速度环与转向环","textChars":11,"textLines":1,"bbox":[515,277,268,40]}
+{"kind":"shape","id":"sh/bq1oryts","slide":4,"bbox":[500,330,6,6]}
+{"kind":"textbox","id":"sh/m58z25kb","slide":4,"text":"PID带积分限幅、微分先行、死区补偿","textPreview":"PID带积分限幅、微分先行、死区补偿","textChars":18,"textLines":1,"bbox":[515,322,268,40]}
+{"kind":"shape","id":"sh/t83itgfm","slide":4,"bbox":[500,375,6,6]}
+{"kind":"textbox","id":"sh/4nap4r65","slide":4,"text":"跌倒保护与停机逻辑","textPreview":"跌倒保护与停机逻辑","textChars":9,"textLines":1,"bbox":[515,367,268,40]}
+{"kind":"shape","id":"sh/b2hwfyxo","slide":4,"bbox":[870,170,330,360]}
+{"kind":"shape","id":"sh/mhk3q5o7","slide":4,"bbox":[870,170,8,360]}
+{"kind":"textbox","id":"sh/tgfmlkjm","slide":4,"text":"调试与显示","textPreview":"调试与显示","textChars":5,"textLines":1,"bbox":[894,188,288,30]}
+{"kind":"shape","id":"sh/4vmtwra5","slide":4,"bbox":[895,240,6,6]}
+{"kind":"textbox","id":"sh/epkzupwb","slide":4,"text":"g_balance_debug：启停、目标和校准","textPreview":"g_balance_debug：启停、目标和校准","textChars":24,"textLines":1,"bbox":[910,232,268,40]}
+{"kind":"shape","id":"sh/7adsji5s","slide":4,"bbox":[895,285,6,6]}
+{"kind":"textbox","id":"sh/wval87ed","slide":4,"text":"g_balance_state：角度、速度、PWM","textPreview":"g_balance_state：角度、速度、PWM","textChars":25,"textLines":1,"bbox":[910,277,268,40]}
+{"kind":"shape","id":"sh/pg3ex0nu","slide":4,"bbox":[895,330,6,6]}
+{"kind":"textbox","id":"sh/e1w7mp0b","slide":4,"text":"g_sensor_state：温湿度、ADC、OLED状态","textPreview":"g_sensor_state：温湿度、ADC、OLED状态","textChars":29,"textLines":1,"bbox":[910,322,268,40]}
+{"kind":"shape","id":"sh/7mp0bi9s","slide":4,"bbox":[895,375,6,6]}
+{"kind":"textbox","id":"sh/w7mp0bi9","slide":4,"text":"display_ui：OLED分页刷新","textPreview":"display_ui：OLED分页刷新","textChars":19,"textLines":1,"bbox":[910,367,268,40]}
+{"kind":"notes","id":"nt/dthzxr","slide":4,"text":""}
+{"kind":"slide","id":"sl/zfzbre","slide":5,"title":"平衡控制与测量链路","textShapes":15}
+{"kind":"textbox","id":"sh/9cvixcze","slide":5,"text":"平衡控制与测量链路","textPreview":"平衡控制与测量链路","textChars":9,"textLines":1,"bbox":[70,44,900,58]}
+{"kind":"textbox","id":"sh/ylc7u54z","slide":5,"text":"互补滤波 + 串级PID控制","textPreview":"互补滤波 + 串级PID控制","textChars":14,"textLines":1,"bbox":[72,96,900,32]}
+{"kind":"shape","id":"sh/r65wjudg","slide":5,"bbox":[70,132,1140,2]}
+{"kind":"shape","id":"sh/g3ex0nux","slide":5,"bbox":[100,190,210,120]}
+{"kind":"shape","id":"sh/5o7qpg3e","slide":5,"bbox":[100,190,8,120]}
+{"kind":"textbox","id":"sh/yxobm58z","slide":5,"text":"MPU6050","textPreview":"MPU6050","textChars":7,"textLines":1,"bbox":[124,208,168,30]}
+{"kind":"shape","id":"sh/nih4byhg","slide":5,"bbox":[125,260,6,6]}
+{"kind":"textbox","id":"sh/g7adsji5","slide":5,"text":"ax/az 与 gy","textPreview":"ax/az 与 gy","textChars":10,"textLines":1,"bbox":[140,252,148,40]}
+{"kind":"shape","id":"sh/9s36hcrm","slide":5,"bbox":[350,190,210,120]}
+{"kind":"shape","id":"sh/d8v6psfi","slide":5,"bbox":[350,190,8,120]}
+{"kind":"textbox","id":"sh/onyd0z61","slide":5,"text":"互补滤波","textPreview":"互补滤波","textChars":4,"textLines":1,"bbox":[374,208,168,30]}
+{"kind":"shape","id":"sh/z25kb6xk","slide":5,"bbox":[375,260,6,6]}
+{"kind":"textbox","id":"sh/6hcrmhk3","slide":5,"text":"angle_acc + angle_gyro","textPreview":"angle_acc + angle_gyro","textChars":22,"textLines":1,"bbox":[390,252,148,40]}
+{"kind":"shape","id":"sh/dg7adsji","slide":5,"bbox":[620,190,210,120]}
+{"kind":"shape","id":"sh/ovahoza1","slide":5,"bbox":[620,190,8,120]}
+{"kind":"textbox","id":"sh/vahoza1g","slide":5,"text":"角度环PID","textPreview":"角度环PID","textChars":6,"textLines":1,"bbox":[644,208,168,30]}
+{"kind":"shape","id":"sh/6tovahoz","slide":5,"bbox":[645,260,6,6]}
+{"kind":"textbox","id":"sh/dsji5sne","slide":5,"text":"输出平均PWM","textPreview":"输出平均PWM","textChars":7,"textLines":1,"bbox":[660,252,148,40]}
+{"kind":"shape","id":"sh/o7qpg3ex","slide":5,"bbox":[890,190,210,120]}
+{"kind":"shape","id":"sh/kjm1cfa9","slide":5,"bbox":[890,190,8,120]}
+{"kind":"textbox","id":"sh/94fu18jq","slide":5,"text":"TB6612电机","textPreview":"TB6612电机","textChars":8,"textLines":1,"bbox":[914,208,168,30]}
+{"kind":"shape","id":"sh/2hwfyxob","slide":5,"bbox":[915,260,6,6]}
+{"kind":"textbox","id":"sh/r2p8nqxs","slide":5,"text":"驱动左右轮","textPreview":"驱动左右轮","textChars":5,"textLines":1,"bbox":[930,252,148,40]}
+{"kind":"shape","id":"sh/gvy90je9","slide":5,"bbox":[310,250,40,0]}
+{"kind":"shape","id":"sh/9gr2p8nq","slide":5,"bbox":[560,250,60,0]}
+{"kind":"shape","id":"sh/2p8nqxs7","slide":5,"bbox":[830,250,60,0]}
+{"kind":"shape","id":"sh/ra5gbq1o","slide":5,"bbox":[220,410,360,130]}
+{"kind":"shape","id":"sh/kzupwb2h","slide":5,"bbox":[220,410,8,130]}
+{"kind":"textbox","id":"sh/9knih4by","slide":5,"text":"速度环","textPreview":"速度环","textChars":3,"textLines":1,"bbox":[244,428,318,30]}
+{"kind":"shape","id":"sh/fa9w3m94","slide":5,"bbox":[245,480,6,6]}
+{"kind":"textbox","id":"sh/qpg3ex0n","slide":5,"text":"编码器读取 left_speed/right_speed，平均速度反馈到目标倾角","textPreview":"编码器读取 left_speed/right_speed，平均速度反馈到目标倾角","textChars":40,"textLines":1,"bbox":[260,472,298,40]}
+{"kind":"shape","id":"sh/xczed8v6","slide":5,"bbox":[700,410,360,130]}
+{"kind":"shape","id":"sh/8v6psfil","slide":5,"bbox":[700,410,8,130]}
+{"kind":"textbox","id":"sh/fyxobm58","slide":5,"text":"转向环","textPreview":"转向环","textChars":3,"textLines":1,"bbox":[724,428,318,30]}
+{"kind":"shape","id":"sh/qd4vmtwr","slide":5,"bbox":[725,480,6,6]}
+{"kind":"textbox","id":"sh/x4nap4r6","slide":5,"text":"左右轮速度差 dif_speed 产生差分PWM，实现可控转向","textPreview":"左右轮速度差 dif_speed 产生差分PWM，实现可控转向","textChars":31,"textLines":1,"bbox":[740,472,298,40]}
+{"kind":"textbox","id":"sh/8jqh0fep","slide":5,"text":"TIM4每1ms产生节拍；角度环10ms执行，速度/转向环50ms执行。","textPreview":"TIM4每1ms产生节拍；角度环10ms执行，速度/转向环50ms执行。","textChars":36,"textLines":1,"bbox":[150,600,980,30]}
+{"kind":"notes","id":"nt/zfzbre","slide":5,"text":""}
+{"kind":"slide","id":"sl/ygjwk4","slide":6,"title":"温湿度与压力显示模块","textShapes":15}
+{"kind":"textbox","id":"sh/qtcj6tov","slide":6,"text":"温湿度与压力显示模块","textPreview":"温湿度与压力显示模块","textChars":10,"textLines":1,"bbox":[70,44,900,58]}
+{"kind":"textbox","id":"sh/1gvy90je","slide":6,"text":"把传感器测量结果变成可观察、可校准的数据","textPreview":"把传感器测量结果变成可观察、可校准的数据","textChars":20,"textLines":1,"bbox":[72,96,900,32]}
+{"kind":"shape","id":"sh/8z25kb6x","slide":6,"bbox":[70,132,1140,2]}
+{"kind":"shape","id":"sh/fmlkjm1c","slide":6,"bbox":[90,170,320,330]}
+{"kind":"shape","id":"sh/q1orytsv","slide":6,"bbox":[90,170,8,330]}
+{"kind":"textbox","id":"sh/xs72x4na","slide":6,"text":"DHT11","textPreview":"DHT11","textChars":5,"textLines":1,"bbox":[114,188,278,30]}
+{"kind":"shape","id":"sh/87ed8bat","slide":6,"bbox":[115,240,6,6]}
+{"kind":"textbox","id":"sh/fyxobm58","slide":6,"text":"PC14 单总线通信","textPreview":"PC14 单总线通信","textChars":10,"textLines":1,"bbox":[130,232,258,40]}
+{"kind":"shape","id":"sh/qd4vmtwr","slide":6,"bbox":[115,285,6,6]}
+{"kind":"textbox","id":"sh/sfil0rqd","slide":6,"text":"约2秒采样一次","textPreview":"约2秒采样一次","textChars":7,"textLines":1,"bbox":[130,277,258,40]}
+{"kind":"shape","id":"sh/h0fepkzu","slide":6,"bbox":[115,330,6,6]}
+{"kind":"textbox","id":"sh/a9w3m94f","slide":6,"text":"输出 temperature_c 与 humidity_percent","textPreview":"输出 temperature_c 与 humidity_percent","textChars":35,"textLines":1,"bbox":[130,322,258,40]}
+{"kind":"shape","id":"sh/zupwb2hw","slide":6,"bbox":[480,170,320,330]}
+{"kind":"shape","id":"sh/orytsvu9","slide":6,"bbox":[480,170,8,330]}
+{"kind":"textbox","id":"sh/hcrmhk3q","slide":6,"text":"FSR402 + RFP602","textPreview":"FSR402 + RFP602","textChars":15,"textLines":1,"bbox":[504,188,278,30]}
+{"kind":"shape","id":"sh/al87ed8b","slide":6,"bbox":[505,240,6,6]}
+{"kind":"textbox","id":"sh/z61032ls","slide":6,"text":"PA2 / ADC1_IN2 采样","textPreview":"PA2 / ADC1_IN2 采样","textChars":17,"textLines":1,"bbox":[520,232,258,40]}
+{"kind":"shape","id":"sh/oza1gvy9","slide":6,"bbox":[505,285,6,6]}
+{"kind":"textbox","id":"sh/hk3q5o7q","slide":6,"text":"输出 fsr_adc_raw 与 fsr_voltage_mv","textPreview":"输出 fsr_adc_raw 与 fsr_voltage_mv","textChars":31,"textLines":1,"bbox":[520,277,258,40]}
+{"kind":"shape","id":"sh/1w7mp0bi","slide":6,"bbox":[505,330,6,6]}
+{"kind":"textbox","id":"sh/8bat47y1","slide":6,"text":"通过零点与系数估算 weight_g","textPreview":"通过零点与系数估算 weight_g","textChars":18,"textLines":1,"bbox":[520,322,258,40]}
+{"kind":"shape","id":"sh/jqh0fepk","slide":6,"bbox":[870,170,320,330]}
+{"kind":"shape","id":"sh/q5o7qpg3","slide":6,"bbox":[870,170,8,330]}
+{"kind":"textbox","id":"sh/18jqh0fe","slide":6,"text":"OLED显示","textPreview":"OLED显示","textChars":6,"textLines":1,"bbox":[894,188,278,30]}
+{"kind":"shape","id":"sh/8nqxs72x","slide":6,"bbox":[895,240,6,6]}
+{"kind":"textbox","id":"sh/j2t83itg","slide":6,"text":"SSD1306 I2C地址 0x3C","textPreview":"SSD1306 I2C地址 0x3C","textChars":18,"textLines":1,"bbox":[910,232,258,40]}
+{"kind":"shape","id":"sh/qh0fepkz","slide":6,"bbox":[895,285,6,6]}
+{"kind":"textbox","id":"sh/1cfa9w3m","slide":6,"text":"PB10/PB11 使用 I2C2","textPreview":"PB10/PB11 使用 I2C2","textChars":17,"textLines":1,"bbox":[910,277,258,40]}
+{"kind":"shape","id":"sh/crmhk3q5","slide":6,"bbox":[895,330,6,6]}
+{"kind":"textbox","id":"sh/mp0bi9s3","slide":6,"text":"显示 Temp、Humi、Weight、ADC","textPreview":"显示 Temp、Humi、Weight、ADC","textChars":23,"textLines":1,"bbox":[910,322,258,40]}
+{"kind":"textbox","id":"sh/bat47y1k","slide":6,"text":"重量估算公式：weight_g = max(0, (fsr_adc_raw - fsr_zero_adc) × fsr_g_per_count)","textPreview":"重量估算公式：weight_g = max(0, (fsr_adc_raw - fsr_zero_adc) × fsr_g_per_count)","textChars":72,"textLines":1,"bbox":[120,585,1040,32]}
+{"kind":"notes","id":"nt/ygjwk4","slide":6,"text":""}
+{"kind":"slide","id":"sl/re0k16","slide":7,"title":"调试验证与当前结果","textShapes":17}
+{"kind":"textbox","id":"sh/bq1oryts","slide":7,"text":"调试验证与当前结果","textPreview":"调试验证与当前结果","textChars":9,"textLines":1,"bbox":[70,44,900,58]}
+{"kind":"textbox","id":"sh/4byhgn29","slide":7,"text":"Ozone变量让每条测量链路可观察","textPreview":"Ozone变量让每条测量链路可观察","textChars":17,"textLines":1,"bbox":[72,96,900,32]}
+{"kind":"shape","id":"sh/twra5gbq","slide":7,"bbox":[70,132,1140,2]}
+{"kind":"shape","id":"sh/mhk3q5o7","slide":7,"bbox":[90,165,350,370]}
+{"kind":"shape","id":"sh/b2hwfyxo","slide":7,"bbox":[90,165,8,370]}
+{"kind":"textbox","id":"sh/4nap4r65","slide":7,"text":"传感器状态","textPreview":"传感器状态","textChars":5,"textLines":1,"bbox":[114,183,308,30]}
+{"kind":"shape","id":"sh/t83itgfm","slide":7,"bbox":[115,235,6,6]}
+{"kind":"textbox","id":"sh/mp0bi9s3","slide":7,"text":"temperature_c 约 30°C","textPreview":"temperature_c 约 30°C","textChars":20,"textLines":1,"bbox":[130,227,288,40]}
+{"kind":"shape","id":"sh/bat47y1k","slide":7,"bbox":[115,280,6,6]}
+{"kind":"textbox","id":"sh/ji5snelo","slide":7,"text":"humidity_percent 约 31%~32%","textPreview":"humidity_percent 约 31%~32%","textChars":26,"textLines":1,"bbox":[130,272,288,40]}
+{"kind":"shape","id":"sh/uxc3ylc7","slide":7,"bbox":[115,325,6,6]}
+{"kind":"textbox","id":"sh/1kre1w7m","slide":7,"text":"fsr_voltage_mv 接近 3.3V时说明压力链路有效","textPreview":"fsr_voltage_mv 接近 3.3V时说明压力链路有效","textChars":31,"textLines":1,"bbox":[130,317,288,40]}
+{"kind":"shape","id":"sh/c3ylc7u5","slide":7,"bbox":[115,370,6,6]}
+{"kind":"textbox","id":"sh/j6tovaho","slide":7,"text":"dht_valid / fsr_valid 为 1 表示读取成功","textPreview":"dht_valid / fsr_valid 为 1 表示读取成功","textChars":32,"textLines":1,"bbox":[130,362,288,40]}
+{"kind":"shape","id":"sh/ulwval87","slide":7,"bbox":[465,165,350,370]}
+{"kind":"shape","id":"sh/1cfa9w3m","slide":7,"bbox":[465,165,8,370]}
+{"kind":"textbox","id":"sh/crmhk3q5","slide":7,"text":"OLED排查","textPreview":"OLED排查","textChars":6,"textLines":1,"bbox":[489,183,308,30]}
+{"kind":"shape","id":"sh/j2t83itg","slide":7,"bbox":[490,235,6,6]}
+{"kind":"textbox","id":"sh/qh0fepkz","slide":7,"text":"oled_ready = 1 表示初始化成功","textPreview":"oled_ready = 1 表示初始化成功","textChars":22,"textLines":1,"bbox":[505,227,288,40]}
+{"kind":"shape","id":"sh/i5sneloj","slide":7,"bbox":[490,280,6,6]}
+{"kind":"textbox","id":"sh/7qpg3ex0","slide":7,"text":"oled_addr_7bit = 0x3C 表示地址探测成功","textPreview":"oled_addr_7bit = 0x3C 表示地址探测成功","textChars":30,"textLines":1,"bbox":[505,272,288,40]}
+{"kind":"shape","id":"sh/0bi9s36h","slide":7,"bbox":[490,325,6,6]}
+{"kind":"textbox","id":"sh/pwb2hwfy","slide":7,"text":"oled_fail_step = 0 表示无失败步骤","textPreview":"oled_fail_step = 0 表示无失败步骤","textChars":26,"textLines":1,"bbox":[505,317,288,40]}
+{"kind":"shape","id":"sh/ed8v6psf","slide":7,"bbox":[490,370,6,6]}
+{"kind":"textbox","id":"sh/7y1kre1w","slide":7,"text":"sensor_fault_flags = 0 表示显示与传感器无故障","textPreview":"sensor_fault_flags = 0 表示显示与传感器无故障","textChars":34,"textLines":1,"bbox":[505,362,288,40]}
+{"kind":"shape","id":"sh/wjudg7ad","slide":7,"bbox":[840,165,350,370]}
+{"kind":"shape","id":"sh/p4r65wju","slide":7,"bbox":[840,165,8,370]}
+{"kind":"textbox","id":"sh/ih4byhgn","slide":7,"text":"平衡安全","textPreview":"平衡安全","textChars":4,"textLines":1,"bbox":[864,183,308,30]}
+{"kind":"shape","id":"sh/72x4nap4","slide":7,"bbox":[865,235,6,6]}
+{"kind":"textbox","id":"sh/xc3ylc7u","slide":7,"text":"run_enable 默认 0，避免上电误动作","textPreview":"run_enable 默认 0，避免上电误动作","textChars":23,"textLines":1,"bbox":[880,227,288,40]}
+{"kind":"shape","id":"sh/4r65wjud","slide":7,"bbox":[865,280,6,6]}
+{"kind":"textbox","id":"sh/f6dcbulw","slide":7,"text":"fall_angle_limit 超限自动停机","textPreview":"fall_angle_limit 超限自动停机","textChars":23,"textLines":1,"bbox":[880,272,288,40]}
+{"kind":"shape","id":"sh/mlkjm1cf","slide":7,"bbox":[865,325,6,6]}
+{"kind":"textbox","id":"sh/xkf6dcbu","slide":7,"text":"PWM输出限幅 -100~100","textPreview":"PWM输出限幅 -100~100","textChars":16,"textLines":1,"bbox":[880,317,288,40]}
+{"kind":"shape","id":"sh/4zidonyd","slide":7,"bbox":[865,370,6,6]}
+{"kind":"textbox","id":"sh/fepkzupw","slide":7,"text":"调参先架空，再落地测试","textPreview":"调参先架空，再落地测试","textChars":11,"textLines":1,"bbox":[880,362,288,40]}
+{"kind":"notes","id":"nt/re0k16","slide":7,"text":""}
+{"kind":"slide","id":"sl/ztb22a","slide":8,"title":"总结与展望","textShapes":13}
+{"kind":"textbox","id":"sh/fu18jqh0","slide":8,"text":"总结与展望","textPreview":"总结与展望","textChars":5,"textLines":1,"bbox":[70,44,900,58]}
+{"kind":"textbox","id":"sh/4fu18jqh","slide":8,"text":"完成多传感器测量、闭环控制和现场显示的综合实践","textPreview":"完成多传感器测量、闭环控制和现场显示的综合实践","textChars":23,"textLines":1,"bbox":[72,96,900,32]}
+{"kind":"shape","id":"sh/x0nuxc3y","slide":8,"bbox":[70,132,1140,2]}
+{"kind":"shape","id":"sh/qxs72x4n","slide":8,"bbox":[90,170,500,340]}
+{"kind":"shape","id":"sh/fil0rqd4","slide":8,"bbox":[90,170,8,340]}
+{"kind":"textbox","id":"sh/83itgfml","slide":8,"text":"项目完成度","textPreview":"项目完成度","textChars":5,"textLines":1,"bbox":[114,188,458,30]}
+{"kind":"shape","id":"sh/xobm58z2","slide":8,"bbox":[115,240,6,6]}
+{"kind":"textbox","id":"sh/mtwra5gb","slide":8,"text":"实现姿态、速度、温湿度、压力等多类数据采集","textPreview":"实现姿态、速度、温湿度、压力等多类数据采集","textChars":21,"textLines":1,"bbox":[130,232,438,40]}
+{"kind":"shape","id":"sh/fepkzupw","slide":8,"bbox":[115,285,6,6]}
+{"kind":"textbox","id":"sh/7adsji5s","slide":8,"text":"完成自平衡车控制框架与PID调试入口","textPreview":"完成自平衡车控制框架与PID调试入口","textChars":18,"textLines":1,"bbox":[130,277,438,40]}
+{"kind":"shape","id":"sh/epkzupwb","slide":8,"bbox":[115,330,6,6]}
+{"kind":"textbox","id":"sh/pg3ex0nu","slide":8,"text":"完成OLED现场显示和Ozone变量观测","textPreview":"完成OLED现场显示和Ozone变量观测","textChars":20,"textLines":1,"bbox":[130,322,438,40]}
+{"kind":"shape","id":"sh/wval87ed","slide":8,"bbox":[115,375,6,6]}
+{"kind":"textbox","id":"sh/7mp0bi9s","slide":8,"text":"形成可扩展的模块化嵌入式工程","textPreview":"形成可扩展的模块化嵌入式工程","textChars":14,"textLines":1,"bbox":[130,367,438,40]}
+{"kind":"shape","id":"sh/e1w7mp0b","slide":8,"bbox":[690,170,500,340]}
+{"kind":"shape","id":"sh/psfil0rq","slide":8,"bbox":[690,170,8,340]}
+{"kind":"textbox","id":"sh/w7mp0bi9","slide":8,"text":"后续优化","textPreview":"后续优化","textChars":4,"textLines":1,"bbox":[714,188,458,30]}
+{"kind":"shape","id":"sh/7u54zido","slide":8,"bbox":[715,240,6,6]}
+{"kind":"textbox","id":"sh/ed8bat47","slide":8,"text":"继续整定角度环、速度环和转向环参数","textPreview":"继续整定角度环、速度环和转向环参数","textChars":17,"textLines":1,"bbox":[730,232,438,40]}
+{"kind":"shape","id":"sh/mhk3q5o7","slide":8,"bbox":[715,285,6,6]}
+{"kind":"textbox","id":"sh/b2hwfyxo","slide":8,"text":"对FSR402进行多点标定或更换HX711称重方案","textPreview":"对FSR402进行多点标定或更换HX711称重方案","textChars":25,"textLines":1,"bbox":[730,277,438,40]}
+{"kind":"shape","id":"sh/4nap4r65","slide":8,"bbox":[715,330,6,6]}
+{"kind":"textbox","id":"sh/t83itgfm","slide":8,"text":"加入蓝牙/串口上传与电池电压检测","textPreview":"加入蓝牙/串口上传与电池电压检测","textChars":16,"textLines":1,"bbox":[730,322,438,40]}
+{"kind":"shape","id":"sh/m58z25kb","slide":8,"bbox":[715,375,6,6]}
+{"kind":"textbox","id":"sh/bq1oryts","slide":8,"text":"扩展循迹功能，实现平衡状态下路线跟随","textPreview":"扩展循迹功能，实现平衡状态下路线跟随","textChars":18,"textLines":1,"bbox":[730,367,438,40]}
+{"kind":"textbox","id":"sh/4byhgn29","slide":8,"text":"谢谢观看","textPreview":"谢谢观看","textChars":4,"textLines":1,"bbox":[460,590,360,48]}
+{"kind":"notes","id":"nt/ztb22a","slide":8,"text":""}

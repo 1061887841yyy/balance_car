@@ -1,0 +1,1432 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/re0k16",
+    "id": "re0k16",
+    "slide": 7,
+    "layoutId": "76aff76d-5874-430e-9551-e3241d54499a",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "9bb08af6-bb5c-435f-a686-30abc1f9f8c1",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#F6F8FB",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "76aff76d-5874-430e-9551-e3241d54499a",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "9bb08af6-bb5c-435f-a686-30abc1f9f8c1",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "9bb08af6-bb5c-435f-a686-30abc1f9f8c1",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bq1oryts",
+      "id": "1",
+      "bbox": [
+        70,
+        44,
+        900,
+        58
+      ],
+      "geometry": "rect",
+      "text": "调试验证与当前结果",
+      "textPreview": "调试验证与当前结果",
+      "resolvedFontSize": 36,
+      "resolvedTextStyle": {
+        "fontSize": 36,
+        "typeface": "+mn-lt",
+        "color": "#172033",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "调试验证与当前结果"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "调试验证与当前结果",
+          "resolvedTextStyle": {
+            "fontSize": 36,
+            "color": "#172033",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "调试验证与当前结果",
+              "fontSize": 36,
+              "color": "#172033",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4byhgn29",
+      "id": "2",
+      "bbox": [
+        72,
+        96,
+        900,
+        32
+      ],
+      "geometry": "rect",
+      "text": "Ozone变量让每条测量链路可观察",
+      "textPreview": "Ozone变量让每条测量链路可观察",
+      "resolvedFontSize": 18,
+      "resolvedTextStyle": {
+        "fontSize": 18,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "Ozone变量让每条测量链路可观察"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "Ozone变量让每条测量链路可观察",
+          "resolvedTextStyle": {
+            "fontSize": 18,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "Ozone变量让每条测量链路可观察",
+              "fontSize": 18,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/twra5gbq",
+      "id": "3",
+      "bbox": [
+        70,
+        132,
+        1140,
+        2
+      ],
+      "geometry": "rect",
+      "fillColor": "#1E5B9A",
+      "lineColor": "#1E5B9A",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mhk3q5o7",
+      "id": "4",
+      "bbox": [
+        90,
+        165,
+        350,
+        370
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7DFEA",
+      "lineWidth": 1
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/b2hwfyxo",
+      "id": "5",
+      "bbox": [
+        90,
+        165,
+        8,
+        370
+      ],
+      "geometry": "rect",
+      "fillColor": "#2E8B57",
+      "lineColor": "#2E8B57",
+      "lineWidth": 0
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4nap4r65",
+      "id": "6",
+      "bbox": [
+        114,
+        183,
+        308,
+        30
+      ],
+      "geometry": "rect",
+      "text": "传感器状态",
+      "textPreview": "传感器状态",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "+mn-lt",
+        "color": "#172033",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "传感器状态"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "传感器状态",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "color": "#172033",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "传感器状态",
+              "fontSize": 22,
+              "color": "#172033",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/t83itgfm",
+      "id": "7",
+      "bbox": [
+        115,
+        235,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#2E8B57",
+      "lineColor": "#2E8B57",
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mp0bi9s3",
+      "id": "8",
+      "bbox": [
+        130,
+        227,
+        288,
+        40
+      ],
+      "geometry": "rect",
+      "text": "temperature_c 约 30°C",
+      "textPreview": "temperature_c 约 30°C",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "temperature_c 约 30°C"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "temperature_c 约 30°C",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "temperature_c 约 30°C",
+              "fontSize": 16,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/bat47y1k",
+      "id": "9",
+      "bbox": [
+        115,
+        280,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#2E8B57",
+      "lineColor": "#2E8B57",
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ji5snelo",
+      "id": "10",
+      "bbox": [
+        130,
+        272,
+        288,
+        40
+      ],
+      "geometry": "rect",
+      "text": "humidity_percent 约 31%~32%",
+      "textPreview": "humidity_percent 约 31%~32%",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "humidity_percent 约 31%~32%"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "humidity_percent 约 31%~32%",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "humidity_percent 约 31%~32%",
+              "fontSize": 16,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/uxc3ylc7",
+      "id": "11",
+      "bbox": [
+        115,
+        325,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#2E8B57",
+      "lineColor": "#2E8B57",
+      "lineWidth": 0
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1kre1w7m",
+      "id": "12",
+      "bbox": [
+        130,
+        317,
+        288,
+        40
+      ],
+      "geometry": "rect",
+      "text": "fsr_voltage_mv 接近 3.3V时说明压力链路有效",
+      "textPreview": "fsr_voltage_mv 接近 3.3V时说明压力链路有效",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "fsr_voltage_mv 接近"
+          },
+          {
+            "index": 2,
+            "text": "3.3V时说明压力链路有效"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "fsr_voltage_mv 接近 3.3V时说明压力链路有效",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "fsr_voltage_mv 接近 3.3V时说明压力链路有效",
+              "fontSize": 16,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 13,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/c3ylc7u5",
+      "id": "13",
+      "bbox": [
+        115,
+        370,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#2E8B57",
+      "lineColor": "#2E8B57",
+      "lineWidth": 0
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/j6tovaho",
+      "id": "14",
+      "bbox": [
+        130,
+        362,
+        288,
+        40
+      ],
+      "geometry": "rect",
+      "text": "dht_valid / fsr_valid 为 1 表示读取成功",
+      "textPreview": "dht_valid / fsr_valid 为 1 表示读取成功",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "dht_valid / fsr_valid 为 1 表示读取成功"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "dht_valid / fsr_valid 为 1 表示读取成功",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "dht_valid / fsr_valid 为 1 表示读取成功",
+              "fontSize": 16,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ulwval87",
+      "id": "15",
+      "bbox": [
+        465,
+        165,
+        350,
+        370
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7DFEA",
+      "lineWidth": 1
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1cfa9w3m",
+      "id": "16",
+      "bbox": [
+        465,
+        165,
+        8,
+        370
+      ],
+      "geometry": "rect",
+      "fillColor": "#2AA8C8",
+      "lineColor": "#2AA8C8",
+      "lineWidth": 0
+    },
+    {
+      "order": 17,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/crmhk3q5",
+      "id": "17",
+      "bbox": [
+        489,
+        183,
+        308,
+        30
+      ],
+      "geometry": "rect",
+      "text": "OLED排查",
+      "textPreview": "OLED排查",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "+mn-lt",
+        "color": "#172033",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "OLED排查"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "OLED排查",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "color": "#172033",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "OLED排查",
+              "fontSize": 22,
+              "color": "#172033",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/j2t83itg",
+      "id": "18",
+      "bbox": [
+        490,
+        235,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#2AA8C8",
+      "lineColor": "#2AA8C8",
+      "lineWidth": 0
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qh0fepkz",
+      "id": "19",
+      "bbox": [
+        505,
+        227,
+        288,
+        40
+      ],
+      "geometry": "rect",
+      "text": "oled_ready = 1 表示初始化成功",
+      "textPreview": "oled_ready = 1 表示初始化成功",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "oled_ready = 1 表示初始化成功"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "oled_ready = 1 表示初始化成功",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "oled_ready = 1 表示初始化成功",
+              "fontSize": 16,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/i5sneloj",
+      "id": "20",
+      "bbox": [
+        490,
+        280,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#2AA8C8",
+      "lineColor": "#2AA8C8",
+      "lineWidth": 0
+    },
+    {
+      "order": 21,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7qpg3ex0",
+      "id": "21",
+      "bbox": [
+        505,
+        272,
+        288,
+        40
+      ],
+      "geometry": "rect",
+      "text": "oled_addr_7bit = 0x3C 表示地址探测成功",
+      "textPreview": "oled_addr_7bit = 0x3C 表示地址探测成功",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "oled_addr_7bit = 0x3C"
+          },
+          {
+            "index": 2,
+            "text": "表示地址探测成功"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "oled_addr_7bit = 0x3C 表示地址探测成功",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "oled_addr_7bit = 0x3C 表示地址探测成功",
+              "fontSize": 16,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0bi9s36h",
+      "id": "22",
+      "bbox": [
+        490,
+        325,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#2AA8C8",
+      "lineColor": "#2AA8C8",
+      "lineWidth": 0
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/pwb2hwfy",
+      "id": "23",
+      "bbox": [
+        505,
+        317,
+        288,
+        40
+      ],
+      "geometry": "rect",
+      "text": "oled_fail_step = 0 表示无失败步骤",
+      "textPreview": "oled_fail_step = 0 表示无失败步骤",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "oled_fail_step = 0 表示无失败步骤"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "oled_fail_step = 0 表示无失败步骤",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "oled_fail_step = 0 表示无失败步骤",
+              "fontSize": 16,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ed8v6psf",
+      "id": "24",
+      "bbox": [
+        490,
+        370,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#2AA8C8",
+      "lineColor": "#2AA8C8",
+      "lineWidth": 0
+    },
+    {
+      "order": 25,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7y1kre1w",
+      "id": "25",
+      "bbox": [
+        505,
+        362,
+        288,
+        40
+      ],
+      "geometry": "rect",
+      "text": "sensor_fault_flags = 0 表示显示与传感器无故障",
+      "textPreview": "sensor_fault_flags = 0 表示显示与传感器无故障",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 2,
+        "lines": [
+          {
+            "index": 1,
+            "text": "sensor_fault_flags = 0"
+          },
+          {
+            "index": 2,
+            "text": "表示显示与传感器无故障"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "sensor_fault_flags = 0 表示显示与传感器无故障",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "sensor_fault_flags = 0 表示显示与传感器无故障",
+              "fontSize": 16,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/wjudg7ad",
+      "id": "26",
+      "bbox": [
+        840,
+        165,
+        350,
+        370
+      ],
+      "geometry": "roundRect",
+      "fillColor": "#FFFFFF",
+      "lineColor": "#D7DFEA",
+      "lineWidth": 1
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/p4r65wju",
+      "id": "27",
+      "bbox": [
+        840,
+        165,
+        8,
+        370
+      ],
+      "geometry": "rect",
+      "fillColor": "#B23B3B",
+      "lineColor": "#B23B3B",
+      "lineWidth": 0
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/ih4byhgn",
+      "id": "28",
+      "bbox": [
+        864,
+        183,
+        308,
+        30
+      ],
+      "geometry": "rect",
+      "text": "平衡安全",
+      "textPreview": "平衡安全",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "+mn-lt",
+        "color": "#172033",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "平衡安全"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "平衡安全",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "color": "#172033",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "平衡安全",
+              "fontSize": 22,
+              "color": "#172033",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/72x4nap4",
+      "id": "29",
+      "bbox": [
+        865,
+        235,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#B23B3B",
+      "lineColor": "#B23B3B",
+      "lineWidth": 0
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xc3ylc7u",
+      "id": "30",
+      "bbox": [
+        880,
+        227,
+        288,
+        40
+      ],
+      "geometry": "rect",
+      "text": "run_enable 默认 0，避免上电误动作",
+      "textPreview": "run_enable 默认 0，避免上电误动作",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "run_enable 默认 0，避免上电误动作"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "run_enable 默认 0，避免上电误动作",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "run_enable 默认 0，避免上电误动作",
+              "fontSize": 16,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 31,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4r65wjud",
+      "id": "31",
+      "bbox": [
+        865,
+        280,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#B23B3B",
+      "lineColor": "#B23B3B",
+      "lineWidth": 0
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/f6dcbulw",
+      "id": "32",
+      "bbox": [
+        880,
+        272,
+        288,
+        40
+      ],
+      "geometry": "rect",
+      "text": "fall_angle_limit 超限自动停机",
+      "textPreview": "fall_angle_limit 超限自动停机",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "fall_angle_limit 超限自动停机"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "fall_angle_limit 超限自动停机",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "fall_angle_limit 超限自动停机",
+              "fontSize": 16,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 33,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mlkjm1cf",
+      "id": "33",
+      "bbox": [
+        865,
+        325,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#B23B3B",
+      "lineColor": "#B23B3B",
+      "lineWidth": 0
+    },
+    {
+      "order": 34,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xkf6dcbu",
+      "id": "34",
+      "bbox": [
+        880,
+        317,
+        288,
+        40
+      ],
+      "geometry": "rect",
+      "text": "PWM输出限幅 -100~100",
+      "textPreview": "PWM输出限幅 -100~100",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "PWM输出限幅 -100~100"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "PWM输出限幅 -100~100",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "PWM输出限幅 -100~100",
+              "fontSize": 16,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 35,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/4zidonyd",
+      "id": "35",
+      "bbox": [
+        865,
+        370,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#B23B3B",
+      "lineColor": "#B23B3B",
+      "lineWidth": 0
+    },
+    {
+      "order": 36,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fepkzupw",
+      "id": "36",
+      "bbox": [
+        880,
+        362,
+        288,
+        40
+      ],
+      "geometry": "rect",
+      "text": "调参先架空，再落地测试",
+      "textPreview": "调参先架空，再落地测试",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#5A6475",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "调参先架空，再落地测试"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "调参先架空，再落地测试",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#5A6475",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "调参先架空，再落地测试",
+              "fontSize": 16,
+              "color": "#5A6475",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}

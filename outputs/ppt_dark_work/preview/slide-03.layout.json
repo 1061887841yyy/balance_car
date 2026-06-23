@@ -1,0 +1,1082 @@
+{
+  "schema": "openai.presentation.layout/v4",
+  "unit": "px",
+  "slide": {
+    "aid": "sl/cxz3af",
+    "id": "cxz3af",
+    "slide": 3,
+    "layoutId": "714bc859-76e9-4af3-bd7d-d15e62273672",
+    "layoutName": "Title Slide",
+    "layoutType": "title",
+    "masterLayoutId": "d1db3968-f0ae-431a-9487-ecca19e1aea9",
+    "masterLayoutName": "Master",
+    "backgroundColor": "#060708",
+    "frame": {
+      "left": 0,
+      "top": 0,
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "theme": {
+    "colorSchemeName": "ChatGPT",
+    "colors": {
+      "accent1": "#156082",
+      "accent2": "#E97132",
+      "accent3": "#196B24",
+      "accent4": "#0F9ED5",
+      "accent5": "#A02B93",
+      "accent6": "#4EA72E",
+      "bg1": "#FFFFFF",
+      "bg2": "#000000",
+      "tx1": "#1F1F1F",
+      "tx2": "#FFFFFF",
+      "dk1": "#000000",
+      "lt1": "#FFFFFF",
+      "dk2": "#0E2841",
+      "lt2": "#E8E8E8",
+      "hlink": "#467886",
+      "folHlink": "#96607D"
+    },
+    "typefaces": [
+      "+mn-lt"
+    ]
+  },
+  "inheritedLayers": [
+    {
+      "scope": "layout",
+      "id": "714bc859-76e9-4af3-bd7d-d15e62273672",
+      "name": "Title Slide",
+      "type": "title",
+      "parentLayoutId": "d1db3968-f0ae-431a-9487-ecca19e1aea9",
+      "elements": []
+    },
+    {
+      "scope": "master",
+      "id": "d1db3968-f0ae-431a-9487-ecca19e1aea9",
+      "name": "Master",
+      "type": "master",
+      "elements": []
+    }
+  ],
+  "elements": [
+    {
+      "order": 1,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/a9w3m94f",
+      "id": "1",
+      "bbox": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "alt": "dark polygon network background",
+      "contentType": "image/png",
+      "imageCrop": {
+        "left": 0.08,
+        "top": 0,
+        "right": 0,
+        "bottom": 0
+      },
+      "imageFit": "cover",
+      "asset": {
+        "assetId": "48daae4c-e5b9-4f50-a863-a7463cbb93be",
+        "contentType": "image/png",
+        "byteLength": 1526724
+      }
+    },
+    {
+      "order": 2,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0nuxc3yl",
+      "id": "2",
+      "bbox": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(0, 0, 0, 0.28)",
+      "lineWidth": 0
+    },
+    {
+      "order": 3,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/p8nqxs72",
+      "id": "3",
+      "bbox": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(0, 0, 0, 0.18)",
+      "lineWidth": 0
+    },
+    {
+      "order": 4,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/itgfmlkj",
+      "id": "4",
+      "bbox": [
+        46,
+        34,
+        104,
+        74
+      ],
+      "geometry": "rect",
+      "text": "03",
+      "textPreview": "03",
+      "resolvedFontSize": 54,
+      "resolvedTextStyle": {
+        "fontSize": 54,
+        "typeface": "+mn-lt",
+        "color": "#E1162D",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "03"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "03",
+          "resolvedTextStyle": {
+            "fontSize": 54,
+            "color": "#E1162D",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "03",
+              "fontSize": 54,
+              "color": "#E1162D",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 5,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7ed8bat4",
+      "id": "5",
+      "bbox": [
+        160,
+        72,
+        192,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#E1162D",
+      "lineWidth": 4
+    },
+    {
+      "order": 6,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/0z61032l",
+      "id": "6",
+      "bbox": [
+        360,
+        72,
+        820,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "rgba(245, 247, 250, 0.42)",
+      "lineWidth": 1
+    },
+    {
+      "order": 7,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/pkzupwb2",
+      "id": "7",
+      "bbox": [
+        64,
+        95,
+        760,
+        52
+      ],
+      "geometry": "rect",
+      "text": "硬件平台",
+      "textPreview": "硬件平台",
+      "resolvedFontSize": 34,
+      "resolvedTextStyle": {
+        "fontSize": 34,
+        "typeface": "+mn-lt",
+        "color": "#F5F7FA",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "硬件平台"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "硬件平台",
+          "resolvedTextStyle": {
+            "fontSize": 34,
+            "color": "#F5F7FA",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "硬件平台",
+              "fontSize": 34,
+              "color": "#F5F7FA",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 8,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/i5sneloj",
+      "id": "8",
+      "bbox": [
+        66,
+        144,
+        850,
+        28
+      ],
+      "geometry": "rect",
+      "text": "双轮移动底盘 + STM32主控 + 食品质控测量模块",
+      "textPreview": "双轮移动底盘 + STM32主控 + 食品质控测量模块",
+      "resolvedFontSize": 17,
+      "resolvedTextStyle": {
+        "fontSize": 17,
+        "typeface": "+mn-lt",
+        "color": "#AEB6C2",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "双轮移动底盘 + STM32主控 + 食品质控测量模块"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "双轮移动底盘 + STM32主控 + 食品质控测量模块",
+          "resolvedTextStyle": {
+            "fontSize": 17,
+            "color": "#AEB6C2",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "双轮移动底盘 + STM32主控 + 食品质控测量模块",
+              "fontSize": 17,
+              "color": "#AEB6C2",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 9,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/7qpg3ex0",
+      "id": "9",
+      "bbox": [
+        1164,
+        64,
+        12,
+        12
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#E1162D",
+      "lineColor": "#E1162D",
+      "lineWidth": 0
+    },
+    {
+      "order": 10,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fu18jqh0",
+      "id": "10",
+      "bbox": [
+        1197,
+        99,
+        6,
+        6
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#F5F7FA",
+      "lineColor": "#F5F7FA",
+      "lineWidth": 0
+    },
+    {
+      "order": 11,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/m94fu18j",
+      "id": "11",
+      "bbox": [
+        79,
+        197,
+        256,
+        224
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(8, 10, 14, 0.72)",
+      "lineColor": "rgba(245, 247, 250, 0.45)",
+      "lineWidth": 1
+    },
+    {
+      "order": 12,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/x0nuxc3y",
+      "id": "12",
+      "bbox": [
+        79,
+        197,
+        65,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#E1162D",
+      "lineWidth": 4
+    },
+    {
+      "order": 13,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/je9cvixc",
+      "id": "13",
+      "bbox": [
+        82,
+        200,
+        250,
+        190
+      ],
+      "alt": "robot.jpg",
+      "contentType": "image/jpeg",
+      "imageFit": "cover",
+      "asset": {
+        "assetId": "fc5cf0b3-211e-4bc1-ab3c-7a1237b60697",
+        "contentType": "image/jpeg",
+        "byteLength": 123817
+      }
+    },
+    {
+      "order": 14,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fil0rqd4",
+      "id": "14",
+      "bbox": [
+        82,
+        397,
+        250,
+        20
+      ],
+      "geometry": "rect",
+      "text": "双轮运输底盘",
+      "textPreview": "双轮运输底盘",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#AEB6C2",
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "双轮运输底盘"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "双轮运输底盘",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#AEB6C2",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "双轮运输底盘",
+              "fontSize": 13,
+              "color": "#AEB6C2",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 15,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/qxs72x4n",
+      "id": "15",
+      "bbox": [
+        369,
+        197,
+        256,
+        224
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(8, 10, 14, 0.72)",
+      "lineColor": "rgba(245, 247, 250, 0.45)",
+      "lineWidth": 1
+    },
+    {
+      "order": 16,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/xobm58z2",
+      "id": "16",
+      "bbox": [
+        369,
+        197,
+        65,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#E1162D",
+      "lineWidth": 4
+    },
+    {
+      "order": 17,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/fmlkjm1c",
+      "id": "17",
+      "bbox": [
+        372,
+        200,
+        250,
+        190
+      ],
+      "alt": "stm32.jpg",
+      "contentType": "image/jpeg",
+      "imageFit": "cover",
+      "asset": {
+        "assetId": "3a00ee5a-88af-4ce5-bbec-97c7a927a4b9",
+        "contentType": "image/jpeg",
+        "byteLength": 518887
+      }
+    },
+    {
+      "order": 18,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/fepkzupw",
+      "id": "18",
+      "bbox": [
+        372,
+        397,
+        250,
+        20
+      ],
+      "geometry": "rect",
+      "text": "STM32主控连接",
+      "textPreview": "STM32主控连接",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#AEB6C2",
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "STM32主控连接"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "STM32主控连接",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#AEB6C2",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "STM32主控连接",
+              "fontSize": 13,
+              "color": "#AEB6C2",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 19,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/mtwra5gb",
+      "id": "19",
+      "bbox": [
+        659,
+        197,
+        256,
+        224
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(8, 10, 14, 0.72)",
+      "lineColor": "rgba(245, 247, 250, 0.45)",
+      "lineWidth": 1
+    },
+    {
+      "order": 20,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u18jqh0f",
+      "id": "20",
+      "bbox": [
+        659,
+        197,
+        65,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#E1162D",
+      "lineWidth": 4
+    },
+    {
+      "order": 21,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/svu9knih",
+      "id": "21",
+      "bbox": [
+        662,
+        200,
+        250,
+        190
+      ],
+      "alt": "board.png",
+      "contentType": "image/png",
+      "imageFit": "cover",
+      "asset": {
+        "assetId": "6ef52c10-a476-4379-b642-66ddd587036c",
+        "contentType": "image/png",
+        "byteLength": 196644
+      }
+    },
+    {
+      "order": 22,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/c7u54zid",
+      "id": "22",
+      "bbox": [
+        662,
+        397,
+        250,
+        20
+      ],
+      "geometry": "rect",
+      "text": "自研扩展板",
+      "textPreview": "自研扩展板",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#AEB6C2",
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "自研扩展板"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "自研扩展板",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#AEB6C2",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "自研扩展板",
+              "fontSize": 13,
+              "color": "#AEB6C2",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 23,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1orytsvu",
+      "id": "23",
+      "bbox": [
+        949,
+        197,
+        236,
+        224
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(8, 10, 14, 0.72)",
+      "lineColor": "rgba(245, 247, 250, 0.45)",
+      "lineWidth": 1
+    },
+    {
+      "order": 24,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/u9knih4b",
+      "id": "24",
+      "bbox": [
+        949,
+        197,
+        65,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#E1162D",
+      "lineWidth": 4
+    },
+    {
+      "order": 25,
+      "kind": "image",
+      "scope": "slide",
+      "aid": "im/s36hcrmh",
+      "id": "25",
+      "bbox": [
+        952,
+        200,
+        230,
+        190
+      ],
+      "alt": "scheme.png",
+      "contentType": "image/png",
+      "imageFit": "cover",
+      "asset": {
+        "assetId": "34da9124-2c4a-43db-894c-766bc60135ed",
+        "contentType": "image/png",
+        "byteLength": 231191
+      }
+    },
+    {
+      "order": 26,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/cfa9w3m9",
+      "id": "26",
+      "bbox": [
+        952,
+        397,
+        230,
+        20
+      ],
+      "geometry": "rect",
+      "text": "扩展板原理图",
+      "textPreview": "扩展板原理图",
+      "resolvedFontSize": 13,
+      "resolvedTextStyle": {
+        "fontSize": 13,
+        "typeface": "+mn-lt",
+        "color": "#AEB6C2",
+        "alignment": "center",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "扩展板原理图"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "扩展板原理图",
+          "resolvedTextStyle": {
+            "fontSize": 13,
+            "color": "#AEB6C2",
+            "alignment": "center"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "扩展板原理图",
+              "fontSize": 13,
+              "color": "#AEB6C2",
+              "alignment": "center"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 27,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/1032lszq",
+      "id": "27",
+      "bbox": [
+        120,
+        455,
+        1040,
+        120
+      ],
+      "geometry": "rect",
+      "fillColor": "rgba(9, 12, 16, 0.7)",
+      "lineColor": "rgba(245, 247, 250, 0.45)",
+      "lineWidth": 1
+    },
+    {
+      "order": 28,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/udg7adsj",
+      "id": "28",
+      "bbox": [
+        120,
+        455,
+        64,
+        0
+      ],
+      "geometry": "line",
+      "lineColor": "#E1162D",
+      "lineWidth": 4
+    },
+    {
+      "order": 29,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/nyd0z610",
+      "id": "29",
+      "bbox": [
+        142,
+        473,
+        996,
+        28
+      ],
+      "geometry": "rect",
+      "text": "硬件分工",
+      "textPreview": "硬件分工",
+      "resolvedFontSize": 22,
+      "resolvedTextStyle": {
+        "fontSize": 22,
+        "typeface": "+mn-lt",
+        "color": "#F5F7FA",
+        "bold": true,
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "硬件分工"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "硬件分工",
+          "resolvedTextStyle": {
+            "fontSize": 22,
+            "color": "#F5F7FA",
+            "bold": true,
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "硬件分工",
+              "fontSize": 22,
+              "color": "#F5F7FA",
+              "bold": true,
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 30,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/94fu18jq",
+      "id": "30",
+      "bbox": [
+        144,
+        523,
+        8,
+        8
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#E1162D",
+      "lineColor": "#E1162D",
+      "lineWidth": 0
+    },
+    {
+      "order": 31,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/kjm1cfa9",
+      "id": "31",
+      "bbox": [
+        164,
+        517,
+        978,
+        34
+      ],
+      "geometry": "rect",
+      "text": "底盘负责食品搬运，主控负责传感器采集与电机控制",
+      "textPreview": "底盘负责食品搬运，主控负责传感器采集与电机控制",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#AEB6C2",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "底盘负责食品搬运，主控负责传感器采集与电机控制"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "底盘负责食品搬运，主控负责传感器采集与电机控制",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#AEB6C2",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "底盘负责食品搬运，主控负责传感器采集与电机控制",
+              "fontSize": 16,
+              "color": "#AEB6C2",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    },
+    {
+      "order": 32,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/r2p8nqxs",
+      "id": "32",
+      "bbox": [
+        144,
+        566,
+        8,
+        8
+      ],
+      "geometry": "ellipse",
+      "fillColor": "#E1162D",
+      "lineColor": "#E1162D",
+      "lineWidth": 0
+    },
+    {
+      "order": 33,
+      "kind": "shape",
+      "scope": "slide",
+      "aid": "sh/2hwfyxob",
+      "id": "33",
+      "bbox": [
+        164,
+        560,
+        978,
+        34
+      ],
+      "geometry": "rect",
+      "text": "扩展板与支撑结构用于固定模块、整理接口、提升可靠性",
+      "textPreview": "扩展板与支撑结构用于固定模块、整理接口、提升可靠性",
+      "resolvedFontSize": 16,
+      "resolvedTextStyle": {
+        "fontSize": 16,
+        "typeface": "+mn-lt",
+        "color": "#AEB6C2",
+        "alignment": "left",
+        "insets": {
+          "top": 4.8,
+          "right": 9.6,
+          "bottom": 4.8,
+          "left": 9.6
+        }
+      },
+      "textLayout": {
+        "lineCount": 1,
+        "lines": [
+          {
+            "index": 1,
+            "text": "扩展板与支撑结构用于固定模块、整理接口、提升可靠性"
+          }
+        ]
+      },
+      "paragraphs": [
+        {
+          "index": 1,
+          "text": "扩展板与支撑结构用于固定模块、整理接口、提升可靠性",
+          "resolvedTextStyle": {
+            "fontSize": 16,
+            "color": "#AEB6C2",
+            "alignment": "left"
+          },
+          "runs": [
+            {
+              "index": 1,
+              "text": "扩展板与支撑结构用于固定模块、整理接口、提升可靠性",
+              "fontSize": 16,
+              "color": "#AEB6C2",
+              "alignment": "left"
+            }
+          ],
+          "marginLeft": 0
+        }
+      ],
+      "lineWidth": 0
+    }
+  ],
+  "composeRuns": []
+}
