@@ -25,6 +25,7 @@ build/oled_ssd1306.o: Core/Src/balance_car/oled_ssd1306.c \
  Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h \
  Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h \
  Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h \
+ Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h \
  Core/Inc/balance_car/i2c_bus.h
 Core/Inc/balance_car/oled_ssd1306.h:
 Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:
@@ -54,4 +55,5 @@ Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h:
 Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h:
 Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h:
 Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h:
+Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:
 Core/Inc/balance_car/i2c_bus.h:

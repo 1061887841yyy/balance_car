@@ -1,0 +1,2757 @@
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"remote_control.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "Core/Src/balance_car/remote_control.c"
+  18              		.global	__aeabi_fcmplt
+  19              		.global	__aeabi_fcmpgt
+  20              		.section	.text.RemoteControl_Clamp,"ax",%progbits
+  21              		.align	1
+  22              		.syntax unified
+  23              		.thumb
+  24              		.thumb_func
+  26              	RemoteControl_Clamp:
+  27              	.LVL0:
+  28              	.LFB68:
+   1:Core/Src/balance_car/remote_control.c **** #include "balance_car/remote_control.h"
+   2:Core/Src/balance_car/remote_control.c **** 
+   3:Core/Src/balance_car/remote_control.c **** #include "balance_car/app_sensors.h"
+   4:Core/Src/balance_car/remote_control.c **** #include "balance_car/balance_control.h"
+   5:Core/Src/balance_car/remote_control.c **** #include <stdlib.h>
+   6:Core/Src/balance_car/remote_control.c **** #include <string.h>
+   7:Core/Src/balance_car/remote_control.c **** #include <stdio.h>
+   8:Core/Src/balance_car/remote_control.c **** 
+   9:Core/Src/balance_car/remote_control.c **** #define REMOTE_UART                         USART1
+  10:Core/Src/balance_car/remote_control.c **** #define REMOTE_UART_BAUDRATE                9600U
+  11:Core/Src/balance_car/remote_control.c **** #define REMOTE_UART_TX_PORT                 GPIOB
+  12:Core/Src/balance_car/remote_control.c **** #define REMOTE_UART_TX_PIN                  GPIO_PIN_6
+  13:Core/Src/balance_car/remote_control.c **** #define REMOTE_UART_RX_PORT                 GPIOB
+  14:Core/Src/balance_car/remote_control.c **** #define REMOTE_UART_RX_PIN                  GPIO_PIN_7
+  15:Core/Src/balance_car/remote_control.c **** #define REMOTE_LINE_MAX                     31U
+  16:Core/Src/balance_car/remote_control.c **** #define REMOTE_TELEMETRY_PERIOD_MS          500U
+  17:Core/Src/balance_car/remote_control.c **** 
+  18:Core/Src/balance_car/remote_control.c **** volatile RemoteControlState_t g_remote_state = {0};
+  19:Core/Src/balance_car/remote_control.c **** volatile RemoteControlDebug_t g_remote_debug = {
+  20:Core/Src/balance_car/remote_control.c ****     .enable = 1U,
+  21:Core/Src/balance_car/remote_control.c ****     .allow_run_command = 1U,
+  22:Core/Src/balance_car/remote_control.c ****     .timeout_stop_enable = 1U,
+  23:Core/Src/balance_car/remote_control.c ****     .speed_limit = 1.0f,
+  24:Core/Src/balance_car/remote_control.c ****     .turn_limit = 0.8f,
+  25:Core/Src/balance_car/remote_control.c ****     .timeout_ms = 500U,
+  26:Core/Src/balance_car/remote_control.c **** };
+  27:Core/Src/balance_car/remote_control.c **** 
+  28:Core/Src/balance_car/remote_control.c **** static UART_HandleTypeDef s_huart_remote;
+  29:Core/Src/balance_car/remote_control.c **** static uint8_t s_rx_byte;
+  30:Core/Src/balance_car/remote_control.c **** static char s_rx_line[REMOTE_LINE_MAX + 1U];
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 2
+
+
+  31:Core/Src/balance_car/remote_control.c **** static volatile uint8_t s_rx_index;
+  32:Core/Src/balance_car/remote_control.c **** static volatile uint8_t s_line_ready;
+  33:Core/Src/balance_car/remote_control.c **** static char s_parse_line[REMOTE_LINE_MAX + 1U];
+  34:Core/Src/balance_car/remote_control.c **** static uint32_t s_next_telemetry_ms;
+  35:Core/Src/balance_car/remote_control.c **** 
+  36:Core/Src/balance_car/remote_control.c **** static float RemoteControl_Clamp(float value, float limit)
+  37:Core/Src/balance_car/remote_control.c **** {
+  29              		.loc 1 37 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		.loc 1 37 1 is_stmt 0 view .LVU1
+  34 0000 38B5     		push	{r3, r4, r5, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 16
+  37              		.cfi_offset 3, -16
+  38              		.cfi_offset 4, -12
+  39              		.cfi_offset 5, -8
+  40              		.cfi_offset 14, -4
+  41 0002 0546     		mov	r5, r0
+  42 0004 0C46     		mov	r4, r1
+  38:Core/Src/balance_car/remote_control.c ****     if (limit < 0.0f) {
+  43              		.loc 1 38 5 is_stmt 1 view .LVU2
+  44              		.loc 1 38 8 is_stmt 0 view .LVU3
+  45 0006 0021     		movs	r1, #0
+  46              	.LVL1:
+  47              		.loc 1 38 8 view .LVU4
+  48 0008 2046     		mov	r0, r4
+  49              	.LVL2:
+  50              		.loc 1 38 8 view .LVU5
+  51 000a FFF7FEFF 		bl	__aeabi_fcmplt
+  52              	.LVL3:
+  53 000e 70B9     		cbnz	r0, .L8
+  54              	.LVL4:
+  55              	.L2:
+  39:Core/Src/balance_car/remote_control.c ****         limit = -limit;
+  40:Core/Src/balance_car/remote_control.c ****     }
+  41:Core/Src/balance_car/remote_control.c ****     if (value > limit) {
+  56              		.loc 1 41 5 is_stmt 1 view .LVU6
+  57              		.loc 1 41 8 is_stmt 0 view .LVU7
+  58 0010 2946     		mov	r1, r5
+  59 0012 2046     		mov	r0, r4
+  60 0014 FFF7FEFF 		bl	__aeabi_fcmplt
+  61              	.LVL5:
+  62 0018 38B9     		cbnz	r0, .L1
+  42:Core/Src/balance_car/remote_control.c ****         return limit;
+  43:Core/Src/balance_car/remote_control.c ****     }
+  44:Core/Src/balance_car/remote_control.c ****     if (value < -limit) {
+  63              		.loc 1 44 5 is_stmt 1 view .LVU8
+  64              		.loc 1 44 17 is_stmt 0 view .LVU9
+  65 001a 04F10044 		add	r4, r4, #-2147483648
+  66              	.LVL6:
+  67              		.loc 1 44 8 view .LVU10
+  68 001e 2946     		mov	r1, r5
+  69 0020 2046     		mov	r0, r4
+  70 0022 FFF7FEFF 		bl	__aeabi_fcmpgt
+  71              	.LVL7:
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 3
+
+
+  72 0026 00B9     		cbnz	r0, .L1
+  45:Core/Src/balance_car/remote_control.c ****         return -limit;
+  46:Core/Src/balance_car/remote_control.c ****     }
+  47:Core/Src/balance_car/remote_control.c ****     return value;
+  73              		.loc 1 47 12 view .LVU11
+  74 0028 2C46     		mov	r4, r5
+  75              	.L1:
+  48:Core/Src/balance_car/remote_control.c **** }
+  76              		.loc 1 48 1 view .LVU12
+  77 002a 2046     		mov	r0, r4
+  78 002c 38BD     		pop	{r3, r4, r5, pc}
+  79              	.LVL8:
+  80              	.L8:
+  39:Core/Src/balance_car/remote_control.c ****     }
+  81              		.loc 1 39 9 is_stmt 1 view .LVU13
+  39:Core/Src/balance_car/remote_control.c ****     }
+  82              		.loc 1 39 15 is_stmt 0 view .LVU14
+  83 002e 04F10044 		add	r4, r4, #-2147483648
+  84              	.LVL9:
+  39:Core/Src/balance_car/remote_control.c ****     }
+  85              		.loc 1 39 15 view .LVU15
+  86 0032 EDE7     		b	.L2
+  87              		.cfi_endproc
+  88              	.LFE68:
+  90              		.section	.text.RemoteControl_SetFault,"ax",%progbits
+  91              		.align	1
+  92              		.syntax unified
+  93              		.thumb
+  94              		.thumb_func
+  96              	RemoteControl_SetFault:
+  97              	.LVL10:
+  98              	.LFB69:
+  49:Core/Src/balance_car/remote_control.c **** 
+  50:Core/Src/balance_car/remote_control.c **** static void RemoteControl_SetFault(uint32_t fault)
+  51:Core/Src/balance_car/remote_control.c **** {
+  99              		.loc 1 51 1 is_stmt 1 view -0
+ 100              		.cfi_startproc
+ 101              		@ args = 0, pretend = 0, frame = 0
+ 102              		@ frame_needed = 0, uses_anonymous_args = 0
+ 103              		@ link register save eliminated.
+  52:Core/Src/balance_car/remote_control.c ****     g_remote_state.fault_flags |= fault;
+ 104              		.loc 1 52 5 view .LVU17
+ 105              		.loc 1 52 19 is_stmt 0 view .LVU18
+ 106 0000 024A     		ldr	r2, .L10
+ 107 0002 9369     		ldr	r3, [r2, #24]
+ 108              		.loc 1 52 32 view .LVU19
+ 109 0004 0343     		orrs	r3, r3, r0
+ 110 0006 9361     		str	r3, [r2, #24]
+  53:Core/Src/balance_car/remote_control.c **** }
+ 111              		.loc 1 53 1 view .LVU20
+ 112 0008 7047     		bx	lr
+ 113              	.L11:
+ 114 000a 00BF     		.align	2
+ 115              	.L10:
+ 116 000c 00000000 		.word	g_remote_state
+ 117              		.cfi_endproc
+ 118              	.LFE69:
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 4
+
+
+ 120              		.section	.text.RemoteControl_CheckTimeout,"ax",%progbits
+ 121              		.align	1
+ 122              		.syntax unified
+ 123              		.thumb
+ 124              		.thumb_func
+ 126              	RemoteControl_CheckTimeout:
+ 127              	.LFB78:
+  54:Core/Src/balance_car/remote_control.c **** 
+  55:Core/Src/balance_car/remote_control.c **** static void RemoteControl_StartReceive(void)
+  56:Core/Src/balance_car/remote_control.c **** {
+  57:Core/Src/balance_car/remote_control.c ****     if (HAL_UART_Receive_IT(&s_huart_remote, &s_rx_byte, 1U) != HAL_OK) {
+  58:Core/Src/balance_car/remote_control.c ****         RemoteControl_SetFault(REMOTE_FAULT_RX_RESTART);
+  59:Core/Src/balance_car/remote_control.c ****     }
+  60:Core/Src/balance_car/remote_control.c **** }
+  61:Core/Src/balance_car/remote_control.c **** 
+  62:Core/Src/balance_car/remote_control.c **** static HAL_StatusTypeDef RemoteControl_UartInit(void)
+  63:Core/Src/balance_car/remote_control.c **** {
+  64:Core/Src/balance_car/remote_control.c ****     GPIO_InitTypeDef gpio = {0};
+  65:Core/Src/balance_car/remote_control.c **** 
+  66:Core/Src/balance_car/remote_control.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
+  67:Core/Src/balance_car/remote_control.c ****     __HAL_RCC_AFIO_CLK_ENABLE();
+  68:Core/Src/balance_car/remote_control.c ****     __HAL_RCC_USART1_CLK_ENABLE();
+  69:Core/Src/balance_car/remote_control.c ****     __HAL_AFIO_REMAP_USART1_ENABLE();
+  70:Core/Src/balance_car/remote_control.c **** 
+  71:Core/Src/balance_car/remote_control.c ****     gpio.Pin = REMOTE_UART_TX_PIN;
+  72:Core/Src/balance_car/remote_control.c ****     gpio.Mode = GPIO_MODE_AF_PP;
+  73:Core/Src/balance_car/remote_control.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+  74:Core/Src/balance_car/remote_control.c ****     HAL_GPIO_Init(REMOTE_UART_TX_PORT, &gpio);
+  75:Core/Src/balance_car/remote_control.c **** 
+  76:Core/Src/balance_car/remote_control.c ****     gpio.Pin = REMOTE_UART_RX_PIN;
+  77:Core/Src/balance_car/remote_control.c ****     gpio.Mode = GPIO_MODE_INPUT;
+  78:Core/Src/balance_car/remote_control.c ****     gpio.Pull = GPIO_PULLUP;
+  79:Core/Src/balance_car/remote_control.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+  80:Core/Src/balance_car/remote_control.c ****     HAL_GPIO_Init(REMOTE_UART_RX_PORT, &gpio);
+  81:Core/Src/balance_car/remote_control.c **** 
+  82:Core/Src/balance_car/remote_control.c ****     s_huart_remote.Instance = REMOTE_UART;
+  83:Core/Src/balance_car/remote_control.c ****     s_huart_remote.Init.BaudRate = REMOTE_UART_BAUDRATE;
+  84:Core/Src/balance_car/remote_control.c ****     s_huart_remote.Init.WordLength = UART_WORDLENGTH_8B;
+  85:Core/Src/balance_car/remote_control.c ****     s_huart_remote.Init.StopBits = UART_STOPBITS_1;
+  86:Core/Src/balance_car/remote_control.c ****     s_huart_remote.Init.Parity = UART_PARITY_NONE;
+  87:Core/Src/balance_car/remote_control.c ****     s_huart_remote.Init.Mode = UART_MODE_TX_RX;
+  88:Core/Src/balance_car/remote_control.c ****     s_huart_remote.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  89:Core/Src/balance_car/remote_control.c ****     s_huart_remote.Init.OverSampling = UART_OVERSAMPLING_16;
+  90:Core/Src/balance_car/remote_control.c **** 
+  91:Core/Src/balance_car/remote_control.c ****     if (HAL_UART_Init(&s_huart_remote) != HAL_OK) {
+  92:Core/Src/balance_car/remote_control.c ****         RemoteControl_SetFault(REMOTE_FAULT_UART_INIT);
+  93:Core/Src/balance_car/remote_control.c ****         return HAL_ERROR;
+  94:Core/Src/balance_car/remote_control.c ****     }
+  95:Core/Src/balance_car/remote_control.c **** 
+  96:Core/Src/balance_car/remote_control.c ****     HAL_NVIC_SetPriority(USART1_IRQn, 2U, 0U);
+  97:Core/Src/balance_car/remote_control.c ****     HAL_NVIC_EnableIRQ(USART1_IRQn);
+  98:Core/Src/balance_car/remote_control.c ****     return HAL_OK;
+  99:Core/Src/balance_car/remote_control.c **** }
+ 100:Core/Src/balance_car/remote_control.c **** 
+ 101:Core/Src/balance_car/remote_control.c **** HAL_StatusTypeDef RemoteControl_Init(void)
+ 102:Core/Src/balance_car/remote_control.c **** {
+ 103:Core/Src/balance_car/remote_control.c ****     HAL_StatusTypeDef status;
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 5
+
+
+ 104:Core/Src/balance_car/remote_control.c **** 
+ 105:Core/Src/balance_car/remote_control.c ****     memset((void *)&g_remote_state, 0, sizeof(g_remote_state));
+ 106:Core/Src/balance_car/remote_control.c ****     s_rx_index = 0U;
+ 107:Core/Src/balance_car/remote_control.c ****     s_line_ready = 0U;
+ 108:Core/Src/balance_car/remote_control.c ****     s_next_telemetry_ms = HAL_GetTick() + REMOTE_TELEMETRY_PERIOD_MS;
+ 109:Core/Src/balance_car/remote_control.c ****     status = RemoteControl_UartInit();
+ 110:Core/Src/balance_car/remote_control.c ****     if (status == HAL_OK) {
+ 111:Core/Src/balance_car/remote_control.c ****         RemoteControl_StartReceive();
+ 112:Core/Src/balance_car/remote_control.c ****     }
+ 113:Core/Src/balance_car/remote_control.c ****     return status;
+ 114:Core/Src/balance_car/remote_control.c **** }
+ 115:Core/Src/balance_car/remote_control.c **** 
+ 116:Core/Src/balance_car/remote_control.c **** static void RemoteControl_SendTelemetry(void)
+ 117:Core/Src/balance_car/remote_control.c **** {
+ 118:Core/Src/balance_car/remote_control.c ****     char line[96];
+ 119:Core/Src/balance_car/remote_control.c ****     int temp10 = (int)(g_sensor_state.temperature_c * 10.0f);
+ 120:Core/Src/balance_car/remote_control.c ****     int humi = (int)(g_sensor_state.humidity_percent + 0.5f);
+ 121:Core/Src/balance_car/remote_control.c ****     int weight = (int)(g_sensor_state.weight_g + 0.5f);
+ 122:Core/Src/balance_car/remote_control.c ****     int len;
+ 123:Core/Src/balance_car/remote_control.c **** 
+ 124:Core/Src/balance_car/remote_control.c ****     len = snprintf(line, sizeof(line),
+ 125:Core/Src/balance_car/remote_control.c ****                    "OLED Temp:%d.%d C|Humi:%d %%|Weight:%d g|ADC:%u\n",
+ 126:Core/Src/balance_car/remote_control.c ****                    temp10 / 10,
+ 127:Core/Src/balance_car/remote_control.c ****                    temp10 < 0 ? -(temp10 % 10) : temp10 % 10,
+ 128:Core/Src/balance_car/remote_control.c ****                    humi,
+ 129:Core/Src/balance_car/remote_control.c ****                    weight,
+ 130:Core/Src/balance_car/remote_control.c ****                    (unsigned)g_sensor_state.fsr_adc_raw);
+ 131:Core/Src/balance_car/remote_control.c ****     if (len <= 0) {
+ 132:Core/Src/balance_car/remote_control.c ****         return;
+ 133:Core/Src/balance_car/remote_control.c ****     }
+ 134:Core/Src/balance_car/remote_control.c ****     if (len >= (int)sizeof(line)) {
+ 135:Core/Src/balance_car/remote_control.c ****         len = (int)sizeof(line) - 1;
+ 136:Core/Src/balance_car/remote_control.c ****     }
+ 137:Core/Src/balance_car/remote_control.c **** 
+ 138:Core/Src/balance_car/remote_control.c ****     (void)HAL_UART_Transmit(&s_huart_remote, (uint8_t *)line, (uint16_t)len, 5U);
+ 139:Core/Src/balance_car/remote_control.c **** }
+ 140:Core/Src/balance_car/remote_control.c **** 
+ 141:Core/Src/balance_car/remote_control.c **** static void RemoteControl_MarkValid(const char *line)
+ 142:Core/Src/balance_car/remote_control.c **** {
+ 143:Core/Src/balance_car/remote_control.c ****     g_remote_state.valid_cmd_count++;
+ 144:Core/Src/balance_car/remote_control.c ****     g_remote_state.parser_error = 0U;
+ 145:Core/Src/balance_car/remote_control.c ****     g_remote_state.last_rx_ms = HAL_GetTick();
+ 146:Core/Src/balance_car/remote_control.c ****     g_remote_state.link_active = 1U;
+ 147:Core/Src/balance_car/remote_control.c ****     strncpy((char *)g_remote_state.last_command, line, sizeof(g_remote_state.last_command) - 1U);
+ 148:Core/Src/balance_car/remote_control.c ****     g_remote_state.last_command[sizeof(g_remote_state.last_command) - 1U] = '\0';
+ 149:Core/Src/balance_car/remote_control.c **** }
+ 150:Core/Src/balance_car/remote_control.c **** 
+ 151:Core/Src/balance_car/remote_control.c **** static void RemoteControl_MarkInvalid(const char *line)
+ 152:Core/Src/balance_car/remote_control.c **** {
+ 153:Core/Src/balance_car/remote_control.c ****     g_remote_state.invalid_cmd_count++;
+ 154:Core/Src/balance_car/remote_control.c ****     g_remote_state.parser_error = 1U;
+ 155:Core/Src/balance_car/remote_control.c ****     RemoteControl_SetFault(REMOTE_FAULT_BAD_COMMAND);
+ 156:Core/Src/balance_car/remote_control.c ****     strncpy((char *)g_remote_state.last_command, line, sizeof(g_remote_state.last_command) - 1U);
+ 157:Core/Src/balance_car/remote_control.c ****     g_remote_state.last_command[sizeof(g_remote_state.last_command) - 1U] = '\0';
+ 158:Core/Src/balance_car/remote_control.c **** }
+ 159:Core/Src/balance_car/remote_control.c **** 
+ 160:Core/Src/balance_car/remote_control.c **** static uint8_t RemoteControl_ParseFloat(const char *text, float *value)
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 6
+
+
+ 161:Core/Src/balance_car/remote_control.c **** {
+ 162:Core/Src/balance_car/remote_control.c ****     char *endptr;
+ 163:Core/Src/balance_car/remote_control.c ****     float parsed;
+ 164:Core/Src/balance_car/remote_control.c **** 
+ 165:Core/Src/balance_car/remote_control.c ****     if (text == 0 || value == 0) {
+ 166:Core/Src/balance_car/remote_control.c ****         return 0U;
+ 167:Core/Src/balance_car/remote_control.c ****     }
+ 168:Core/Src/balance_car/remote_control.c **** 
+ 169:Core/Src/balance_car/remote_control.c ****     parsed = strtof(text, &endptr);
+ 170:Core/Src/balance_car/remote_control.c ****     if (endptr == text) {
+ 171:Core/Src/balance_car/remote_control.c ****         return 0U;
+ 172:Core/Src/balance_car/remote_control.c ****     }
+ 173:Core/Src/balance_car/remote_control.c ****     while (*endptr == ' ') {
+ 174:Core/Src/balance_car/remote_control.c ****         endptr++;
+ 175:Core/Src/balance_car/remote_control.c ****     }
+ 176:Core/Src/balance_car/remote_control.c ****     if (*endptr != '\0') {
+ 177:Core/Src/balance_car/remote_control.c ****         return 0U;
+ 178:Core/Src/balance_car/remote_control.c ****     }
+ 179:Core/Src/balance_car/remote_control.c **** 
+ 180:Core/Src/balance_car/remote_control.c ****     *value = parsed;
+ 181:Core/Src/balance_car/remote_control.c ****     return 1U;
+ 182:Core/Src/balance_car/remote_control.c **** }
+ 183:Core/Src/balance_car/remote_control.c **** 
+ 184:Core/Src/balance_car/remote_control.c **** static void RemoteControl_ProcessLine(char *line)
+ 185:Core/Src/balance_car/remote_control.c **** {
+ 186:Core/Src/balance_car/remote_control.c ****     if (line[0] == '\0') {
+ 187:Core/Src/balance_car/remote_control.c ****         return;
+ 188:Core/Src/balance_car/remote_control.c ****     }
+ 189:Core/Src/balance_car/remote_control.c **** 
+ 190:Core/Src/balance_car/remote_control.c ****     if (g_remote_debug.enable == 0U) {
+ 191:Core/Src/balance_car/remote_control.c ****         RemoteControl_MarkValid(line);
+ 192:Core/Src/balance_car/remote_control.c ****         return;
+ 193:Core/Src/balance_car/remote_control.c ****     }
+ 194:Core/Src/balance_car/remote_control.c **** 
+ 195:Core/Src/balance_car/remote_control.c ****     if (strcmp(line, "STOP") == 0) {
+ 196:Core/Src/balance_car/remote_control.c ****         g_balance_debug.speed_target = 0.0f;
+ 197:Core/Src/balance_car/remote_control.c ****         g_balance_debug.turn_target = 0.0f;
+ 198:Core/Src/balance_car/remote_control.c ****         g_remote_state.speed_cmd = 0.0f;
+ 199:Core/Src/balance_car/remote_control.c ****         g_remote_state.turn_cmd = 0.0f;
+ 200:Core/Src/balance_car/remote_control.c ****         RemoteControl_MarkValid(line);
+ 201:Core/Src/balance_car/remote_control.c ****         return;
+ 202:Core/Src/balance_car/remote_control.c ****     }
+ 203:Core/Src/balance_car/remote_control.c **** 
+ 204:Core/Src/balance_car/remote_control.c ****     if (strcmp(line, "PING") == 0) {
+ 205:Core/Src/balance_car/remote_control.c ****         RemoteControl_MarkValid(line);
+ 206:Core/Src/balance_car/remote_control.c ****         return;
+ 207:Core/Src/balance_car/remote_control.c ****     }
+ 208:Core/Src/balance_car/remote_control.c **** 
+ 209:Core/Src/balance_car/remote_control.c ****     if (strncmp(line, "RUN ", 4U) == 0) {
+ 210:Core/Src/balance_car/remote_control.c ****         if (strcmp(&line[4], "1") == 0) {
+ 211:Core/Src/balance_car/remote_control.c ****             if (g_remote_debug.allow_run_command != 0U) {
+ 212:Core/Src/balance_car/remote_control.c ****                 g_balance_debug.run_enable = 1U;
+ 213:Core/Src/balance_car/remote_control.c ****             }
+ 214:Core/Src/balance_car/remote_control.c ****             RemoteControl_MarkValid(line);
+ 215:Core/Src/balance_car/remote_control.c ****             return;
+ 216:Core/Src/balance_car/remote_control.c ****         }
+ 217:Core/Src/balance_car/remote_control.c ****         if (strcmp(&line[4], "0") == 0) {
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 7
+
+
+ 218:Core/Src/balance_car/remote_control.c ****             if (g_remote_debug.allow_run_command != 0U) {
+ 219:Core/Src/balance_car/remote_control.c ****                 g_balance_debug.run_enable = 0U;
+ 220:Core/Src/balance_car/remote_control.c ****             }
+ 221:Core/Src/balance_car/remote_control.c ****             g_balance_debug.speed_target = 0.0f;
+ 222:Core/Src/balance_car/remote_control.c ****             g_balance_debug.turn_target = 0.0f;
+ 223:Core/Src/balance_car/remote_control.c ****             g_remote_state.speed_cmd = 0.0f;
+ 224:Core/Src/balance_car/remote_control.c ****             g_remote_state.turn_cmd = 0.0f;
+ 225:Core/Src/balance_car/remote_control.c ****             RemoteControl_MarkValid(line);
+ 226:Core/Src/balance_car/remote_control.c ****             return;
+ 227:Core/Src/balance_car/remote_control.c ****         }
+ 228:Core/Src/balance_car/remote_control.c ****     }
+ 229:Core/Src/balance_car/remote_control.c **** 
+ 230:Core/Src/balance_car/remote_control.c ****     if (strncmp(line, "SPD ", 4U) == 0) {
+ 231:Core/Src/balance_car/remote_control.c ****         float speed;
+ 232:Core/Src/balance_car/remote_control.c ****         if (RemoteControl_ParseFloat(&line[4], &speed) != 0U) {
+ 233:Core/Src/balance_car/remote_control.c ****             speed = RemoteControl_Clamp(speed, g_remote_debug.speed_limit);
+ 234:Core/Src/balance_car/remote_control.c ****             g_balance_debug.speed_target = speed;
+ 235:Core/Src/balance_car/remote_control.c ****             g_remote_state.speed_cmd = speed;
+ 236:Core/Src/balance_car/remote_control.c ****             RemoteControl_MarkValid(line);
+ 237:Core/Src/balance_car/remote_control.c ****             return;
+ 238:Core/Src/balance_car/remote_control.c ****         }
+ 239:Core/Src/balance_car/remote_control.c ****     }
+ 240:Core/Src/balance_car/remote_control.c **** 
+ 241:Core/Src/balance_car/remote_control.c ****     if (strncmp(line, "TURN ", 5U) == 0) {
+ 242:Core/Src/balance_car/remote_control.c ****         float turn;
+ 243:Core/Src/balance_car/remote_control.c ****         if (RemoteControl_ParseFloat(&line[5], &turn) != 0U) {
+ 244:Core/Src/balance_car/remote_control.c ****             turn = RemoteControl_Clamp(turn, g_remote_debug.turn_limit);
+ 245:Core/Src/balance_car/remote_control.c ****             g_balance_debug.turn_target = turn;
+ 246:Core/Src/balance_car/remote_control.c ****             g_remote_state.turn_cmd = turn;
+ 247:Core/Src/balance_car/remote_control.c ****             RemoteControl_MarkValid(line);
+ 248:Core/Src/balance_car/remote_control.c ****             return;
+ 249:Core/Src/balance_car/remote_control.c ****         }
+ 250:Core/Src/balance_car/remote_control.c ****     }
+ 251:Core/Src/balance_car/remote_control.c **** 
+ 252:Core/Src/balance_car/remote_control.c ****     RemoteControl_MarkInvalid(line);
+ 253:Core/Src/balance_car/remote_control.c **** }
+ 254:Core/Src/balance_car/remote_control.c **** 
+ 255:Core/Src/balance_car/remote_control.c **** static void RemoteControl_CheckTimeout(void)
+ 256:Core/Src/balance_car/remote_control.c **** {
+ 128              		.loc 1 256 1 is_stmt 1 view -0
+ 129              		.cfi_startproc
+ 130              		@ args = 0, pretend = 0, frame = 0
+ 131              		@ frame_needed = 0, uses_anonymous_args = 0
+ 132 0000 10B5     		push	{r4, lr}
+ 133              	.LCFI1:
+ 134              		.cfi_def_cfa_offset 8
+ 135              		.cfi_offset 4, -8
+ 136              		.cfi_offset 14, -4
+ 257:Core/Src/balance_car/remote_control.c ****     uint32_t now;
+ 137              		.loc 1 257 5 view .LVU22
+ 258:Core/Src/balance_car/remote_control.c ****     uint32_t timeout_ms = g_remote_debug.timeout_ms;
+ 138              		.loc 1 258 5 view .LVU23
+ 139              		.loc 1 258 14 is_stmt 0 view .LVU24
+ 140 0002 0E4B     		ldr	r3, .L16
+ 141 0004 DC68     		ldr	r4, [r3, #12]
+ 142              	.LVL11:
+ 259:Core/Src/balance_car/remote_control.c **** 
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 8
+
+
+ 260:Core/Src/balance_car/remote_control.c ****     if (g_remote_debug.timeout_stop_enable == 0U || timeout_ms == 0U) {
+ 143              		.loc 1 260 5 is_stmt 1 view .LVU25
+ 144              		.loc 1 260 23 is_stmt 0 view .LVU26
+ 145 0006 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 146              		.loc 1 260 8 view .LVU27
+ 147 0008 1BB1     		cbz	r3, .L12
+ 148              		.loc 1 260 50 discriminator 1 view .LVU28
+ 149 000a 14B1     		cbz	r4, .L12
+ 261:Core/Src/balance_car/remote_control.c ****         return;
+ 262:Core/Src/balance_car/remote_control.c ****     }
+ 263:Core/Src/balance_car/remote_control.c ****     if (g_remote_state.link_active == 0U) {
+ 150              		.loc 1 263 5 is_stmt 1 view .LVU29
+ 151              		.loc 1 263 23 is_stmt 0 view .LVU30
+ 152 000c 0C4B     		ldr	r3, .L16+4
+ 153 000e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 154              		.loc 1 263 8 view .LVU31
+ 155 0010 03B9     		cbnz	r3, .L15
+ 156              	.L12:
+ 264:Core/Src/balance_car/remote_control.c ****         return;
+ 265:Core/Src/balance_car/remote_control.c ****     }
+ 266:Core/Src/balance_car/remote_control.c **** 
+ 267:Core/Src/balance_car/remote_control.c ****     now = HAL_GetTick();
+ 268:Core/Src/balance_car/remote_control.c ****     if ((uint32_t)(now - g_remote_state.last_rx_ms) > timeout_ms) {
+ 269:Core/Src/balance_car/remote_control.c ****         g_remote_state.link_active = 0U;
+ 270:Core/Src/balance_car/remote_control.c ****         g_remote_state.timeout_count++;
+ 271:Core/Src/balance_car/remote_control.c ****         g_balance_debug.speed_target = 0.0f;
+ 272:Core/Src/balance_car/remote_control.c ****         g_balance_debug.turn_target = 0.0f;
+ 273:Core/Src/balance_car/remote_control.c ****         g_remote_state.speed_cmd = 0.0f;
+ 274:Core/Src/balance_car/remote_control.c ****         g_remote_state.turn_cmd = 0.0f;
+ 275:Core/Src/balance_car/remote_control.c ****     }
+ 276:Core/Src/balance_car/remote_control.c **** }
+ 157              		.loc 1 276 1 view .LVU32
+ 158 0012 10BD     		pop	{r4, pc}
+ 159              	.LVL12:
+ 160              	.L15:
+ 267:Core/Src/balance_car/remote_control.c ****     if ((uint32_t)(now - g_remote_state.last_rx_ms) > timeout_ms) {
+ 161              		.loc 1 267 5 is_stmt 1 view .LVU33
+ 267:Core/Src/balance_car/remote_control.c ****     if ((uint32_t)(now - g_remote_state.last_rx_ms) > timeout_ms) {
+ 162              		.loc 1 267 11 is_stmt 0 view .LVU34
+ 163 0014 FFF7FEFF 		bl	HAL_GetTick
+ 164              	.LVL13:
+ 268:Core/Src/balance_car/remote_control.c ****         g_remote_state.link_active = 0U;
+ 165              		.loc 1 268 5 is_stmt 1 view .LVU35
+ 268:Core/Src/balance_car/remote_control.c ****         g_remote_state.link_active = 0U;
+ 166              		.loc 1 268 40 is_stmt 0 view .LVU36
+ 167 0018 094B     		ldr	r3, .L16+4
+ 168 001a 5B69     		ldr	r3, [r3, #20]
+ 268:Core/Src/balance_car/remote_control.c ****         g_remote_state.link_active = 0U;
+ 169              		.loc 1 268 24 view .LVU37
+ 170 001c C01A     		subs	r0, r0, r3
+ 171              	.LVL14:
+ 268:Core/Src/balance_car/remote_control.c ****         g_remote_state.link_active = 0U;
+ 172              		.loc 1 268 8 view .LVU38
+ 173 001e A042     		cmp	r0, r4
+ 174 0020 F7D9     		bls	.L12
+ 269:Core/Src/balance_car/remote_control.c ****         g_remote_state.timeout_count++;
+ 175              		.loc 1 269 9 is_stmt 1 view .LVU39
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 9
+
+
+ 269:Core/Src/balance_car/remote_control.c ****         g_remote_state.timeout_count++;
+ 176              		.loc 1 269 36 is_stmt 0 view .LVU40
+ 177 0022 074B     		ldr	r3, .L16+4
+ 178 0024 0022     		movs	r2, #0
+ 179 0026 1A70     		strb	r2, [r3]
+ 270:Core/Src/balance_car/remote_control.c ****         g_balance_debug.speed_target = 0.0f;
+ 180              		.loc 1 270 9 is_stmt 1 view .LVU41
+ 270:Core/Src/balance_car/remote_control.c ****         g_balance_debug.speed_target = 0.0f;
+ 181              		.loc 1 270 23 is_stmt 0 view .LVU42
+ 182 0028 1A69     		ldr	r2, [r3, #16]
+ 270:Core/Src/balance_car/remote_control.c ****         g_balance_debug.speed_target = 0.0f;
+ 183              		.loc 1 270 37 view .LVU43
+ 184 002a 0132     		adds	r2, r2, #1
+ 185 002c 1A61     		str	r2, [r3, #16]
+ 271:Core/Src/balance_car/remote_control.c ****         g_balance_debug.turn_target = 0.0f;
+ 186              		.loc 1 271 9 is_stmt 1 view .LVU44
+ 271:Core/Src/balance_car/remote_control.c ****         g_balance_debug.turn_target = 0.0f;
+ 187              		.loc 1 271 38 is_stmt 0 view .LVU45
+ 188 002e 0549     		ldr	r1, .L16+8
+ 189 0030 0022     		movs	r2, #0
+ 190 0032 4A60     		str	r2, [r1, #4]	@ float
+ 272:Core/Src/balance_car/remote_control.c ****         g_remote_state.speed_cmd = 0.0f;
+ 191              		.loc 1 272 9 is_stmt 1 view .LVU46
+ 272:Core/Src/balance_car/remote_control.c ****         g_remote_state.speed_cmd = 0.0f;
+ 192              		.loc 1 272 37 is_stmt 0 view .LVU47
+ 193 0034 8A60     		str	r2, [r1, #8]	@ float
+ 273:Core/Src/balance_car/remote_control.c ****         g_remote_state.turn_cmd = 0.0f;
+ 194              		.loc 1 273 9 is_stmt 1 view .LVU48
+ 273:Core/Src/balance_car/remote_control.c ****         g_remote_state.turn_cmd = 0.0f;
+ 195              		.loc 1 273 34 is_stmt 0 view .LVU49
+ 196 0036 DA61     		str	r2, [r3, #28]	@ float
+ 274:Core/Src/balance_car/remote_control.c ****     }
+ 197              		.loc 1 274 9 is_stmt 1 view .LVU50
+ 274:Core/Src/balance_car/remote_control.c ****     }
+ 198              		.loc 1 274 33 is_stmt 0 view .LVU51
+ 199 0038 1A62     		str	r2, [r3, #32]	@ float
+ 200 003a EAE7     		b	.L12
+ 201              	.L17:
+ 202              		.align	2
+ 203              	.L16:
+ 204 003c 00000000 		.word	g_remote_debug
+ 205 0040 00000000 		.word	g_remote_state
+ 206 0044 00000000 		.word	g_balance_debug
+ 207              		.cfi_endproc
+ 208              	.LFE78:
+ 210              		.section	.text.RemoteControl_UartInit,"ax",%progbits
+ 211              		.align	1
+ 212              		.syntax unified
+ 213              		.thumb
+ 214              		.thumb_func
+ 216              	RemoteControl_UartInit:
+ 217              	.LFB71:
+  63:Core/Src/balance_car/remote_control.c ****     GPIO_InitTypeDef gpio = {0};
+ 218              		.loc 1 63 1 is_stmt 1 view -0
+ 219              		.cfi_startproc
+ 220              		@ args = 0, pretend = 0, frame = 32
+ 221              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 10
+
+
+ 222 0000 70B5     		push	{r4, r5, r6, lr}
+ 223              	.LCFI2:
+ 224              		.cfi_def_cfa_offset 16
+ 225              		.cfi_offset 4, -16
+ 226              		.cfi_offset 5, -12
+ 227              		.cfi_offset 6, -8
+ 228              		.cfi_offset 14, -4
+ 229 0002 88B0     		sub	sp, sp, #32
+ 230              	.LCFI3:
+ 231              		.cfi_def_cfa_offset 48
+  64:Core/Src/balance_car/remote_control.c **** 
+ 232              		.loc 1 64 5 view .LVU53
+  64:Core/Src/balance_car/remote_control.c **** 
+ 233              		.loc 1 64 22 is_stmt 0 view .LVU54
+ 234 0004 0024     		movs	r4, #0
+ 235 0006 0494     		str	r4, [sp, #16]
+ 236 0008 0594     		str	r4, [sp, #20]
+ 237 000a 0694     		str	r4, [sp, #24]
+ 238 000c 0794     		str	r4, [sp, #28]
+  66:Core/Src/balance_car/remote_control.c ****     __HAL_RCC_AFIO_CLK_ENABLE();
+ 239              		.loc 1 66 5 is_stmt 1 view .LVU55
+ 240              	.LBB6:
+  66:Core/Src/balance_car/remote_control.c ****     __HAL_RCC_AFIO_CLK_ENABLE();
+ 241              		.loc 1 66 5 view .LVU56
+  66:Core/Src/balance_car/remote_control.c ****     __HAL_RCC_AFIO_CLK_ENABLE();
+ 242              		.loc 1 66 5 view .LVU57
+ 243 000e 2C4B     		ldr	r3, .L23
+ 244 0010 9A69     		ldr	r2, [r3, #24]
+ 245 0012 42F00802 		orr	r2, r2, #8
+ 246 0016 9A61     		str	r2, [r3, #24]
+  66:Core/Src/balance_car/remote_control.c ****     __HAL_RCC_AFIO_CLK_ENABLE();
+ 247              		.loc 1 66 5 view .LVU58
+ 248 0018 9A69     		ldr	r2, [r3, #24]
+ 249 001a 02F00802 		and	r2, r2, #8
+ 250 001e 0192     		str	r2, [sp, #4]
+  66:Core/Src/balance_car/remote_control.c ****     __HAL_RCC_AFIO_CLK_ENABLE();
+ 251              		.loc 1 66 5 view .LVU59
+ 252 0020 019A     		ldr	r2, [sp, #4]
+ 253              	.LBE6:
+  66:Core/Src/balance_car/remote_control.c ****     __HAL_RCC_AFIO_CLK_ENABLE();
+ 254              		.loc 1 66 5 view .LVU60
+  67:Core/Src/balance_car/remote_control.c ****     __HAL_RCC_USART1_CLK_ENABLE();
+ 255              		.loc 1 67 5 view .LVU61
+ 256              	.LBB7:
+  67:Core/Src/balance_car/remote_control.c ****     __HAL_RCC_USART1_CLK_ENABLE();
+ 257              		.loc 1 67 5 view .LVU62
+  67:Core/Src/balance_car/remote_control.c ****     __HAL_RCC_USART1_CLK_ENABLE();
+ 258              		.loc 1 67 5 view .LVU63
+ 259 0022 9A69     		ldr	r2, [r3, #24]
+ 260 0024 42F00102 		orr	r2, r2, #1
+ 261 0028 9A61     		str	r2, [r3, #24]
+  67:Core/Src/balance_car/remote_control.c ****     __HAL_RCC_USART1_CLK_ENABLE();
+ 262              		.loc 1 67 5 view .LVU64
+ 263 002a 9A69     		ldr	r2, [r3, #24]
+ 264 002c 02F00102 		and	r2, r2, #1
+ 265 0030 0292     		str	r2, [sp, #8]
+  67:Core/Src/balance_car/remote_control.c ****     __HAL_RCC_USART1_CLK_ENABLE();
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 11
+
+
+ 266              		.loc 1 67 5 view .LVU65
+ 267 0032 029A     		ldr	r2, [sp, #8]
+ 268              	.LBE7:
+  67:Core/Src/balance_car/remote_control.c ****     __HAL_RCC_USART1_CLK_ENABLE();
+ 269              		.loc 1 67 5 view .LVU66
+  68:Core/Src/balance_car/remote_control.c ****     __HAL_AFIO_REMAP_USART1_ENABLE();
+ 270              		.loc 1 68 5 view .LVU67
+ 271              	.LBB8:
+  68:Core/Src/balance_car/remote_control.c ****     __HAL_AFIO_REMAP_USART1_ENABLE();
+ 272              		.loc 1 68 5 view .LVU68
+  68:Core/Src/balance_car/remote_control.c ****     __HAL_AFIO_REMAP_USART1_ENABLE();
+ 273              		.loc 1 68 5 view .LVU69
+ 274 0034 9A69     		ldr	r2, [r3, #24]
+ 275 0036 42F48042 		orr	r2, r2, #16384
+ 276 003a 9A61     		str	r2, [r3, #24]
+  68:Core/Src/balance_car/remote_control.c ****     __HAL_AFIO_REMAP_USART1_ENABLE();
+ 277              		.loc 1 68 5 view .LVU70
+ 278 003c 9B69     		ldr	r3, [r3, #24]
+ 279 003e 03F48043 		and	r3, r3, #16384
+ 280 0042 0393     		str	r3, [sp, #12]
+  68:Core/Src/balance_car/remote_control.c ****     __HAL_AFIO_REMAP_USART1_ENABLE();
+ 281              		.loc 1 68 5 view .LVU71
+ 282 0044 039B     		ldr	r3, [sp, #12]
+ 283              	.LBE8:
+  68:Core/Src/balance_car/remote_control.c ****     __HAL_AFIO_REMAP_USART1_ENABLE();
+ 284              		.loc 1 68 5 view .LVU72
+  69:Core/Src/balance_car/remote_control.c **** 
+ 285              		.loc 1 69 5 view .LVU73
+ 286              	.LBB9:
+  69:Core/Src/balance_car/remote_control.c **** 
+ 287              		.loc 1 69 5 view .LVU74
+ 288 0046 1F4A     		ldr	r2, .L23+4
+ 289 0048 5368     		ldr	r3, [r2, #4]
+ 290              	.LVL15:
+  69:Core/Src/balance_car/remote_control.c **** 
+ 291              		.loc 1 69 5 view .LVU75
+  69:Core/Src/balance_car/remote_control.c **** 
+ 292              		.loc 1 69 5 view .LVU76
+ 293 004a 43F0E063 		orr	r3, r3, #117440512
+ 294              	.LVL16:
+  69:Core/Src/balance_car/remote_control.c **** 
+ 295              		.loc 1 69 5 is_stmt 0 view .LVU77
+ 296 004e 43F00403 		orr	r3, r3, #4
+ 297              	.LVL17:
+  69:Core/Src/balance_car/remote_control.c **** 
+ 298              		.loc 1 69 5 is_stmt 1 view .LVU78
+ 299 0052 5360     		str	r3, [r2, #4]
+ 300              	.LBE9:
+  69:Core/Src/balance_car/remote_control.c **** 
+ 301              		.loc 1 69 5 view .LVU79
+  71:Core/Src/balance_car/remote_control.c ****     gpio.Mode = GPIO_MODE_AF_PP;
+ 302              		.loc 1 71 5 view .LVU80
+  71:Core/Src/balance_car/remote_control.c ****     gpio.Mode = GPIO_MODE_AF_PP;
+ 303              		.loc 1 71 14 is_stmt 0 view .LVU81
+ 304 0054 4023     		movs	r3, #64
+ 305              	.LVL18:
+  71:Core/Src/balance_car/remote_control.c ****     gpio.Mode = GPIO_MODE_AF_PP;
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 12
+
+
+ 306              		.loc 1 71 14 view .LVU82
+ 307 0056 0493     		str	r3, [sp, #16]
+ 308              	.LVL19:
+  72:Core/Src/balance_car/remote_control.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+ 309              		.loc 1 72 5 is_stmt 1 view .LVU83
+  72:Core/Src/balance_car/remote_control.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+ 310              		.loc 1 72 15 is_stmt 0 view .LVU84
+ 311 0058 0223     		movs	r3, #2
+ 312 005a 0593     		str	r3, [sp, #20]
+  73:Core/Src/balance_car/remote_control.c ****     HAL_GPIO_Init(REMOTE_UART_TX_PORT, &gpio);
+ 313              		.loc 1 73 5 is_stmt 1 view .LVU85
+  73:Core/Src/balance_car/remote_control.c ****     HAL_GPIO_Init(REMOTE_UART_TX_PORT, &gpio);
+ 314              		.loc 1 73 16 is_stmt 0 view .LVU86
+ 315 005c 0326     		movs	r6, #3
+ 316 005e 0796     		str	r6, [sp, #28]
+  74:Core/Src/balance_car/remote_control.c **** 
+ 317              		.loc 1 74 5 is_stmt 1 view .LVU87
+ 318 0060 194D     		ldr	r5, .L23+8
+ 319 0062 04A9     		add	r1, sp, #16
+ 320 0064 2846     		mov	r0, r5
+ 321 0066 FFF7FEFF 		bl	HAL_GPIO_Init
+ 322              	.LVL20:
+  76:Core/Src/balance_car/remote_control.c ****     gpio.Mode = GPIO_MODE_INPUT;
+ 323              		.loc 1 76 5 view .LVU88
+  76:Core/Src/balance_car/remote_control.c ****     gpio.Mode = GPIO_MODE_INPUT;
+ 324              		.loc 1 76 14 is_stmt 0 view .LVU89
+ 325 006a 8023     		movs	r3, #128
+ 326 006c 0493     		str	r3, [sp, #16]
+  77:Core/Src/balance_car/remote_control.c ****     gpio.Pull = GPIO_PULLUP;
+ 327              		.loc 1 77 5 is_stmt 1 view .LVU90
+  77:Core/Src/balance_car/remote_control.c ****     gpio.Pull = GPIO_PULLUP;
+ 328              		.loc 1 77 15 is_stmt 0 view .LVU91
+ 329 006e 0594     		str	r4, [sp, #20]
+  78:Core/Src/balance_car/remote_control.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+ 330              		.loc 1 78 5 is_stmt 1 view .LVU92
+  78:Core/Src/balance_car/remote_control.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+ 331              		.loc 1 78 15 is_stmt 0 view .LVU93
+ 332 0070 0123     		movs	r3, #1
+ 333 0072 0693     		str	r3, [sp, #24]
+  79:Core/Src/balance_car/remote_control.c ****     HAL_GPIO_Init(REMOTE_UART_RX_PORT, &gpio);
+ 334              		.loc 1 79 5 is_stmt 1 view .LVU94
+  79:Core/Src/balance_car/remote_control.c ****     HAL_GPIO_Init(REMOTE_UART_RX_PORT, &gpio);
+ 335              		.loc 1 79 16 is_stmt 0 view .LVU95
+ 336 0074 0796     		str	r6, [sp, #28]
+  80:Core/Src/balance_car/remote_control.c **** 
+ 337              		.loc 1 80 5 is_stmt 1 view .LVU96
+ 338 0076 04A9     		add	r1, sp, #16
+ 339 0078 2846     		mov	r0, r5
+ 340 007a FFF7FEFF 		bl	HAL_GPIO_Init
+ 341              	.LVL21:
+  82:Core/Src/balance_car/remote_control.c ****     s_huart_remote.Init.BaudRate = REMOTE_UART_BAUDRATE;
+ 342              		.loc 1 82 5 view .LVU97
+  82:Core/Src/balance_car/remote_control.c ****     s_huart_remote.Init.BaudRate = REMOTE_UART_BAUDRATE;
+ 343              		.loc 1 82 29 is_stmt 0 view .LVU98
+ 344 007e 1348     		ldr	r0, .L23+12
+ 345 0080 134B     		ldr	r3, .L23+16
+ 346 0082 0360     		str	r3, [r0]
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 13
+
+
+  83:Core/Src/balance_car/remote_control.c ****     s_huart_remote.Init.WordLength = UART_WORDLENGTH_8B;
+ 347              		.loc 1 83 5 is_stmt 1 view .LVU99
+  83:Core/Src/balance_car/remote_control.c ****     s_huart_remote.Init.WordLength = UART_WORDLENGTH_8B;
+ 348              		.loc 1 83 34 is_stmt 0 view .LVU100
+ 349 0084 4FF41653 		mov	r3, #9600
+ 350 0088 4360     		str	r3, [r0, #4]
+  84:Core/Src/balance_car/remote_control.c ****     s_huart_remote.Init.StopBits = UART_STOPBITS_1;
+ 351              		.loc 1 84 5 is_stmt 1 view .LVU101
+  84:Core/Src/balance_car/remote_control.c ****     s_huart_remote.Init.StopBits = UART_STOPBITS_1;
+ 352              		.loc 1 84 36 is_stmt 0 view .LVU102
+ 353 008a 8460     		str	r4, [r0, #8]
+  85:Core/Src/balance_car/remote_control.c ****     s_huart_remote.Init.Parity = UART_PARITY_NONE;
+ 354              		.loc 1 85 5 is_stmt 1 view .LVU103
+  85:Core/Src/balance_car/remote_control.c ****     s_huart_remote.Init.Parity = UART_PARITY_NONE;
+ 355              		.loc 1 85 34 is_stmt 0 view .LVU104
+ 356 008c C460     		str	r4, [r0, #12]
+  86:Core/Src/balance_car/remote_control.c ****     s_huart_remote.Init.Mode = UART_MODE_TX_RX;
+ 357              		.loc 1 86 5 is_stmt 1 view .LVU105
+  86:Core/Src/balance_car/remote_control.c ****     s_huart_remote.Init.Mode = UART_MODE_TX_RX;
+ 358              		.loc 1 86 32 is_stmt 0 view .LVU106
+ 359 008e 0461     		str	r4, [r0, #16]
+  87:Core/Src/balance_car/remote_control.c ****     s_huart_remote.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+ 360              		.loc 1 87 5 is_stmt 1 view .LVU107
+  87:Core/Src/balance_car/remote_control.c ****     s_huart_remote.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+ 361              		.loc 1 87 30 is_stmt 0 view .LVU108
+ 362 0090 0C23     		movs	r3, #12
+ 363 0092 4361     		str	r3, [r0, #20]
+  88:Core/Src/balance_car/remote_control.c ****     s_huart_remote.Init.OverSampling = UART_OVERSAMPLING_16;
+ 364              		.loc 1 88 5 is_stmt 1 view .LVU109
+  88:Core/Src/balance_car/remote_control.c ****     s_huart_remote.Init.OverSampling = UART_OVERSAMPLING_16;
+ 365              		.loc 1 88 35 is_stmt 0 view .LVU110
+ 366 0094 8461     		str	r4, [r0, #24]
+  89:Core/Src/balance_car/remote_control.c **** 
+ 367              		.loc 1 89 5 is_stmt 1 view .LVU111
+  89:Core/Src/balance_car/remote_control.c **** 
+ 368              		.loc 1 89 38 is_stmt 0 view .LVU112
+ 369 0096 C461     		str	r4, [r0, #28]
+  91:Core/Src/balance_car/remote_control.c ****         RemoteControl_SetFault(REMOTE_FAULT_UART_INIT);
+ 370              		.loc 1 91 5 is_stmt 1 view .LVU113
+  91:Core/Src/balance_car/remote_control.c ****         RemoteControl_SetFault(REMOTE_FAULT_UART_INIT);
+ 371              		.loc 1 91 9 is_stmt 0 view .LVU114
+ 372 0098 FFF7FEFF 		bl	HAL_UART_Init
+ 373              	.LVL22:
+  91:Core/Src/balance_car/remote_control.c ****         RemoteControl_SetFault(REMOTE_FAULT_UART_INIT);
+ 374              		.loc 1 91 8 discriminator 1 view .LVU115
+ 375 009c 58B9     		cbnz	r0, .L22
+ 376 009e 0446     		mov	r4, r0
+  96:Core/Src/balance_car/remote_control.c ****     HAL_NVIC_EnableIRQ(USART1_IRQn);
+ 377              		.loc 1 96 5 is_stmt 1 view .LVU116
+ 378 00a0 0022     		movs	r2, #0
+ 379 00a2 0221     		movs	r1, #2
+ 380 00a4 2520     		movs	r0, #37
+ 381 00a6 FFF7FEFF 		bl	HAL_NVIC_SetPriority
+ 382              	.LVL23:
+  97:Core/Src/balance_car/remote_control.c ****     return HAL_OK;
+ 383              		.loc 1 97 5 view .LVU117
+ 384 00aa 2520     		movs	r0, #37
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 14
+
+
+ 385 00ac FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
+ 386              	.LVL24:
+  98:Core/Src/balance_car/remote_control.c **** }
+ 387              		.loc 1 98 5 view .LVU118
+ 388              	.L20:
+  99:Core/Src/balance_car/remote_control.c **** 
+ 389              		.loc 1 99 1 is_stmt 0 view .LVU119
+ 390 00b0 2046     		mov	r0, r4
+ 391 00b2 08B0     		add	sp, sp, #32
+ 392              	.LCFI4:
+ 393              		.cfi_remember_state
+ 394              		.cfi_def_cfa_offset 16
+ 395              		@ sp needed
+ 396 00b4 70BD     		pop	{r4, r5, r6, pc}
+ 397              	.L22:
+ 398              	.LCFI5:
+ 399              		.cfi_restore_state
+  92:Core/Src/balance_car/remote_control.c ****         return HAL_ERROR;
+ 400              		.loc 1 92 9 is_stmt 1 view .LVU120
+ 401 00b6 0120     		movs	r0, #1
+ 402 00b8 FFF7FEFF 		bl	RemoteControl_SetFault
+ 403              	.LVL25:
+  93:Core/Src/balance_car/remote_control.c ****     }
+ 404              		.loc 1 93 9 view .LVU121
+  93:Core/Src/balance_car/remote_control.c ****     }
+ 405              		.loc 1 93 16 is_stmt 0 view .LVU122
+ 406 00bc 0124     		movs	r4, #1
+ 407 00be F7E7     		b	.L20
+ 408              	.L24:
+ 409              		.align	2
+ 410              	.L23:
+ 411 00c0 00100240 		.word	1073876992
+ 412 00c4 00000140 		.word	1073807360
+ 413 00c8 000C0140 		.word	1073810432
+ 414 00cc 00000000 		.word	s_huart_remote
+ 415 00d0 00380140 		.word	1073821696
+ 416              		.cfi_endproc
+ 417              	.LFE71:
+ 419              		.section	.text.RemoteControl_StartReceive,"ax",%progbits
+ 420              		.align	1
+ 421              		.syntax unified
+ 422              		.thumb
+ 423              		.thumb_func
+ 425              	RemoteControl_StartReceive:
+ 426              	.LFB70:
+  56:Core/Src/balance_car/remote_control.c ****     if (HAL_UART_Receive_IT(&s_huart_remote, &s_rx_byte, 1U) != HAL_OK) {
+ 427              		.loc 1 56 1 is_stmt 1 view -0
+ 428              		.cfi_startproc
+ 429              		@ args = 0, pretend = 0, frame = 0
+ 430              		@ frame_needed = 0, uses_anonymous_args = 0
+ 431 0000 08B5     		push	{r3, lr}
+ 432              	.LCFI6:
+ 433              		.cfi_def_cfa_offset 8
+ 434              		.cfi_offset 3, -8
+ 435              		.cfi_offset 14, -4
+  57:Core/Src/balance_car/remote_control.c ****         RemoteControl_SetFault(REMOTE_FAULT_RX_RESTART);
+ 436              		.loc 1 57 5 view .LVU124
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 15
+
+
+  57:Core/Src/balance_car/remote_control.c ****         RemoteControl_SetFault(REMOTE_FAULT_RX_RESTART);
+ 437              		.loc 1 57 9 is_stmt 0 view .LVU125
+ 438 0002 0122     		movs	r2, #1
+ 439 0004 0449     		ldr	r1, .L29
+ 440 0006 0548     		ldr	r0, .L29+4
+ 441 0008 FFF7FEFF 		bl	HAL_UART_Receive_IT
+ 442              	.LVL26:
+  57:Core/Src/balance_car/remote_control.c ****         RemoteControl_SetFault(REMOTE_FAULT_RX_RESTART);
+ 443              		.loc 1 57 8 discriminator 1 view .LVU126
+ 444 000c 00B9     		cbnz	r0, .L28
+ 445              	.L25:
+  60:Core/Src/balance_car/remote_control.c **** 
+ 446              		.loc 1 60 1 view .LVU127
+ 447 000e 08BD     		pop	{r3, pc}
+ 448              	.L28:
+  58:Core/Src/balance_car/remote_control.c ****     }
+ 449              		.loc 1 58 9 is_stmt 1 view .LVU128
+ 450 0010 0220     		movs	r0, #2
+ 451 0012 FFF7FEFF 		bl	RemoteControl_SetFault
+ 452              	.LVL27:
+  60:Core/Src/balance_car/remote_control.c **** 
+ 453              		.loc 1 60 1 is_stmt 0 view .LVU129
+ 454 0016 FAE7     		b	.L25
+ 455              	.L30:
+ 456              		.align	2
+ 457              	.L29:
+ 458 0018 00000000 		.word	s_rx_byte
+ 459 001c 00000000 		.word	s_huart_remote
+ 460              		.cfi_endproc
+ 461              	.LFE70:
+ 463              		.section	.text.RemoteControl_MarkValid,"ax",%progbits
+ 464              		.align	1
+ 465              		.syntax unified
+ 466              		.thumb
+ 467              		.thumb_func
+ 469              	RemoteControl_MarkValid:
+ 470              	.LVL28:
+ 471              	.LFB74:
+ 142:Core/Src/balance_car/remote_control.c ****     g_remote_state.valid_cmd_count++;
+ 472              		.loc 1 142 1 is_stmt 1 view -0
+ 473              		.cfi_startproc
+ 474              		@ args = 0, pretend = 0, frame = 0
+ 475              		@ frame_needed = 0, uses_anonymous_args = 0
+ 142:Core/Src/balance_car/remote_control.c ****     g_remote_state.valid_cmd_count++;
+ 476              		.loc 1 142 1 is_stmt 0 view .LVU131
+ 477 0000 70B5     		push	{r4, r5, r6, lr}
+ 478              	.LCFI7:
+ 479              		.cfi_def_cfa_offset 16
+ 480              		.cfi_offset 4, -16
+ 481              		.cfi_offset 5, -12
+ 482              		.cfi_offset 6, -8
+ 483              		.cfi_offset 14, -4
+ 484 0002 0546     		mov	r5, r0
+ 143:Core/Src/balance_car/remote_control.c ****     g_remote_state.parser_error = 0U;
+ 485              		.loc 1 143 5 is_stmt 1 view .LVU132
+ 143:Core/Src/balance_car/remote_control.c ****     g_remote_state.parser_error = 0U;
+ 486              		.loc 1 143 19 is_stmt 0 view .LVU133
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 16
+
+
+ 487 0004 094C     		ldr	r4, .L33
+ 488 0006 A368     		ldr	r3, [r4, #8]
+ 143:Core/Src/balance_car/remote_control.c ****     g_remote_state.parser_error = 0U;
+ 489              		.loc 1 143 35 view .LVU134
+ 490 0008 0133     		adds	r3, r3, #1
+ 491 000a A360     		str	r3, [r4, #8]
+ 144:Core/Src/balance_car/remote_control.c ****     g_remote_state.last_rx_ms = HAL_GetTick();
+ 492              		.loc 1 144 5 is_stmt 1 view .LVU135
+ 144:Core/Src/balance_car/remote_control.c ****     g_remote_state.last_rx_ms = HAL_GetTick();
+ 493              		.loc 1 144 33 is_stmt 0 view .LVU136
+ 494 000c 0026     		movs	r6, #0
+ 495 000e A670     		strb	r6, [r4, #2]
+ 145:Core/Src/balance_car/remote_control.c ****     g_remote_state.link_active = 1U;
+ 496              		.loc 1 145 5 is_stmt 1 view .LVU137
+ 145:Core/Src/balance_car/remote_control.c ****     g_remote_state.link_active = 1U;
+ 497              		.loc 1 145 33 is_stmt 0 view .LVU138
+ 498 0010 FFF7FEFF 		bl	HAL_GetTick
+ 499              	.LVL29:
+ 145:Core/Src/balance_car/remote_control.c ****     g_remote_state.link_active = 1U;
+ 500              		.loc 1 145 31 discriminator 1 view .LVU139
+ 501 0014 6061     		str	r0, [r4, #20]
+ 146:Core/Src/balance_car/remote_control.c ****     strncpy((char *)g_remote_state.last_command, line, sizeof(g_remote_state.last_command) - 1U);
+ 502              		.loc 1 146 5 is_stmt 1 view .LVU140
+ 146:Core/Src/balance_car/remote_control.c ****     strncpy((char *)g_remote_state.last_command, line, sizeof(g_remote_state.last_command) - 1U);
+ 503              		.loc 1 146 32 is_stmt 0 view .LVU141
+ 504 0016 2046     		mov	r0, r4
+ 505 0018 0123     		movs	r3, #1
+ 506 001a 00F8243B 		strb	r3, [r0], #36
+ 147:Core/Src/balance_car/remote_control.c ****     g_remote_state.last_command[sizeof(g_remote_state.last_command) - 1U] = '\0';
+ 507              		.loc 1 147 5 is_stmt 1 view .LVU142
+ 508 001e 1F22     		movs	r2, #31
+ 509 0020 2946     		mov	r1, r5
+ 510 0022 FFF7FEFF 		bl	strncpy
+ 511              	.LVL30:
+ 148:Core/Src/balance_car/remote_control.c **** }
+ 512              		.loc 1 148 5 view .LVU143
+ 148:Core/Src/balance_car/remote_control.c **** }
+ 513              		.loc 1 148 75 is_stmt 0 view .LVU144
+ 514 0026 84F84360 		strb	r6, [r4, #67]
+ 149:Core/Src/balance_car/remote_control.c **** 
+ 515              		.loc 1 149 1 view .LVU145
+ 516 002a 70BD     		pop	{r4, r5, r6, pc}
+ 517              	.LVL31:
+ 518              	.L34:
+ 149:Core/Src/balance_car/remote_control.c **** 
+ 519              		.loc 1 149 1 view .LVU146
+ 520              		.align	2
+ 521              	.L33:
+ 522 002c 00000000 		.word	g_remote_state
+ 523              		.cfi_endproc
+ 524              	.LFE74:
+ 526              		.section	.text.RemoteControl_MarkInvalid,"ax",%progbits
+ 527              		.align	1
+ 528              		.syntax unified
+ 529              		.thumb
+ 530              		.thumb_func
+ 532              	RemoteControl_MarkInvalid:
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 17
+
+
+ 533              	.LVL32:
+ 534              	.LFB75:
+ 152:Core/Src/balance_car/remote_control.c ****     g_remote_state.invalid_cmd_count++;
+ 535              		.loc 1 152 1 is_stmt 1 view -0
+ 536              		.cfi_startproc
+ 537              		@ args = 0, pretend = 0, frame = 0
+ 538              		@ frame_needed = 0, uses_anonymous_args = 0
+ 152:Core/Src/balance_car/remote_control.c ****     g_remote_state.invalid_cmd_count++;
+ 539              		.loc 1 152 1 is_stmt 0 view .LVU148
+ 540 0000 38B5     		push	{r3, r4, r5, lr}
+ 541              	.LCFI8:
+ 542              		.cfi_def_cfa_offset 16
+ 543              		.cfi_offset 3, -16
+ 544              		.cfi_offset 4, -12
+ 545              		.cfi_offset 5, -8
+ 546              		.cfi_offset 14, -4
+ 547 0002 0546     		mov	r5, r0
+ 153:Core/Src/balance_car/remote_control.c ****     g_remote_state.parser_error = 1U;
+ 548              		.loc 1 153 5 is_stmt 1 view .LVU149
+ 153:Core/Src/balance_car/remote_control.c ****     g_remote_state.parser_error = 1U;
+ 549              		.loc 1 153 19 is_stmt 0 view .LVU150
+ 550 0004 094C     		ldr	r4, .L37
+ 551 0006 E368     		ldr	r3, [r4, #12]
+ 153:Core/Src/balance_car/remote_control.c ****     g_remote_state.parser_error = 1U;
+ 552              		.loc 1 153 37 view .LVU151
+ 553 0008 0133     		adds	r3, r3, #1
+ 554 000a E360     		str	r3, [r4, #12]
+ 154:Core/Src/balance_car/remote_control.c ****     RemoteControl_SetFault(REMOTE_FAULT_BAD_COMMAND);
+ 555              		.loc 1 154 5 is_stmt 1 view .LVU152
+ 154:Core/Src/balance_car/remote_control.c ****     RemoteControl_SetFault(REMOTE_FAULT_BAD_COMMAND);
+ 556              		.loc 1 154 33 is_stmt 0 view .LVU153
+ 557 000c 0123     		movs	r3, #1
+ 558 000e A370     		strb	r3, [r4, #2]
+ 155:Core/Src/balance_car/remote_control.c ****     strncpy((char *)g_remote_state.last_command, line, sizeof(g_remote_state.last_command) - 1U);
+ 559              		.loc 1 155 5 is_stmt 1 view .LVU154
+ 560 0010 0820     		movs	r0, #8
+ 561              	.LVL33:
+ 155:Core/Src/balance_car/remote_control.c ****     strncpy((char *)g_remote_state.last_command, line, sizeof(g_remote_state.last_command) - 1U);
+ 562              		.loc 1 155 5 is_stmt 0 view .LVU155
+ 563 0012 FFF7FEFF 		bl	RemoteControl_SetFault
+ 564              	.LVL34:
+ 156:Core/Src/balance_car/remote_control.c ****     g_remote_state.last_command[sizeof(g_remote_state.last_command) - 1U] = '\0';
+ 565              		.loc 1 156 5 is_stmt 1 view .LVU156
+ 566 0016 1F22     		movs	r2, #31
+ 567 0018 2946     		mov	r1, r5
+ 568 001a 04F12400 		add	r0, r4, #36
+ 569 001e FFF7FEFF 		bl	strncpy
+ 570              	.LVL35:
+ 157:Core/Src/balance_car/remote_control.c **** }
+ 571              		.loc 1 157 5 view .LVU157
+ 157:Core/Src/balance_car/remote_control.c **** }
+ 572              		.loc 1 157 75 is_stmt 0 view .LVU158
+ 573 0022 0023     		movs	r3, #0
+ 574 0024 84F84330 		strb	r3, [r4, #67]
+ 158:Core/Src/balance_car/remote_control.c **** 
+ 575              		.loc 1 158 1 view .LVU159
+ 576 0028 38BD     		pop	{r3, r4, r5, pc}
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 18
+
+
+ 577              	.LVL36:
+ 578              	.L38:
+ 158:Core/Src/balance_car/remote_control.c **** 
+ 579              		.loc 1 158 1 view .LVU160
+ 580 002a 00BF     		.align	2
+ 581              	.L37:
+ 582 002c 00000000 		.word	g_remote_state
+ 583              		.cfi_endproc
+ 584              	.LFE75:
+ 586              		.section	.text.RemoteControl_ParseFloat,"ax",%progbits
+ 587              		.align	1
+ 588              		.syntax unified
+ 589              		.thumb
+ 590              		.thumb_func
+ 592              	RemoteControl_ParseFloat:
+ 593              	.LVL37:
+ 594              	.LFB76:
+ 161:Core/Src/balance_car/remote_control.c ****     char *endptr;
+ 595              		.loc 1 161 1 is_stmt 1 view -0
+ 596              		.cfi_startproc
+ 597              		@ args = 0, pretend = 0, frame = 8
+ 598              		@ frame_needed = 0, uses_anonymous_args = 0
+ 162:Core/Src/balance_car/remote_control.c ****     float parsed;
+ 599              		.loc 1 162 5 view .LVU162
+ 163:Core/Src/balance_car/remote_control.c **** 
+ 600              		.loc 1 163 5 view .LVU163
+ 165:Core/Src/balance_car/remote_control.c ****         return 0U;
+ 601              		.loc 1 165 5 view .LVU164
+ 165:Core/Src/balance_car/remote_control.c ****         return 0U;
+ 602              		.loc 1 165 8 is_stmt 0 view .LVU165
+ 603 0000 B8B1     		cbz	r0, .L43
+ 161:Core/Src/balance_car/remote_control.c ****     char *endptr;
+ 604              		.loc 1 161 1 view .LVU166
+ 605 0002 30B5     		push	{r4, r5, lr}
+ 606              	.LCFI9:
+ 607              		.cfi_def_cfa_offset 12
+ 608              		.cfi_offset 4, -12
+ 609              		.cfi_offset 5, -8
+ 610              		.cfi_offset 14, -4
+ 611 0004 83B0     		sub	sp, sp, #12
+ 612              	.LCFI10:
+ 613              		.cfi_def_cfa_offset 24
+ 614 0006 0C46     		mov	r4, r1
+ 615 0008 0546     		mov	r5, r0
+ 165:Core/Src/balance_car/remote_control.c ****         return 0U;
+ 616              		.loc 1 165 19 discriminator 1 view .LVU167
+ 617 000a A1B1     		cbz	r1, .L44
+ 169:Core/Src/balance_car/remote_control.c ****     if (endptr == text) {
+ 618              		.loc 1 169 5 is_stmt 1 view .LVU168
+ 169:Core/Src/balance_car/remote_control.c ****     if (endptr == text) {
+ 619              		.loc 1 169 14 is_stmt 0 view .LVU169
+ 620 000c 01A9     		add	r1, sp, #4
+ 621              	.LVL38:
+ 169:Core/Src/balance_car/remote_control.c ****     if (endptr == text) {
+ 622              		.loc 1 169 14 view .LVU170
+ 623 000e FFF7FEFF 		bl	strtof
+ 624              	.LVL39:
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 19
+
+
+ 170:Core/Src/balance_car/remote_control.c ****         return 0U;
+ 625              		.loc 1 170 5 is_stmt 1 view .LVU171
+ 170:Core/Src/balance_car/remote_control.c ****         return 0U;
+ 626              		.loc 1 170 16 is_stmt 0 view .LVU172
+ 627 0012 019B     		ldr	r3, [sp, #4]
+ 170:Core/Src/balance_car/remote_control.c ****         return 0U;
+ 628              		.loc 1 170 8 view .LVU173
+ 629 0014 AB42     		cmp	r3, r5
+ 630 0016 03D1     		bne	.L41
+ 171:Core/Src/balance_car/remote_control.c ****     }
+ 631              		.loc 1 171 16 view .LVU174
+ 632 0018 0020     		movs	r0, #0
+ 633              	.LVL40:
+ 171:Core/Src/balance_car/remote_control.c ****     }
+ 634              		.loc 1 171 16 view .LVU175
+ 635 001a 08E0     		b	.L40
+ 636              	.LVL41:
+ 637              	.L42:
+ 174:Core/Src/balance_car/remote_control.c ****     }
+ 638              		.loc 1 174 9 is_stmt 1 view .LVU176
+ 174:Core/Src/balance_car/remote_control.c ****     }
+ 639              		.loc 1 174 15 is_stmt 0 view .LVU177
+ 640 001c 0133     		adds	r3, r3, #1
+ 641 001e 0193     		str	r3, [sp, #4]
+ 642              	.L41:
+ 173:Core/Src/balance_car/remote_control.c ****         endptr++;
+ 643              		.loc 1 173 20 is_stmt 1 view .LVU178
+ 173:Core/Src/balance_car/remote_control.c ****         endptr++;
+ 644              		.loc 1 173 12 is_stmt 0 view .LVU179
+ 645 0020 019B     		ldr	r3, [sp, #4]
+ 646 0022 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 173:Core/Src/balance_car/remote_control.c ****         endptr++;
+ 647              		.loc 1 173 20 view .LVU180
+ 648 0024 202A     		cmp	r2, #32
+ 649 0026 F9D0     		beq	.L42
+ 176:Core/Src/balance_car/remote_control.c ****         return 0U;
+ 650              		.loc 1 176 5 is_stmt 1 view .LVU181
+ 176:Core/Src/balance_car/remote_control.c ****         return 0U;
+ 651              		.loc 1 176 8 is_stmt 0 view .LVU182
+ 652 0028 3AB9     		cbnz	r2, .L46
+ 180:Core/Src/balance_car/remote_control.c ****     return 1U;
+ 653              		.loc 1 180 5 is_stmt 1 view .LVU183
+ 180:Core/Src/balance_car/remote_control.c ****     return 1U;
+ 654              		.loc 1 180 12 is_stmt 0 view .LVU184
+ 655 002a 2060     		str	r0, [r4]	@ float
+ 181:Core/Src/balance_car/remote_control.c **** }
+ 656              		.loc 1 181 5 is_stmt 1 view .LVU185
+ 181:Core/Src/balance_car/remote_control.c **** }
+ 657              		.loc 1 181 12 is_stmt 0 view .LVU186
+ 658 002c 0120     		movs	r0, #1
+ 659              	.LVL42:
+ 660              	.L40:
+ 182:Core/Src/balance_car/remote_control.c **** 
+ 661              		.loc 1 182 1 view .LVU187
+ 662 002e 03B0     		add	sp, sp, #12
+ 663              	.LCFI11:
+ 664              		.cfi_def_cfa_offset 12
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 20
+
+
+ 665              		@ sp needed
+ 666 0030 30BD     		pop	{r4, r5, pc}
+ 667              	.LVL43:
+ 668              	.L43:
+ 669              	.LCFI12:
+ 670              		.cfi_def_cfa_offset 0
+ 671              		.cfi_restore 4
+ 672              		.cfi_restore 5
+ 673              		.cfi_restore 14
+ 166:Core/Src/balance_car/remote_control.c ****     }
+ 674              		.loc 1 166 16 view .LVU188
+ 675 0032 0020     		movs	r0, #0
+ 676              	.LVL44:
+ 182:Core/Src/balance_car/remote_control.c **** 
+ 677              		.loc 1 182 1 view .LVU189
+ 678 0034 7047     		bx	lr
+ 679              	.LVL45:
+ 680              	.L44:
+ 681              	.LCFI13:
+ 682              		.cfi_def_cfa_offset 24
+ 683              		.cfi_offset 4, -12
+ 684              		.cfi_offset 5, -8
+ 685              		.cfi_offset 14, -4
+ 166:Core/Src/balance_car/remote_control.c ****     }
+ 686              		.loc 1 166 16 view .LVU190
+ 687 0036 0020     		movs	r0, #0
+ 688              	.LVL46:
+ 166:Core/Src/balance_car/remote_control.c ****     }
+ 689              		.loc 1 166 16 view .LVU191
+ 690 0038 F9E7     		b	.L40
+ 691              	.LVL47:
+ 692              	.L46:
+ 177:Core/Src/balance_car/remote_control.c ****     }
+ 693              		.loc 1 177 16 view .LVU192
+ 694 003a 0020     		movs	r0, #0
+ 695              	.LVL48:
+ 177:Core/Src/balance_car/remote_control.c ****     }
+ 696              		.loc 1 177 16 view .LVU193
+ 697 003c F7E7     		b	.L40
+ 698              		.cfi_endproc
+ 699              	.LFE76:
+ 701              		.section	.rodata.RemoteControl_ProcessLine.str1.4,"aMS",%progbits,1
+ 702              		.align	2
+ 703              	.LC0:
+ 704 0000 53544F50 		.ascii	"STOP\000"
+ 704      00
+ 705 0005 000000   		.align	2
+ 706              	.LC1:
+ 707 0008 50494E47 		.ascii	"PING\000"
+ 707      00
+ 708 000d 000000   		.align	2
+ 709              	.LC2:
+ 710 0010 52554E20 		.ascii	"RUN \000"
+ 710      00
+ 711 0015 000000   		.align	2
+ 712              	.LC3:
+ 713 0018 3100     		.ascii	"1\000"
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 21
+
+
+ 714 001a 0000     		.align	2
+ 715              	.LC4:
+ 716 001c 3000     		.ascii	"0\000"
+ 717 001e 0000     		.align	2
+ 718              	.LC5:
+ 719 0020 53504420 		.ascii	"SPD \000"
+ 719      00
+ 720 0025 000000   		.align	2
+ 721              	.LC6:
+ 722 0028 5455524E 		.ascii	"TURN \000"
+ 722      2000
+ 723              		.section	.text.RemoteControl_ProcessLine,"ax",%progbits
+ 724              		.align	1
+ 725              		.syntax unified
+ 726              		.thumb
+ 727              		.thumb_func
+ 729              	RemoteControl_ProcessLine:
+ 730              	.LVL49:
+ 731              	.LFB77:
+ 185:Core/Src/balance_car/remote_control.c ****     if (line[0] == '\0') {
+ 732              		.loc 1 185 1 is_stmt 1 view -0
+ 733              		.cfi_startproc
+ 734              		@ args = 0, pretend = 0, frame = 8
+ 735              		@ frame_needed = 0, uses_anonymous_args = 0
+ 186:Core/Src/balance_car/remote_control.c ****         return;
+ 736              		.loc 1 186 5 view .LVU195
+ 186:Core/Src/balance_car/remote_control.c ****         return;
+ 737              		.loc 1 186 13 is_stmt 0 view .LVU196
+ 738 0000 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 186:Core/Src/balance_car/remote_control.c ****         return;
+ 739              		.loc 1 186 8 view .LVU197
+ 740 0002 002B     		cmp	r3, #0
+ 741 0004 00F08C80 		beq	.L65
+ 185:Core/Src/balance_car/remote_control.c ****     if (line[0] == '\0') {
+ 742              		.loc 1 185 1 view .LVU198
+ 743 0008 30B5     		push	{r4, r5, lr}
+ 744              	.LCFI14:
+ 745              		.cfi_def_cfa_offset 12
+ 746              		.cfi_offset 4, -12
+ 747              		.cfi_offset 5, -8
+ 748              		.cfi_offset 14, -4
+ 749 000a 83B0     		sub	sp, sp, #12
+ 750              	.LCFI15:
+ 751              		.cfi_def_cfa_offset 24
+ 752 000c 0446     		mov	r4, r0
+ 190:Core/Src/balance_car/remote_control.c ****         RemoteControl_MarkValid(line);
+ 753              		.loc 1 190 5 is_stmt 1 view .LVU199
+ 190:Core/Src/balance_car/remote_control.c ****         RemoteControl_MarkValid(line);
+ 754              		.loc 1 190 23 is_stmt 0 view .LVU200
+ 755 000e 454B     		ldr	r3, .L75
+ 756 0010 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 190:Core/Src/balance_car/remote_control.c ****         RemoteControl_MarkValid(line);
+ 757              		.loc 1 190 8 view .LVU201
+ 758 0012 002B     		cmp	r3, #0
+ 759 0014 35D0     		beq	.L68
+ 195:Core/Src/balance_car/remote_control.c ****         g_balance_debug.speed_target = 0.0f;
+ 760              		.loc 1 195 5 is_stmt 1 view .LVU202
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 22
+
+
+ 195:Core/Src/balance_car/remote_control.c ****         g_balance_debug.speed_target = 0.0f;
+ 761              		.loc 1 195 9 is_stmt 0 view .LVU203
+ 762 0016 4449     		ldr	r1, .L75+4
+ 763 0018 FFF7FEFF 		bl	strcmp
+ 764              	.LVL50:
+ 195:Core/Src/balance_car/remote_control.c ****         g_balance_debug.speed_target = 0.0f;
+ 765              		.loc 1 195 8 discriminator 1 view .LVU204
+ 766 001c 0028     		cmp	r0, #0
+ 767 001e 33D0     		beq	.L69
+ 204:Core/Src/balance_car/remote_control.c ****         RemoteControl_MarkValid(line);
+ 768              		.loc 1 204 5 is_stmt 1 view .LVU205
+ 204:Core/Src/balance_car/remote_control.c ****         RemoteControl_MarkValid(line);
+ 769              		.loc 1 204 9 is_stmt 0 view .LVU206
+ 770 0020 4249     		ldr	r1, .L75+8
+ 771 0022 2046     		mov	r0, r4
+ 772 0024 FFF7FEFF 		bl	strcmp
+ 773              	.LVL51:
+ 204:Core/Src/balance_car/remote_control.c ****         RemoteControl_MarkValid(line);
+ 774              		.loc 1 204 8 discriminator 1 view .LVU207
+ 775 0028 0028     		cmp	r0, #0
+ 776 002a 38D0     		beq	.L70
+ 209:Core/Src/balance_car/remote_control.c ****         if (strcmp(&line[4], "1") == 0) {
+ 777              		.loc 1 209 5 is_stmt 1 view .LVU208
+ 209:Core/Src/balance_car/remote_control.c ****         if (strcmp(&line[4], "1") == 0) {
+ 778              		.loc 1 209 9 is_stmt 0 view .LVU209
+ 779 002c 0422     		movs	r2, #4
+ 780 002e 4049     		ldr	r1, .L75+12
+ 781 0030 2046     		mov	r0, r4
+ 782 0032 FFF7FEFF 		bl	strncmp
+ 783              	.LVL52:
+ 209:Core/Src/balance_car/remote_control.c ****         if (strcmp(&line[4], "1") == 0) {
+ 784              		.loc 1 209 8 discriminator 1 view .LVU210
+ 785 0036 60B9     		cbnz	r0, .L56
+ 210:Core/Src/balance_car/remote_control.c ****             if (g_remote_debug.allow_run_command != 0U) {
+ 786              		.loc 1 210 9 is_stmt 1 view .LVU211
+ 210:Core/Src/balance_car/remote_control.c ****             if (g_remote_debug.allow_run_command != 0U) {
+ 787              		.loc 1 210 20 is_stmt 0 view .LVU212
+ 788 0038 251D     		adds	r5, r4, #4
+ 210:Core/Src/balance_car/remote_control.c ****             if (g_remote_debug.allow_run_command != 0U) {
+ 789              		.loc 1 210 13 view .LVU213
+ 790 003a 3E49     		ldr	r1, .L75+16
+ 791 003c 2846     		mov	r0, r5
+ 792 003e FFF7FEFF 		bl	strcmp
+ 793              	.LVL53:
+ 210:Core/Src/balance_car/remote_control.c ****             if (g_remote_debug.allow_run_command != 0U) {
+ 794              		.loc 1 210 12 discriminator 1 view .LVU214
+ 795 0042 0028     		cmp	r0, #0
+ 796 0044 2FD0     		beq	.L71
+ 217:Core/Src/balance_car/remote_control.c ****             if (g_remote_debug.allow_run_command != 0U) {
+ 797              		.loc 1 217 9 is_stmt 1 view .LVU215
+ 217:Core/Src/balance_car/remote_control.c ****             if (g_remote_debug.allow_run_command != 0U) {
+ 798              		.loc 1 217 13 is_stmt 0 view .LVU216
+ 799 0046 3C49     		ldr	r1, .L75+20
+ 800 0048 2846     		mov	r0, r5
+ 801 004a FFF7FEFF 		bl	strcmp
+ 802              	.LVL54:
+ 217:Core/Src/balance_car/remote_control.c ****             if (g_remote_debug.allow_run_command != 0U) {
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 23
+
+
+ 803              		.loc 1 217 12 discriminator 1 view .LVU217
+ 804 004e 0028     		cmp	r0, #0
+ 805 0050 33D0     		beq	.L72
+ 806              	.L56:
+ 230:Core/Src/balance_car/remote_control.c ****         float speed;
+ 807              		.loc 1 230 5 is_stmt 1 view .LVU218
+ 230:Core/Src/balance_car/remote_control.c ****         float speed;
+ 808              		.loc 1 230 9 is_stmt 0 view .LVU219
+ 809 0052 0422     		movs	r2, #4
+ 810 0054 3949     		ldr	r1, .L75+24
+ 811 0056 2046     		mov	r0, r4
+ 812 0058 FFF7FEFF 		bl	strncmp
+ 813              	.LVL55:
+ 230:Core/Src/balance_car/remote_control.c ****         float speed;
+ 814              		.loc 1 230 8 discriminator 1 view .LVU220
+ 815 005c 0028     		cmp	r0, #0
+ 816 005e 3DD0     		beq	.L73
+ 817              	.L60:
+ 241:Core/Src/balance_car/remote_control.c ****         float turn;
+ 818              		.loc 1 241 5 is_stmt 1 view .LVU221
+ 241:Core/Src/balance_car/remote_control.c ****         float turn;
+ 819              		.loc 1 241 9 is_stmt 0 view .LVU222
+ 820 0060 0522     		movs	r2, #5
+ 821 0062 3749     		ldr	r1, .L75+28
+ 822 0064 2046     		mov	r0, r4
+ 823 0066 FFF7FEFF 		bl	strncmp
+ 824              	.LVL56:
+ 241:Core/Src/balance_car/remote_control.c ****         float turn;
+ 825              		.loc 1 241 8 discriminator 1 view .LVU223
+ 826 006a 28B9     		cbnz	r0, .L62
+ 827              	.LBB10:
+ 242:Core/Src/balance_car/remote_control.c ****         if (RemoteControl_ParseFloat(&line[5], &turn) != 0U) {
+ 828              		.loc 1 242 9 is_stmt 1 view .LVU224
+ 243:Core/Src/balance_car/remote_control.c ****             turn = RemoteControl_Clamp(turn, g_remote_debug.turn_limit);
+ 829              		.loc 1 243 9 view .LVU225
+ 243:Core/Src/balance_car/remote_control.c ****             turn = RemoteControl_Clamp(turn, g_remote_debug.turn_limit);
+ 830              		.loc 1 243 13 is_stmt 0 view .LVU226
+ 831 006c 01A9     		add	r1, sp, #4
+ 832 006e 601D     		adds	r0, r4, #5
+ 833 0070 FFF7FEFF 		bl	RemoteControl_ParseFloat
+ 834              	.LVL57:
+ 243:Core/Src/balance_car/remote_control.c ****             turn = RemoteControl_Clamp(turn, g_remote_debug.turn_limit);
+ 835              		.loc 1 243 12 discriminator 1 view .LVU227
+ 836 0074 0028     		cmp	r0, #0
+ 837 0076 45D1     		bne	.L74
+ 838              	.L62:
+ 839              	.LBE10:
+ 252:Core/Src/balance_car/remote_control.c **** }
+ 840              		.loc 1 252 5 is_stmt 1 view .LVU228
+ 841 0078 2046     		mov	r0, r4
+ 842 007a FFF7FEFF 		bl	RemoteControl_MarkInvalid
+ 843              	.LVL58:
+ 844              	.L51:
+ 253:Core/Src/balance_car/remote_control.c **** 
+ 845              		.loc 1 253 1 is_stmt 0 view .LVU229
+ 846 007e 03B0     		add	sp, sp, #12
+ 847              	.LCFI16:
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 24
+
+
+ 848              		.cfi_remember_state
+ 849              		.cfi_def_cfa_offset 12
+ 850              		@ sp needed
+ 851 0080 30BD     		pop	{r4, r5, pc}
+ 852              	.LVL59:
+ 853              	.L68:
+ 854              	.LCFI17:
+ 855              		.cfi_restore_state
+ 191:Core/Src/balance_car/remote_control.c ****         return;
+ 856              		.loc 1 191 9 is_stmt 1 view .LVU230
+ 857 0082 FFF7FEFF 		bl	RemoteControl_MarkValid
+ 858              	.LVL60:
+ 192:Core/Src/balance_car/remote_control.c ****     }
+ 859              		.loc 1 192 9 view .LVU231
+ 860 0086 FAE7     		b	.L51
+ 861              	.L69:
+ 196:Core/Src/balance_car/remote_control.c ****         g_balance_debug.turn_target = 0.0f;
+ 862              		.loc 1 196 9 view .LVU232
+ 196:Core/Src/balance_car/remote_control.c ****         g_balance_debug.turn_target = 0.0f;
+ 863              		.loc 1 196 38 is_stmt 0 view .LVU233
+ 864 0088 2E4A     		ldr	r2, .L75+32
+ 865 008a 0023     		movs	r3, #0
+ 866 008c 5360     		str	r3, [r2, #4]	@ float
+ 197:Core/Src/balance_car/remote_control.c ****         g_remote_state.speed_cmd = 0.0f;
+ 867              		.loc 1 197 9 is_stmt 1 view .LVU234
+ 197:Core/Src/balance_car/remote_control.c ****         g_remote_state.speed_cmd = 0.0f;
+ 868              		.loc 1 197 37 is_stmt 0 view .LVU235
+ 869 008e 9360     		str	r3, [r2, #8]	@ float
+ 198:Core/Src/balance_car/remote_control.c ****         g_remote_state.turn_cmd = 0.0f;
+ 870              		.loc 1 198 9 is_stmt 1 view .LVU236
+ 198:Core/Src/balance_car/remote_control.c ****         g_remote_state.turn_cmd = 0.0f;
+ 871              		.loc 1 198 34 is_stmt 0 view .LVU237
+ 872 0090 2D4A     		ldr	r2, .L75+36
+ 873 0092 D361     		str	r3, [r2, #28]	@ float
+ 199:Core/Src/balance_car/remote_control.c ****         RemoteControl_MarkValid(line);
+ 874              		.loc 1 199 9 is_stmt 1 view .LVU238
+ 199:Core/Src/balance_car/remote_control.c ****         RemoteControl_MarkValid(line);
+ 875              		.loc 1 199 33 is_stmt 0 view .LVU239
+ 876 0094 1362     		str	r3, [r2, #32]	@ float
+ 200:Core/Src/balance_car/remote_control.c ****         return;
+ 877              		.loc 1 200 9 is_stmt 1 view .LVU240
+ 878 0096 2046     		mov	r0, r4
+ 879 0098 FFF7FEFF 		bl	RemoteControl_MarkValid
+ 880              	.LVL61:
+ 201:Core/Src/balance_car/remote_control.c ****     }
+ 881              		.loc 1 201 9 view .LVU241
+ 882 009c EFE7     		b	.L51
+ 883              	.L70:
+ 205:Core/Src/balance_car/remote_control.c ****         return;
+ 884              		.loc 1 205 9 view .LVU242
+ 885 009e 2046     		mov	r0, r4
+ 886 00a0 FFF7FEFF 		bl	RemoteControl_MarkValid
+ 887              	.LVL62:
+ 206:Core/Src/balance_car/remote_control.c ****     }
+ 888              		.loc 1 206 9 view .LVU243
+ 889 00a4 EBE7     		b	.L51
+ 890              	.L71:
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 25
+
+
+ 211:Core/Src/balance_car/remote_control.c ****                 g_balance_debug.run_enable = 1U;
+ 891              		.loc 1 211 13 view .LVU244
+ 211:Core/Src/balance_car/remote_control.c ****                 g_balance_debug.run_enable = 1U;
+ 892              		.loc 1 211 31 is_stmt 0 view .LVU245
+ 893 00a6 1F4B     		ldr	r3, .L75
+ 894 00a8 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 211:Core/Src/balance_car/remote_control.c ****                 g_balance_debug.run_enable = 1U;
+ 895              		.loc 1 211 16 view .LVU246
+ 896 00aa 13B1     		cbz	r3, .L58
+ 212:Core/Src/balance_car/remote_control.c ****             }
+ 897              		.loc 1 212 17 is_stmt 1 view .LVU247
+ 212:Core/Src/balance_car/remote_control.c ****             }
+ 898              		.loc 1 212 44 is_stmt 0 view .LVU248
+ 899 00ac 254B     		ldr	r3, .L75+32
+ 900 00ae 0122     		movs	r2, #1
+ 901 00b0 1A70     		strb	r2, [r3]
+ 902              	.L58:
+ 214:Core/Src/balance_car/remote_control.c ****             return;
+ 903              		.loc 1 214 13 is_stmt 1 view .LVU249
+ 904 00b2 2046     		mov	r0, r4
+ 905 00b4 FFF7FEFF 		bl	RemoteControl_MarkValid
+ 906              	.LVL63:
+ 215:Core/Src/balance_car/remote_control.c ****         }
+ 907              		.loc 1 215 13 view .LVU250
+ 908 00b8 E1E7     		b	.L51
+ 909              	.L72:
+ 218:Core/Src/balance_car/remote_control.c ****                 g_balance_debug.run_enable = 0U;
+ 910              		.loc 1 218 13 view .LVU251
+ 218:Core/Src/balance_car/remote_control.c ****                 g_balance_debug.run_enable = 0U;
+ 911              		.loc 1 218 31 is_stmt 0 view .LVU252
+ 912 00ba 1A4B     		ldr	r3, .L75
+ 913 00bc 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 218:Core/Src/balance_car/remote_control.c ****                 g_balance_debug.run_enable = 0U;
+ 914              		.loc 1 218 16 view .LVU253
+ 915 00be 13B1     		cbz	r3, .L59
+ 219:Core/Src/balance_car/remote_control.c ****             }
+ 916              		.loc 1 219 17 is_stmt 1 view .LVU254
+ 219:Core/Src/balance_car/remote_control.c ****             }
+ 917              		.loc 1 219 44 is_stmt 0 view .LVU255
+ 918 00c0 204B     		ldr	r3, .L75+32
+ 919 00c2 0022     		movs	r2, #0
+ 920 00c4 1A70     		strb	r2, [r3]
+ 921              	.L59:
+ 221:Core/Src/balance_car/remote_control.c ****             g_balance_debug.turn_target = 0.0f;
+ 922              		.loc 1 221 13 is_stmt 1 view .LVU256
+ 221:Core/Src/balance_car/remote_control.c ****             g_balance_debug.turn_target = 0.0f;
+ 923              		.loc 1 221 42 is_stmt 0 view .LVU257
+ 924 00c6 1F4A     		ldr	r2, .L75+32
+ 925 00c8 0023     		movs	r3, #0
+ 926 00ca 5360     		str	r3, [r2, #4]	@ float
+ 222:Core/Src/balance_car/remote_control.c ****             g_remote_state.speed_cmd = 0.0f;
+ 927              		.loc 1 222 13 is_stmt 1 view .LVU258
+ 222:Core/Src/balance_car/remote_control.c ****             g_remote_state.speed_cmd = 0.0f;
+ 928              		.loc 1 222 41 is_stmt 0 view .LVU259
+ 929 00cc 9360     		str	r3, [r2, #8]	@ float
+ 223:Core/Src/balance_car/remote_control.c ****             g_remote_state.turn_cmd = 0.0f;
+ 930              		.loc 1 223 13 is_stmt 1 view .LVU260
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 26
+
+
+ 223:Core/Src/balance_car/remote_control.c ****             g_remote_state.turn_cmd = 0.0f;
+ 931              		.loc 1 223 38 is_stmt 0 view .LVU261
+ 932 00ce 1E4A     		ldr	r2, .L75+36
+ 933 00d0 D361     		str	r3, [r2, #28]	@ float
+ 224:Core/Src/balance_car/remote_control.c ****             RemoteControl_MarkValid(line);
+ 934              		.loc 1 224 13 is_stmt 1 view .LVU262
+ 224:Core/Src/balance_car/remote_control.c ****             RemoteControl_MarkValid(line);
+ 935              		.loc 1 224 37 is_stmt 0 view .LVU263
+ 936 00d2 1362     		str	r3, [r2, #32]	@ float
+ 225:Core/Src/balance_car/remote_control.c ****             return;
+ 937              		.loc 1 225 13 is_stmt 1 view .LVU264
+ 938 00d4 2046     		mov	r0, r4
+ 939 00d6 FFF7FEFF 		bl	RemoteControl_MarkValid
+ 940              	.LVL64:
+ 226:Core/Src/balance_car/remote_control.c ****         }
+ 941              		.loc 1 226 13 view .LVU265
+ 942 00da D0E7     		b	.L51
+ 943              	.L73:
+ 944              	.LBB11:
+ 231:Core/Src/balance_car/remote_control.c ****         if (RemoteControl_ParseFloat(&line[4], &speed) != 0U) {
+ 945              		.loc 1 231 9 view .LVU266
+ 232:Core/Src/balance_car/remote_control.c ****             speed = RemoteControl_Clamp(speed, g_remote_debug.speed_limit);
+ 946              		.loc 1 232 9 view .LVU267
+ 232:Core/Src/balance_car/remote_control.c ****             speed = RemoteControl_Clamp(speed, g_remote_debug.speed_limit);
+ 947              		.loc 1 232 13 is_stmt 0 view .LVU268
+ 948 00dc 01A9     		add	r1, sp, #4
+ 949 00de 201D     		adds	r0, r4, #4
+ 950 00e0 FFF7FEFF 		bl	RemoteControl_ParseFloat
+ 951              	.LVL65:
+ 232:Core/Src/balance_car/remote_control.c ****             speed = RemoteControl_Clamp(speed, g_remote_debug.speed_limit);
+ 952              		.loc 1 232 12 discriminator 1 view .LVU269
+ 953 00e4 0028     		cmp	r0, #0
+ 954 00e6 BBD0     		beq	.L60
+ 233:Core/Src/balance_car/remote_control.c ****             g_balance_debug.speed_target = speed;
+ 955              		.loc 1 233 13 is_stmt 1 view .LVU270
+ 233:Core/Src/balance_car/remote_control.c ****             g_balance_debug.speed_target = speed;
+ 956              		.loc 1 233 62 is_stmt 0 view .LVU271
+ 957 00e8 0E4B     		ldr	r3, .L75
+ 958 00ea 5968     		ldr	r1, [r3, #4]	@ float
+ 233:Core/Src/balance_car/remote_control.c ****             g_balance_debug.speed_target = speed;
+ 959              		.loc 1 233 21 view .LVU272
+ 960 00ec 0198     		ldr	r0, [sp, #4]	@ float
+ 961 00ee FFF7FEFF 		bl	RemoteControl_Clamp
+ 962              	.LVL66:
+ 233:Core/Src/balance_car/remote_control.c ****             g_balance_debug.speed_target = speed;
+ 963              		.loc 1 233 19 discriminator 1 view .LVU273
+ 964 00f2 0190     		str	r0, [sp, #4]	@ float
+ 234:Core/Src/balance_car/remote_control.c ****             g_remote_state.speed_cmd = speed;
+ 965              		.loc 1 234 13 is_stmt 1 view .LVU274
+ 234:Core/Src/balance_car/remote_control.c ****             g_remote_state.speed_cmd = speed;
+ 966              		.loc 1 234 42 is_stmt 0 view .LVU275
+ 967 00f4 134B     		ldr	r3, .L75+32
+ 968 00f6 5860     		str	r0, [r3, #4]	@ float
+ 235:Core/Src/balance_car/remote_control.c ****             RemoteControl_MarkValid(line);
+ 969              		.loc 1 235 13 is_stmt 1 view .LVU276
+ 235:Core/Src/balance_car/remote_control.c ****             RemoteControl_MarkValid(line);
+ 970              		.loc 1 235 38 is_stmt 0 view .LVU277
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 27
+
+
+ 971 00f8 134B     		ldr	r3, .L75+36
+ 972 00fa D861     		str	r0, [r3, #28]	@ float
+ 236:Core/Src/balance_car/remote_control.c ****             return;
+ 973              		.loc 1 236 13 is_stmt 1 view .LVU278
+ 974 00fc 2046     		mov	r0, r4
+ 975 00fe FFF7FEFF 		bl	RemoteControl_MarkValid
+ 976              	.LVL67:
+ 237:Core/Src/balance_car/remote_control.c ****         }
+ 977              		.loc 1 237 13 view .LVU279
+ 978 0102 BCE7     		b	.L51
+ 979              	.L74:
+ 237:Core/Src/balance_car/remote_control.c ****         }
+ 980              		.loc 1 237 13 is_stmt 0 view .LVU280
+ 981              	.LBE11:
+ 982              	.LBB12:
+ 244:Core/Src/balance_car/remote_control.c ****             g_balance_debug.turn_target = turn;
+ 983              		.loc 1 244 13 is_stmt 1 view .LVU281
+ 244:Core/Src/balance_car/remote_control.c ****             g_balance_debug.turn_target = turn;
+ 984              		.loc 1 244 60 is_stmt 0 view .LVU282
+ 985 0104 074B     		ldr	r3, .L75
+ 986 0106 9968     		ldr	r1, [r3, #8]	@ float
+ 244:Core/Src/balance_car/remote_control.c ****             g_balance_debug.turn_target = turn;
+ 987              		.loc 1 244 20 view .LVU283
+ 988 0108 0198     		ldr	r0, [sp, #4]	@ float
+ 989 010a FFF7FEFF 		bl	RemoteControl_Clamp
+ 990              	.LVL68:
+ 244:Core/Src/balance_car/remote_control.c ****             g_balance_debug.turn_target = turn;
+ 991              		.loc 1 244 18 discriminator 1 view .LVU284
+ 992 010e 0190     		str	r0, [sp, #4]	@ float
+ 245:Core/Src/balance_car/remote_control.c ****             g_remote_state.turn_cmd = turn;
+ 993              		.loc 1 245 13 is_stmt 1 view .LVU285
+ 245:Core/Src/balance_car/remote_control.c ****             g_remote_state.turn_cmd = turn;
+ 994              		.loc 1 245 41 is_stmt 0 view .LVU286
+ 995 0110 0C4B     		ldr	r3, .L75+32
+ 996 0112 9860     		str	r0, [r3, #8]	@ float
+ 246:Core/Src/balance_car/remote_control.c ****             RemoteControl_MarkValid(line);
+ 997              		.loc 1 246 13 is_stmt 1 view .LVU287
+ 246:Core/Src/balance_car/remote_control.c ****             RemoteControl_MarkValid(line);
+ 998              		.loc 1 246 37 is_stmt 0 view .LVU288
+ 999 0114 0C4B     		ldr	r3, .L75+36
+ 1000 0116 1862     		str	r0, [r3, #32]	@ float
+ 247:Core/Src/balance_car/remote_control.c ****             return;
+ 1001              		.loc 1 247 13 is_stmt 1 view .LVU289
+ 1002 0118 2046     		mov	r0, r4
+ 1003 011a FFF7FEFF 		bl	RemoteControl_MarkValid
+ 1004              	.LVL69:
+ 248:Core/Src/balance_car/remote_control.c ****         }
+ 1005              		.loc 1 248 13 view .LVU290
+ 1006 011e AEE7     		b	.L51
+ 1007              	.LVL70:
+ 1008              	.L65:
+ 1009              	.LCFI18:
+ 1010              		.cfi_def_cfa_offset 0
+ 1011              		.cfi_restore 4
+ 1012              		.cfi_restore 5
+ 1013              		.cfi_restore 14
+ 248:Core/Src/balance_car/remote_control.c ****         }
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 28
+
+
+ 1014              		.loc 1 248 13 is_stmt 0 view .LVU291
+ 1015 0120 7047     		bx	lr
+ 1016              	.L76:
+ 1017 0122 00BF     		.align	2
+ 1018              	.L75:
+ 1019 0124 00000000 		.word	g_remote_debug
+ 1020 0128 00000000 		.word	.LC0
+ 1021 012c 08000000 		.word	.LC1
+ 1022 0130 10000000 		.word	.LC2
+ 1023 0134 18000000 		.word	.LC3
+ 1024 0138 1C000000 		.word	.LC4
+ 1025 013c 20000000 		.word	.LC5
+ 1026 0140 28000000 		.word	.LC6
+ 1027 0144 00000000 		.word	g_balance_debug
+ 1028 0148 00000000 		.word	g_remote_state
+ 1029              	.LBE12:
+ 1030              		.cfi_endproc
+ 1031              	.LFE77:
+ 1033              		.global	__aeabi_fmul
+ 1034              		.global	__aeabi_f2iz
+ 1035              		.global	__aeabi_fadd
+ 1036              		.section	.rodata.RemoteControl_SendTelemetry.str1.4,"aMS",%progbits,1
+ 1037              		.align	2
+ 1038              	.LC7:
+ 1039 0000 4F4C4544 		.ascii	"OLED Temp:%d.%d C|Humi:%d %%|Weight:%d g|ADC:%u\012"
+ 1039      2054656D 
+ 1039      703A2564 
+ 1039      2E256420 
+ 1039      437C4875 
+ 1040 0030 00       		.ascii	"\000"
+ 1041              		.section	.text.RemoteControl_SendTelemetry,"ax",%progbits
+ 1042              		.align	1
+ 1043              		.syntax unified
+ 1044              		.thumb
+ 1045              		.thumb_func
+ 1047              	RemoteControl_SendTelemetry:
+ 1048              	.LFB73:
+ 117:Core/Src/balance_car/remote_control.c ****     char line[96];
+ 1049              		.loc 1 117 1 is_stmt 1 view -0
+ 1050              		.cfi_startproc
+ 1051              		@ args = 0, pretend = 0, frame = 96
+ 1052              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1053 0000 70B5     		push	{r4, r5, r6, lr}
+ 1054              	.LCFI19:
+ 1055              		.cfi_def_cfa_offset 16
+ 1056              		.cfi_offset 4, -16
+ 1057              		.cfi_offset 5, -12
+ 1058              		.cfi_offset 6, -8
+ 1059              		.cfi_offset 14, -4
+ 1060 0002 9CB0     		sub	sp, sp, #112
+ 1061              	.LCFI20:
+ 1062              		.cfi_def_cfa_offset 128
+ 118:Core/Src/balance_car/remote_control.c ****     int temp10 = (int)(g_sensor_state.temperature_c * 10.0f);
+ 1063              		.loc 1 118 5 view .LVU293
+ 119:Core/Src/balance_car/remote_control.c ****     int humi = (int)(g_sensor_state.humidity_percent + 0.5f);
+ 1064              		.loc 1 119 5 view .LVU294
+ 119:Core/Src/balance_car/remote_control.c ****     int humi = (int)(g_sensor_state.humidity_percent + 0.5f);
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 29
+
+
+ 1065              		.loc 1 119 38 is_stmt 0 view .LVU295
+ 1066 0004 234E     		ldr	r6, .L86
+ 1067 0006 3068     		ldr	r0, [r6]	@ float
+ 119:Core/Src/balance_car/remote_control.c ****     int humi = (int)(g_sensor_state.humidity_percent + 0.5f);
+ 1068              		.loc 1 119 53 view .LVU296
+ 1069 0008 2349     		ldr	r1, .L86+4
+ 1070 000a FFF7FEFF 		bl	__aeabi_fmul
+ 1071              	.LVL71:
+ 119:Core/Src/balance_car/remote_control.c ****     int humi = (int)(g_sensor_state.humidity_percent + 0.5f);
+ 1072              		.loc 1 119 9 view .LVU297
+ 1073 000e FFF7FEFF 		bl	__aeabi_f2iz
+ 1074              	.LVL72:
+ 1075 0012 0446     		mov	r4, r0
+ 1076              	.LVL73:
+ 120:Core/Src/balance_car/remote_control.c ****     int weight = (int)(g_sensor_state.weight_g + 0.5f);
+ 1077              		.loc 1 120 5 is_stmt 1 view .LVU298
+ 120:Core/Src/balance_car/remote_control.c ****     int weight = (int)(g_sensor_state.weight_g + 0.5f);
+ 1078              		.loc 1 120 36 is_stmt 0 view .LVU299
+ 1079 0014 7068     		ldr	r0, [r6, #4]	@ float
+ 1080              	.LVL74:
+ 120:Core/Src/balance_car/remote_control.c ****     int weight = (int)(g_sensor_state.weight_g + 0.5f);
+ 1081              		.loc 1 120 54 view .LVU300
+ 1082 0016 4FF07C51 		mov	r1, #1056964608
+ 1083 001a FFF7FEFF 		bl	__aeabi_fadd
+ 1084              	.LVL75:
+ 120:Core/Src/balance_car/remote_control.c ****     int weight = (int)(g_sensor_state.weight_g + 0.5f);
+ 1085              		.loc 1 120 9 view .LVU301
+ 1086 001e FFF7FEFF 		bl	__aeabi_f2iz
+ 1087              	.LVL76:
+ 1088 0022 0546     		mov	r5, r0
+ 1089              	.LVL77:
+ 121:Core/Src/balance_car/remote_control.c ****     int len;
+ 1090              		.loc 1 121 5 is_stmt 1 view .LVU302
+ 121:Core/Src/balance_car/remote_control.c ****     int len;
+ 1091              		.loc 1 121 38 is_stmt 0 view .LVU303
+ 1092 0024 F068     		ldr	r0, [r6, #12]	@ float
+ 1093              	.LVL78:
+ 121:Core/Src/balance_car/remote_control.c ****     int len;
+ 1094              		.loc 1 121 48 view .LVU304
+ 1095 0026 4FF07C51 		mov	r1, #1056964608
+ 1096 002a FFF7FEFF 		bl	__aeabi_fadd
+ 1097              	.LVL79:
+ 121:Core/Src/balance_car/remote_control.c ****     int len;
+ 1098              		.loc 1 121 9 view .LVU305
+ 1099 002e FFF7FEFF 		bl	__aeabi_f2iz
+ 1100              	.LVL80:
+ 122:Core/Src/balance_car/remote_control.c **** 
+ 1101              		.loc 1 122 5 is_stmt 1 view .LVU306
+ 124:Core/Src/balance_car/remote_control.c ****                    "OLED Temp:%d.%d C|Humi:%d %%|Weight:%d g|ADC:%u\n",
+ 1102              		.loc 1 124 5 view .LVU307
+ 124:Core/Src/balance_car/remote_control.c ****                    "OLED Temp:%d.%d C|Humi:%d %%|Weight:%d g|ADC:%u\n",
+ 1103              		.loc 1 124 11 is_stmt 0 view .LVU308
+ 1104 0032 1A4A     		ldr	r2, .L86+8
+ 1105 0034 82FB0432 		smull	r3, r2, r2, r4
+ 1106 0038 E317     		asrs	r3, r4, #31
+ 1107 003a C3EBA203 		rsb	r3, r3, r2, asr #2
+ 1108 003e 002C     		cmp	r4, #0
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 30
+
+
+ 1109 0040 22DB     		blt	.L85
+ 124:Core/Src/balance_car/remote_control.c ****                    "OLED Temp:%d.%d C|Humi:%d %%|Weight:%d g|ADC:%u\n",
+ 1110              		.loc 1 124 11 discriminator 2 view .LVU309
+ 1111 0042 1649     		ldr	r1, .L86+8
+ 1112 0044 81FB0421 		smull	r2, r1, r1, r4
+ 1113 0048 E217     		asrs	r2, r4, #31
+ 1114 004a C2EBA102 		rsb	r2, r2, r1, asr #2
+ 1115 004e 02EB8202 		add	r2, r2, r2, lsl #2
+ 1116 0052 A4EB4202 		sub	r2, r4, r2, lsl #1
+ 1117              	.L79:
+ 130:Core/Src/balance_car/remote_control.c ****     if (len <= 0) {
+ 1118              		.loc 1 130 44 view .LVU310
+ 1119 0056 0F49     		ldr	r1, .L86
+ 1120 0058 0989     		ldrh	r1, [r1, #8]
+ 1121 005a 89B2     		uxth	r1, r1
+ 124:Core/Src/balance_car/remote_control.c ****                    "OLED Temp:%d.%d C|Humi:%d %%|Weight:%d g|ADC:%u\n",
+ 1122              		.loc 1 124 11 view .LVU311
+ 1123 005c 0391     		str	r1, [sp, #12]
+ 1124 005e 0290     		str	r0, [sp, #8]
+ 1125 0060 0195     		str	r5, [sp, #4]
+ 1126 0062 0092     		str	r2, [sp]
+ 1127 0064 0E4A     		ldr	r2, .L86+12
+ 1128 0066 6021     		movs	r1, #96
+ 1129 0068 04A8     		add	r0, sp, #16
+ 1130              	.LVL81:
+ 124:Core/Src/balance_car/remote_control.c ****                    "OLED Temp:%d.%d C|Humi:%d %%|Weight:%d g|ADC:%u\n",
+ 1131              		.loc 1 124 11 view .LVU312
+ 1132 006a FFF7FEFF 		bl	snprintf
+ 1133              	.LVL82:
+ 131:Core/Src/balance_car/remote_control.c ****         return;
+ 1134              		.loc 1 131 5 is_stmt 1 view .LVU313
+ 131:Core/Src/balance_car/remote_control.c ****         return;
+ 1135              		.loc 1 131 8 is_stmt 0 view .LVU314
+ 1136 006e 0028     		cmp	r0, #0
+ 131:Core/Src/balance_car/remote_control.c ****         return;
+ 1137              		.loc 1 131 8 view .LVU315
+ 1138 0070 08DD     		ble	.L77
+ 134:Core/Src/balance_car/remote_control.c ****         len = (int)sizeof(line) - 1;
+ 1139              		.loc 1 134 5 is_stmt 1 view .LVU316
+ 134:Core/Src/balance_car/remote_control.c ****         len = (int)sizeof(line) - 1;
+ 1140              		.loc 1 134 8 is_stmt 0 view .LVU317
+ 1141 0072 5F28     		cmp	r0, #95
+ 1142 0074 00DD     		ble	.L82
+ 135:Core/Src/balance_car/remote_control.c ****     }
+ 1143              		.loc 1 135 13 view .LVU318
+ 1144 0076 5F20     		movs	r0, #95
+ 1145              	.LVL83:
+ 1146              	.L82:
+ 138:Core/Src/balance_car/remote_control.c **** }
+ 1147              		.loc 1 138 5 is_stmt 1 view .LVU319
+ 138:Core/Src/balance_car/remote_control.c **** }
+ 1148              		.loc 1 138 11 is_stmt 0 view .LVU320
+ 1149 0078 0523     		movs	r3, #5
+ 1150 007a 82B2     		uxth	r2, r0
+ 1151 007c 04A9     		add	r1, sp, #16
+ 1152 007e 0948     		ldr	r0, .L86+16
+ 1153              	.LVL84:
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 31
+
+
+ 138:Core/Src/balance_car/remote_control.c **** }
+ 1154              		.loc 1 138 11 view .LVU321
+ 1155 0080 FFF7FEFF 		bl	HAL_UART_Transmit
+ 1156              	.LVL85:
+ 1157              	.L77:
+ 139:Core/Src/balance_car/remote_control.c **** 
+ 1158              		.loc 1 139 1 view .LVU322
+ 1159 0084 1CB0     		add	sp, sp, #112
+ 1160              	.LCFI21:
+ 1161              		.cfi_remember_state
+ 1162              		.cfi_def_cfa_offset 16
+ 1163              		@ sp needed
+ 1164 0086 70BD     		pop	{r4, r5, r6, pc}
+ 1165              	.LVL86:
+ 1166              	.L85:
+ 1167              	.LCFI22:
+ 1168              		.cfi_restore_state
+ 127:Core/Src/balance_car/remote_control.c ****                    humi,
+ 1169              		.loc 1 127 42 view .LVU323
+ 1170 0088 03EB8302 		add	r2, r3, r3, lsl #2
+ 124:Core/Src/balance_car/remote_control.c ****                    "OLED Temp:%d.%d C|Humi:%d %%|Weight:%d g|ADC:%u\n",
+ 1171              		.loc 1 124 11 discriminator 1 view .LVU324
+ 1172 008c C4EB4202 		rsb	r2, r4, r2, lsl #1
+ 1173 0090 E1E7     		b	.L79
+ 1174              	.L87:
+ 1175 0092 00BF     		.align	2
+ 1176              	.L86:
+ 1177 0094 00000000 		.word	g_sensor_state
+ 1178 0098 00002041 		.word	1092616192
+ 1179 009c 67666666 		.word	1717986919
+ 1180 00a0 00000000 		.word	.LC7
+ 1181 00a4 00000000 		.word	s_huart_remote
+ 1182              		.cfi_endproc
+ 1183              	.LFE73:
+ 1185              		.section	.text.RemoteControl_Init,"ax",%progbits
+ 1186              		.align	1
+ 1187              		.global	RemoteControl_Init
+ 1188              		.syntax unified
+ 1189              		.thumb
+ 1190              		.thumb_func
+ 1192              	RemoteControl_Init:
+ 1193              	.LFB72:
+ 102:Core/Src/balance_car/remote_control.c ****     HAL_StatusTypeDef status;
+ 1194              		.loc 1 102 1 is_stmt 1 view -0
+ 1195              		.cfi_startproc
+ 1196              		@ args = 0, pretend = 0, frame = 0
+ 1197              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1198 0000 10B5     		push	{r4, lr}
+ 1199              	.LCFI23:
+ 1200              		.cfi_def_cfa_offset 8
+ 1201              		.cfi_offset 4, -8
+ 1202              		.cfi_offset 14, -4
+ 103:Core/Src/balance_car/remote_control.c **** 
+ 1203              		.loc 1 103 5 view .LVU326
+ 105:Core/Src/balance_car/remote_control.c ****     s_rx_index = 0U;
+ 1204              		.loc 1 105 5 view .LVU327
+ 1205 0002 4422     		movs	r2, #68
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 32
+
+
+ 1206 0004 0021     		movs	r1, #0
+ 1207 0006 0B48     		ldr	r0, .L92
+ 1208 0008 FFF7FEFF 		bl	memset
+ 1209              	.LVL87:
+ 106:Core/Src/balance_car/remote_control.c ****     s_line_ready = 0U;
+ 1210              		.loc 1 106 5 view .LVU328
+ 106:Core/Src/balance_car/remote_control.c ****     s_line_ready = 0U;
+ 1211              		.loc 1 106 16 is_stmt 0 view .LVU329
+ 1212 000c 0023     		movs	r3, #0
+ 1213 000e 0A4A     		ldr	r2, .L92+4
+ 1214 0010 1370     		strb	r3, [r2]
+ 107:Core/Src/balance_car/remote_control.c ****     s_next_telemetry_ms = HAL_GetTick() + REMOTE_TELEMETRY_PERIOD_MS;
+ 1215              		.loc 1 107 5 is_stmt 1 view .LVU330
+ 107:Core/Src/balance_car/remote_control.c ****     s_next_telemetry_ms = HAL_GetTick() + REMOTE_TELEMETRY_PERIOD_MS;
+ 1216              		.loc 1 107 18 is_stmt 0 view .LVU331
+ 1217 0012 0A4A     		ldr	r2, .L92+8
+ 1218 0014 1370     		strb	r3, [r2]
+ 108:Core/Src/balance_car/remote_control.c ****     status = RemoteControl_UartInit();
+ 1219              		.loc 1 108 5 is_stmt 1 view .LVU332
+ 108:Core/Src/balance_car/remote_control.c ****     status = RemoteControl_UartInit();
+ 1220              		.loc 1 108 27 is_stmt 0 view .LVU333
+ 1221 0016 FFF7FEFF 		bl	HAL_GetTick
+ 1222              	.LVL88:
+ 108:Core/Src/balance_car/remote_control.c ****     status = RemoteControl_UartInit();
+ 1223              		.loc 1 108 41 discriminator 1 view .LVU334
+ 1224 001a 00F5FA70 		add	r0, r0, #500
+ 108:Core/Src/balance_car/remote_control.c ****     status = RemoteControl_UartInit();
+ 1225              		.loc 1 108 25 discriminator 1 view .LVU335
+ 1226 001e 084B     		ldr	r3, .L92+12
+ 1227 0020 1860     		str	r0, [r3]
+ 109:Core/Src/balance_car/remote_control.c ****     if (status == HAL_OK) {
+ 1228              		.loc 1 109 5 is_stmt 1 view .LVU336
+ 109:Core/Src/balance_car/remote_control.c ****     if (status == HAL_OK) {
+ 1229              		.loc 1 109 14 is_stmt 0 view .LVU337
+ 1230 0022 FFF7FEFF 		bl	RemoteControl_UartInit
+ 1231              	.LVL89:
+ 110:Core/Src/balance_car/remote_control.c ****         RemoteControl_StartReceive();
+ 1232              		.loc 1 110 5 is_stmt 1 view .LVU338
+ 110:Core/Src/balance_car/remote_control.c ****         RemoteControl_StartReceive();
+ 1233              		.loc 1 110 8 is_stmt 0 view .LVU339
+ 1234 0026 0446     		mov	r4, r0
+ 1235 0028 08B1     		cbz	r0, .L91
+ 1236              	.LVL90:
+ 1237              	.L89:
+ 113:Core/Src/balance_car/remote_control.c **** }
+ 1238              		.loc 1 113 5 is_stmt 1 view .LVU340
+ 114:Core/Src/balance_car/remote_control.c **** 
+ 1239              		.loc 1 114 1 is_stmt 0 view .LVU341
+ 1240 002a 2046     		mov	r0, r4
+ 1241 002c 10BD     		pop	{r4, pc}
+ 1242              	.LVL91:
+ 1243              	.L91:
+ 111:Core/Src/balance_car/remote_control.c ****     }
+ 1244              		.loc 1 111 9 is_stmt 1 view .LVU342
+ 1245 002e FFF7FEFF 		bl	RemoteControl_StartReceive
+ 1246              	.LVL92:
+ 111:Core/Src/balance_car/remote_control.c ****     }
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 33
+
+
+ 1247              		.loc 1 111 9 is_stmt 0 view .LVU343
+ 1248 0032 FAE7     		b	.L89
+ 1249              	.L93:
+ 1250              		.align	2
+ 1251              	.L92:
+ 1252 0034 00000000 		.word	g_remote_state
+ 1253 0038 00000000 		.word	s_rx_index
+ 1254 003c 00000000 		.word	s_line_ready
+ 1255 0040 00000000 		.word	s_next_telemetry_ms
+ 1256              		.cfi_endproc
+ 1257              	.LFE72:
+ 1259              		.section	.text.RemoteControl_Background,"ax",%progbits
+ 1260              		.align	1
+ 1261              		.global	RemoteControl_Background
+ 1262              		.syntax unified
+ 1263              		.thumb
+ 1264              		.thumb_func
+ 1266              	RemoteControl_Background:
+ 1267              	.LFB79:
+ 277:Core/Src/balance_car/remote_control.c **** 
+ 278:Core/Src/balance_car/remote_control.c **** void RemoteControl_Background(void)
+ 279:Core/Src/balance_car/remote_control.c **** {
+ 1268              		.loc 1 279 1 is_stmt 1 view -0
+ 1269              		.cfi_startproc
+ 1270              		@ args = 0, pretend = 0, frame = 0
+ 1271              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1272 0000 10B5     		push	{r4, lr}
+ 1273              	.LCFI24:
+ 1274              		.cfi_def_cfa_offset 8
+ 1275              		.cfi_offset 4, -8
+ 1276              		.cfi_offset 14, -4
+ 280:Core/Src/balance_car/remote_control.c ****     uint32_t now;
+ 1277              		.loc 1 280 5 view .LVU345
+ 281:Core/Src/balance_car/remote_control.c **** 
+ 282:Core/Src/balance_car/remote_control.c ****     if (s_line_ready != 0U) {
+ 1278              		.loc 1 282 5 view .LVU346
+ 1279              		.loc 1 282 22 is_stmt 0 view .LVU347
+ 1280 0002 134B     		ldr	r3, .L100
+ 1281 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1282              		.loc 1 282 8 view .LVU348
+ 1283 0006 4BB9     		cbnz	r3, .L98
+ 1284              	.L95:
+ 283:Core/Src/balance_car/remote_control.c ****         __disable_irq();
+ 284:Core/Src/balance_car/remote_control.c ****         strncpy(s_parse_line, s_rx_line, sizeof(s_parse_line) - 1U);
+ 285:Core/Src/balance_car/remote_control.c ****         s_parse_line[sizeof(s_parse_line) - 1U] = '\0';
+ 286:Core/Src/balance_car/remote_control.c ****         s_line_ready = 0U;
+ 287:Core/Src/balance_car/remote_control.c ****         g_remote_state.command_ready = 0U;
+ 288:Core/Src/balance_car/remote_control.c ****         __enable_irq();
+ 289:Core/Src/balance_car/remote_control.c **** 
+ 290:Core/Src/balance_car/remote_control.c ****         RemoteControl_ProcessLine(s_parse_line);
+ 291:Core/Src/balance_car/remote_control.c ****     }
+ 292:Core/Src/balance_car/remote_control.c **** 
+ 293:Core/Src/balance_car/remote_control.c ****     RemoteControl_CheckTimeout();
+ 1285              		.loc 1 293 5 is_stmt 1 view .LVU349
+ 1286 0008 FFF7FEFF 		bl	RemoteControl_CheckTimeout
+ 1287              	.LVL93:
+ 294:Core/Src/balance_car/remote_control.c **** 
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 34
+
+
+ 295:Core/Src/balance_car/remote_control.c ****     now = HAL_GetTick();
+ 1288              		.loc 1 295 5 view .LVU350
+ 1289              		.loc 1 295 11 is_stmt 0 view .LVU351
+ 1290 000c FFF7FEFF 		bl	HAL_GetTick
+ 1291              	.LVL94:
+ 296:Core/Src/balance_car/remote_control.c ****     if ((int32_t)(now - s_next_telemetry_ms) >= 0) {
+ 1292              		.loc 1 296 5 is_stmt 1 view .LVU352
+ 1293              		.loc 1 296 23 is_stmt 0 view .LVU353
+ 1294 0010 104B     		ldr	r3, .L100+4
+ 1295 0012 1B68     		ldr	r3, [r3]
+ 1296 0014 C31A     		subs	r3, r0, r3
+ 1297              		.loc 1 296 8 view .LVU354
+ 1298 0016 002B     		cmp	r3, #0
+ 1299 0018 12DA     		bge	.L99
+ 1300              	.LVL95:
+ 1301              	.L94:
+ 297:Core/Src/balance_car/remote_control.c ****         s_next_telemetry_ms = now + REMOTE_TELEMETRY_PERIOD_MS;
+ 298:Core/Src/balance_car/remote_control.c ****         RemoteControl_SendTelemetry();
+ 299:Core/Src/balance_car/remote_control.c ****     }
+ 300:Core/Src/balance_car/remote_control.c **** }
+ 1302              		.loc 1 300 1 view .LVU355
+ 1303 001a 10BD     		pop	{r4, pc}
+ 1304              	.LVL96:
+ 1305              	.L98:
+ 283:Core/Src/balance_car/remote_control.c ****         strncpy(s_parse_line, s_rx_line, sizeof(s_parse_line) - 1U);
+ 1306              		.loc 1 283 9 is_stmt 1 view .LVU356
+ 1307              	.LBB13:
+ 1308              	.LBI13:
+ 1309              		.file 2 "Drivers/CMSIS/Include/cmsis_gcc.h"
+   1:Drivers/CMSIS/Include/cmsis_gcc.h **** /**************************************************************************//**
+   2:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @file     cmsis_gcc.h
+   3:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @brief    CMSIS compiler GCC header file
+   4:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @version  V5.0.4
+   5:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @date     09. April 2018
+   6:Drivers/CMSIS/Include/cmsis_gcc.h ****  ******************************************************************************/
+   7:Drivers/CMSIS/Include/cmsis_gcc.h **** /*
+   8:Drivers/CMSIS/Include/cmsis_gcc.h ****  * Copyright (c) 2009-2018 Arm Limited. All rights reserved.
+   9:Drivers/CMSIS/Include/cmsis_gcc.h ****  *
+  10:Drivers/CMSIS/Include/cmsis_gcc.h ****  * SPDX-License-Identifier: Apache-2.0
+  11:Drivers/CMSIS/Include/cmsis_gcc.h ****  *
+  12:Drivers/CMSIS/Include/cmsis_gcc.h ****  * Licensed under the Apache License, Version 2.0 (the License); you may
+  13:Drivers/CMSIS/Include/cmsis_gcc.h ****  * not use this file except in compliance with the License.
+  14:Drivers/CMSIS/Include/cmsis_gcc.h ****  * You may obtain a copy of the License at
+  15:Drivers/CMSIS/Include/cmsis_gcc.h ****  *
+  16:Drivers/CMSIS/Include/cmsis_gcc.h ****  * www.apache.org/licenses/LICENSE-2.0
+  17:Drivers/CMSIS/Include/cmsis_gcc.h ****  *
+  18:Drivers/CMSIS/Include/cmsis_gcc.h ****  * Unless required by applicable law or agreed to in writing, software
+  19:Drivers/CMSIS/Include/cmsis_gcc.h ****  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  20:Drivers/CMSIS/Include/cmsis_gcc.h ****  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  21:Drivers/CMSIS/Include/cmsis_gcc.h ****  * See the License for the specific language governing permissions and
+  22:Drivers/CMSIS/Include/cmsis_gcc.h ****  * limitations under the License.
+  23:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+  24:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+  25:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef __CMSIS_GCC_H
+  26:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __CMSIS_GCC_H
+  27:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+  28:Drivers/CMSIS/Include/cmsis_gcc.h **** /* ignore some GCC warnings */
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 35
+
+
+  29:Drivers/CMSIS/Include/cmsis_gcc.h **** #pragma GCC diagnostic push
+  30:Drivers/CMSIS/Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wsign-conversion"
+  31:Drivers/CMSIS/Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wconversion"
+  32:Drivers/CMSIS/Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wunused-parameter"
+  33:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+  34:Drivers/CMSIS/Include/cmsis_gcc.h **** /* Fallback for __has_builtin */
+  35:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef __has_builtin
+  36:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __has_builtin(x) (0)
+  37:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  38:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+  39:Drivers/CMSIS/Include/cmsis_gcc.h **** /* CMSIS compiler specific defines */
+  40:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __ASM
+  41:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __ASM                                  __asm
+  42:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  43:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __INLINE
+  44:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __INLINE                               inline
+  45:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  46:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __STATIC_INLINE
+  47:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __STATIC_INLINE                        static inline
+  48:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  49:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __STATIC_FORCEINLINE                 
+  50:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __STATIC_FORCEINLINE                   __attribute__((always_inline)) static inline
+  51:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif                                           
+  52:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __NO_RETURN
+  53:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __NO_RETURN                            __attribute__((__noreturn__))
+  54:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  55:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __USED
+  56:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __USED                                 __attribute__((used))
+  57:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  58:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __WEAK
+  59:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __WEAK                                 __attribute__((weak))
+  60:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  61:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __PACKED
+  62:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __PACKED                               __attribute__((packed, aligned(1)))
+  63:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  64:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __PACKED_STRUCT
+  65:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __PACKED_STRUCT                        struct __attribute__((packed, aligned(1)))
+  66:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  67:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __PACKED_UNION
+  68:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __PACKED_UNION                         union __attribute__((packed, aligned(1)))
+  69:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  70:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32        /* deprecated */
+  71:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  72:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  73:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  74:Drivers/CMSIS/Include/cmsis_gcc.h ****   struct __attribute__((packed)) T_UINT32 { uint32_t v; };
+  75:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+  76:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32(x)                  (((struct T_UINT32 *)(x))->v)
+  77:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  78:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT16_WRITE
+  79:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  80:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  81:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  82:Drivers/CMSIS/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT16_WRITE { uint16_t v; };
+  83:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+  84:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT16_WRITE(addr, val)    (void)((((struct T_UINT16_WRITE *)(void *)(addr))-
+  85:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 36
+
+
+  86:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT16_READ
+  87:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  88:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  89:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  90:Drivers/CMSIS/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT16_READ { uint16_t v; };
+  91:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+  92:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT16_READ(addr)          (((const struct T_UINT16_READ *)(const void *)(add
+  93:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  94:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32_WRITE
+  95:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  96:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  97:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  98:Drivers/CMSIS/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT32_WRITE { uint32_t v; };
+  99:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+ 100:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32_WRITE(addr, val)    (void)((((struct T_UINT32_WRITE *)(void *)(addr))-
+ 101:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 102:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32_READ
+ 103:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+ 104:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+ 105:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+ 106:Drivers/CMSIS/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT32_READ { uint32_t v; };
+ 107:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+ 108:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32_READ(addr)          (((const struct T_UINT32_READ *)(const void *)(add
+ 109:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 110:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __ALIGNED
+ 111:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __ALIGNED(x)                           __attribute__((aligned(x)))
+ 112:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 113:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __RESTRICT
+ 114:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __RESTRICT                             __restrict
+ 115:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 116:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 117:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 118:Drivers/CMSIS/Include/cmsis_gcc.h **** /* ###########################  Core Function Access  ########################### */
+ 119:Drivers/CMSIS/Include/cmsis_gcc.h **** /** \ingroup  CMSIS_Core_FunctionInterface
+ 120:Drivers/CMSIS/Include/cmsis_gcc.h ****     \defgroup CMSIS_Core_RegAccFunctions CMSIS Core Register Access Functions
+ 121:Drivers/CMSIS/Include/cmsis_gcc.h ****   @{
+ 122:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 123:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 124:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 125:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Enable IRQ Interrupts
+ 126:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Enables IRQ interrupts by clearing the I-bit in the CPSR.
+ 127:Drivers/CMSIS/Include/cmsis_gcc.h ****            Can only be executed in Privileged modes.
+ 128:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 129:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __enable_irq(void)
+ 130:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 131:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("cpsie i" : : : "memory");
+ 132:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 133:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 134:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 135:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 136:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Disable IRQ Interrupts
+ 137:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Disables IRQ interrupts by setting the I-bit in the CPSR.
+ 138:Drivers/CMSIS/Include/cmsis_gcc.h ****            Can only be executed in Privileged modes.
+ 139:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 140:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __disable_irq(void)
+ 1310              		.loc 2 140 27 view .LVU357
+ 1311              	.LBB14:
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 37
+
+
+ 141:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 142:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("cpsid i" : : : "memory");
+ 1312              		.loc 2 142 3 view .LVU358
+ 1313              		.syntax unified
+ 1314              	@ 142 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1315 001c 72B6     		cpsid i
+ 1316              	@ 0 "" 2
+ 1317              		.thumb
+ 1318              		.syntax unified
+ 1319              	.LBE14:
+ 1320              	.LBE13:
+ 284:Core/Src/balance_car/remote_control.c ****         s_parse_line[sizeof(s_parse_line) - 1U] = '\0';
+ 1321              		.loc 1 284 9 view .LVU359
+ 1322 001e 0E4C     		ldr	r4, .L100+8
+ 1323 0020 1F22     		movs	r2, #31
+ 1324 0022 0E49     		ldr	r1, .L100+12
+ 1325 0024 2046     		mov	r0, r4
+ 1326 0026 FFF7FEFF 		bl	strncpy
+ 1327              	.LVL97:
+ 285:Core/Src/balance_car/remote_control.c ****         s_line_ready = 0U;
+ 1328              		.loc 1 285 9 view .LVU360
+ 285:Core/Src/balance_car/remote_control.c ****         s_line_ready = 0U;
+ 1329              		.loc 1 285 49 is_stmt 0 view .LVU361
+ 1330 002a 0023     		movs	r3, #0
+ 1331 002c E377     		strb	r3, [r4, #31]
+ 286:Core/Src/balance_car/remote_control.c ****         g_remote_state.command_ready = 0U;
+ 1332              		.loc 1 286 9 is_stmt 1 view .LVU362
+ 286:Core/Src/balance_car/remote_control.c ****         g_remote_state.command_ready = 0U;
+ 1333              		.loc 1 286 22 is_stmt 0 view .LVU363
+ 1334 002e 084A     		ldr	r2, .L100
+ 1335 0030 1370     		strb	r3, [r2]
+ 287:Core/Src/balance_car/remote_control.c ****         __enable_irq();
+ 1336              		.loc 1 287 9 is_stmt 1 view .LVU364
+ 287:Core/Src/balance_car/remote_control.c ****         __enable_irq();
+ 1337              		.loc 1 287 38 is_stmt 0 view .LVU365
+ 1338 0032 0B4A     		ldr	r2, .L100+16
+ 1339 0034 5370     		strb	r3, [r2, #1]
+ 288:Core/Src/balance_car/remote_control.c **** 
+ 1340              		.loc 1 288 9 is_stmt 1 view .LVU366
+ 1341              	.LBB15:
+ 1342              	.LBI15:
+ 129:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 1343              		.loc 2 129 27 view .LVU367
+ 1344              	.LBB16:
+ 131:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 1345              		.loc 2 131 3 view .LVU368
+ 1346              		.syntax unified
+ 1347              	@ 131 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 1348 0036 62B6     		cpsie i
+ 1349              	@ 0 "" 2
+ 1350              		.thumb
+ 1351              		.syntax unified
+ 1352              	.LBE16:
+ 1353              	.LBE15:
+ 290:Core/Src/balance_car/remote_control.c ****     }
+ 1354              		.loc 1 290 9 view .LVU369
+ 1355 0038 2046     		mov	r0, r4
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 38
+
+
+ 1356 003a FFF7FEFF 		bl	RemoteControl_ProcessLine
+ 1357              	.LVL98:
+ 1358 003e E3E7     		b	.L95
+ 1359              	.LVL99:
+ 1360              	.L99:
+ 297:Core/Src/balance_car/remote_control.c ****         RemoteControl_SendTelemetry();
+ 1361              		.loc 1 297 9 view .LVU370
+ 297:Core/Src/balance_car/remote_control.c ****         RemoteControl_SendTelemetry();
+ 1362              		.loc 1 297 35 is_stmt 0 view .LVU371
+ 1363 0040 00F5FA70 		add	r0, r0, #500
+ 1364              	.LVL100:
+ 297:Core/Src/balance_car/remote_control.c ****         RemoteControl_SendTelemetry();
+ 1365              		.loc 1 297 29 view .LVU372
+ 1366 0044 034B     		ldr	r3, .L100+4
+ 1367 0046 1860     		str	r0, [r3]
+ 298:Core/Src/balance_car/remote_control.c ****     }
+ 1368              		.loc 1 298 9 is_stmt 1 view .LVU373
+ 1369 0048 FFF7FEFF 		bl	RemoteControl_SendTelemetry
+ 1370              	.LVL101:
+ 1371              		.loc 1 300 1 is_stmt 0 view .LVU374
+ 1372 004c E5E7     		b	.L94
+ 1373              	.L101:
+ 1374 004e 00BF     		.align	2
+ 1375              	.L100:
+ 1376 0050 00000000 		.word	s_line_ready
+ 1377 0054 00000000 		.word	s_next_telemetry_ms
+ 1378 0058 00000000 		.word	s_parse_line
+ 1379 005c 00000000 		.word	s_rx_line
+ 1380 0060 00000000 		.word	g_remote_state
+ 1381              		.cfi_endproc
+ 1382              	.LFE79:
+ 1384              		.section	.text.RemoteControl_IRQHandler,"ax",%progbits
+ 1385              		.align	1
+ 1386              		.global	RemoteControl_IRQHandler
+ 1387              		.syntax unified
+ 1388              		.thumb
+ 1389              		.thumb_func
+ 1391              	RemoteControl_IRQHandler:
+ 1392              	.LFB80:
+ 301:Core/Src/balance_car/remote_control.c **** 
+ 302:Core/Src/balance_car/remote_control.c **** void RemoteControl_IRQHandler(void)
+ 303:Core/Src/balance_car/remote_control.c **** {
+ 1393              		.loc 1 303 1 is_stmt 1 view -0
+ 1394              		.cfi_startproc
+ 1395              		@ args = 0, pretend = 0, frame = 0
+ 1396              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1397 0000 08B5     		push	{r3, lr}
+ 1398              	.LCFI25:
+ 1399              		.cfi_def_cfa_offset 8
+ 1400              		.cfi_offset 3, -8
+ 1401              		.cfi_offset 14, -4
+ 304:Core/Src/balance_car/remote_control.c ****     HAL_UART_IRQHandler(&s_huart_remote);
+ 1402              		.loc 1 304 5 view .LVU376
+ 1403 0002 0248     		ldr	r0, .L104
+ 1404 0004 FFF7FEFF 		bl	HAL_UART_IRQHandler
+ 1405              	.LVL102:
+ 305:Core/Src/balance_car/remote_control.c **** }
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 39
+
+
+ 1406              		.loc 1 305 1 is_stmt 0 view .LVU377
+ 1407 0008 08BD     		pop	{r3, pc}
+ 1408              	.L105:
+ 1409 000a 00BF     		.align	2
+ 1410              	.L104:
+ 1411 000c 00000000 		.word	s_huart_remote
+ 1412              		.cfi_endproc
+ 1413              	.LFE80:
+ 1415              		.section	.text.HAL_UART_RxCpltCallback,"ax",%progbits
+ 1416              		.align	1
+ 1417              		.global	HAL_UART_RxCpltCallback
+ 1418              		.syntax unified
+ 1419              		.thumb
+ 1420              		.thumb_func
+ 1422              	HAL_UART_RxCpltCallback:
+ 1423              	.LVL103:
+ 1424              	.LFB81:
+ 306:Core/Src/balance_car/remote_control.c **** 
+ 307:Core/Src/balance_car/remote_control.c **** void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+ 308:Core/Src/balance_car/remote_control.c **** {
+ 1425              		.loc 1 308 1 is_stmt 1 view -0
+ 1426              		.cfi_startproc
+ 1427              		@ args = 0, pretend = 0, frame = 0
+ 1428              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1429              		.loc 1 308 1 is_stmt 0 view .LVU379
+ 1430 0000 08B5     		push	{r3, lr}
+ 1431              	.LCFI26:
+ 1432              		.cfi_def_cfa_offset 8
+ 1433              		.cfi_offset 3, -8
+ 1434              		.cfi_offset 14, -4
+ 309:Core/Src/balance_car/remote_control.c ****     uint8_t ch;
+ 1435              		.loc 1 309 5 is_stmt 1 view .LVU380
+ 310:Core/Src/balance_car/remote_control.c **** 
+ 311:Core/Src/balance_car/remote_control.c ****     if (huart->Instance != REMOTE_UART) {
+ 1436              		.loc 1 311 5 view .LVU381
+ 1437              		.loc 1 311 14 is_stmt 0 view .LVU382
+ 1438 0002 0268     		ldr	r2, [r0]
+ 1439              		.loc 1 311 8 view .LVU383
+ 1440 0004 1C4B     		ldr	r3, .L116
+ 1441 0006 9A42     		cmp	r2, r3
+ 1442 0008 00D0     		beq	.L113
+ 1443              	.LVL104:
+ 1444              	.L106:
+ 312:Core/Src/balance_car/remote_control.c ****         return;
+ 313:Core/Src/balance_car/remote_control.c ****     }
+ 314:Core/Src/balance_car/remote_control.c **** 
+ 315:Core/Src/balance_car/remote_control.c ****     ch = s_rx_byte;
+ 316:Core/Src/balance_car/remote_control.c ****     g_remote_state.rx_count++;
+ 317:Core/Src/balance_car/remote_control.c **** 
+ 318:Core/Src/balance_car/remote_control.c ****     if (ch == '\r') {
+ 319:Core/Src/balance_car/remote_control.c ****         RemoteControl_StartReceive();
+ 320:Core/Src/balance_car/remote_control.c ****         return;
+ 321:Core/Src/balance_car/remote_control.c ****     }
+ 322:Core/Src/balance_car/remote_control.c **** 
+ 323:Core/Src/balance_car/remote_control.c ****     if (ch == '\n') {
+ 324:Core/Src/balance_car/remote_control.c ****         s_rx_line[s_rx_index] = '\0';
+ 325:Core/Src/balance_car/remote_control.c ****         s_rx_index = 0U;
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 40
+
+
+ 326:Core/Src/balance_car/remote_control.c ****         s_line_ready = 1U;
+ 327:Core/Src/balance_car/remote_control.c ****         g_remote_state.command_ready = 1U;
+ 328:Core/Src/balance_car/remote_control.c ****         RemoteControl_StartReceive();
+ 329:Core/Src/balance_car/remote_control.c ****         return;
+ 330:Core/Src/balance_car/remote_control.c ****     }
+ 331:Core/Src/balance_car/remote_control.c **** 
+ 332:Core/Src/balance_car/remote_control.c ****     if (s_rx_index < REMOTE_LINE_MAX) {
+ 333:Core/Src/balance_car/remote_control.c ****         s_rx_line[s_rx_index++] = (char)ch;
+ 334:Core/Src/balance_car/remote_control.c ****     } else {
+ 335:Core/Src/balance_car/remote_control.c ****         s_rx_index = 0U;
+ 336:Core/Src/balance_car/remote_control.c ****         s_rx_line[0] = '\0';
+ 337:Core/Src/balance_car/remote_control.c ****         RemoteControl_SetFault(REMOTE_FAULT_LINE_OVERFLOW);
+ 338:Core/Src/balance_car/remote_control.c ****     }
+ 339:Core/Src/balance_car/remote_control.c **** 
+ 340:Core/Src/balance_car/remote_control.c ****     RemoteControl_StartReceive();
+ 341:Core/Src/balance_car/remote_control.c **** }
+ 1445              		.loc 1 341 1 view .LVU384
+ 1446 000a 08BD     		pop	{r3, pc}
+ 1447              	.LVL105:
+ 1448              	.L113:
+ 315:Core/Src/balance_car/remote_control.c ****     g_remote_state.rx_count++;
+ 1449              		.loc 1 315 5 is_stmt 1 view .LVU385
+ 315:Core/Src/balance_car/remote_control.c ****     g_remote_state.rx_count++;
+ 1450              		.loc 1 315 8 is_stmt 0 view .LVU386
+ 1451 000c 1B4B     		ldr	r3, .L116+4
+ 1452 000e 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 1453              	.LVL106:
+ 316:Core/Src/balance_car/remote_control.c **** 
+ 1454              		.loc 1 316 5 is_stmt 1 view .LVU387
+ 316:Core/Src/balance_car/remote_control.c **** 
+ 1455              		.loc 1 316 19 is_stmt 0 view .LVU388
+ 1456 0010 1B49     		ldr	r1, .L116+8
+ 1457 0012 4B68     		ldr	r3, [r1, #4]
+ 316:Core/Src/balance_car/remote_control.c **** 
+ 1458              		.loc 1 316 28 view .LVU389
+ 1459 0014 0133     		adds	r3, r3, #1
+ 1460 0016 4B60     		str	r3, [r1, #4]
+ 318:Core/Src/balance_car/remote_control.c ****         RemoteControl_StartReceive();
+ 1461              		.loc 1 318 5 is_stmt 1 view .LVU390
+ 318:Core/Src/balance_car/remote_control.c ****         RemoteControl_StartReceive();
+ 1462              		.loc 1 318 8 is_stmt 0 view .LVU391
+ 1463 0018 0D2A     		cmp	r2, #13
+ 1464 001a 11D0     		beq	.L114
+ 323:Core/Src/balance_car/remote_control.c ****         s_rx_line[s_rx_index] = '\0';
+ 1465              		.loc 1 323 5 is_stmt 1 view .LVU392
+ 323:Core/Src/balance_car/remote_control.c ****         s_rx_line[s_rx_index] = '\0';
+ 1466              		.loc 1 323 8 is_stmt 0 view .LVU393
+ 1467 001c 0A2A     		cmp	r2, #10
+ 1468 001e 12D0     		beq	.L115
+ 332:Core/Src/balance_car/remote_control.c ****         s_rx_line[s_rx_index++] = (char)ch;
+ 1469              		.loc 1 332 5 is_stmt 1 view .LVU394
+ 332:Core/Src/balance_car/remote_control.c ****         s_rx_line[s_rx_index++] = (char)ch;
+ 1470              		.loc 1 332 20 is_stmt 0 view .LVU395
+ 1471 0020 184B     		ldr	r3, .L116+12
+ 1472 0022 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1473 0024 DBB2     		uxtb	r3, r3
+ 332:Core/Src/balance_car/remote_control.c ****         s_rx_line[s_rx_index++] = (char)ch;
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 41
+
+
+ 1474              		.loc 1 332 8 view .LVU396
+ 1475 0026 1E2B     		cmp	r3, #30
+ 1476 0028 1CD8     		bhi	.L110
+ 333:Core/Src/balance_car/remote_control.c ****     } else {
+ 1477              		.loc 1 333 9 is_stmt 1 view .LVU397
+ 333:Core/Src/balance_car/remote_control.c ****     } else {
+ 1478              		.loc 1 333 29 is_stmt 0 view .LVU398
+ 1479 002a 1649     		ldr	r1, .L116+12
+ 1480 002c 0B78     		ldrb	r3, [r1]	@ zero_extendqisi2
+ 1481 002e D8B2     		uxtb	r0, r3
+ 1482              	.LVL107:
+ 333:Core/Src/balance_car/remote_control.c ****     } else {
+ 1483              		.loc 1 333 29 view .LVU399
+ 1484 0030 0133     		adds	r3, r3, #1
+ 1485 0032 DBB2     		uxtb	r3, r3
+ 1486 0034 0B70     		strb	r3, [r1]
+ 333:Core/Src/balance_car/remote_control.c ****     } else {
+ 1487              		.loc 1 333 33 view .LVU400
+ 1488 0036 144B     		ldr	r3, .L116+16
+ 1489 0038 1A54     		strb	r2, [r3, r0]
+ 1490              	.LVL108:
+ 1491              	.L111:
+ 340:Core/Src/balance_car/remote_control.c **** }
+ 1492              		.loc 1 340 5 is_stmt 1 view .LVU401
+ 1493 003a FFF7FEFF 		bl	RemoteControl_StartReceive
+ 1494              	.LVL109:
+ 1495 003e E4E7     		b	.L106
+ 1496              	.LVL110:
+ 1497              	.L114:
+ 319:Core/Src/balance_car/remote_control.c ****         return;
+ 1498              		.loc 1 319 9 view .LVU402
+ 1499 0040 FFF7FEFF 		bl	RemoteControl_StartReceive
+ 1500              	.LVL111:
+ 320:Core/Src/balance_car/remote_control.c ****     }
+ 1501              		.loc 1 320 9 view .LVU403
+ 1502 0044 E1E7     		b	.L106
+ 1503              	.LVL112:
+ 1504              	.L115:
+ 324:Core/Src/balance_car/remote_control.c ****         s_rx_index = 0U;
+ 1505              		.loc 1 324 9 view .LVU404
+ 324:Core/Src/balance_car/remote_control.c ****         s_rx_index = 0U;
+ 1506              		.loc 1 324 18 is_stmt 0 view .LVU405
+ 1507 0046 0F4A     		ldr	r2, .L116+12
+ 1508              	.LVL113:
+ 324:Core/Src/balance_car/remote_control.c ****         s_rx_index = 0U;
+ 1509              		.loc 1 324 18 view .LVU406
+ 1510 0048 1378     		ldrb	r3, [r2]	@ zero_extendqisi2
+ 1511 004a DBB2     		uxtb	r3, r3
+ 324:Core/Src/balance_car/remote_control.c ****         s_rx_index = 0U;
+ 1512              		.loc 1 324 31 view .LVU407
+ 1513 004c 0021     		movs	r1, #0
+ 1514 004e 0E48     		ldr	r0, .L116+16
+ 1515              	.LVL114:
+ 324:Core/Src/balance_car/remote_control.c ****         s_rx_index = 0U;
+ 1516              		.loc 1 324 31 view .LVU408
+ 1517 0050 C154     		strb	r1, [r0, r3]
+ 325:Core/Src/balance_car/remote_control.c ****         s_line_ready = 1U;
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 42
+
+
+ 1518              		.loc 1 325 9 is_stmt 1 view .LVU409
+ 325:Core/Src/balance_car/remote_control.c ****         s_line_ready = 1U;
+ 1519              		.loc 1 325 20 is_stmt 0 view .LVU410
+ 1520 0052 1170     		strb	r1, [r2]
+ 326:Core/Src/balance_car/remote_control.c ****         g_remote_state.command_ready = 1U;
+ 1521              		.loc 1 326 9 is_stmt 1 view .LVU411
+ 326:Core/Src/balance_car/remote_control.c ****         g_remote_state.command_ready = 1U;
+ 1522              		.loc 1 326 22 is_stmt 0 view .LVU412
+ 1523 0054 0123     		movs	r3, #1
+ 1524 0056 0D4A     		ldr	r2, .L116+20
+ 1525 0058 1370     		strb	r3, [r2]
+ 327:Core/Src/balance_car/remote_control.c ****         RemoteControl_StartReceive();
+ 1526              		.loc 1 327 9 is_stmt 1 view .LVU413
+ 327:Core/Src/balance_car/remote_control.c ****         RemoteControl_StartReceive();
+ 1527              		.loc 1 327 38 is_stmt 0 view .LVU414
+ 1528 005a 094A     		ldr	r2, .L116+8
+ 1529 005c 5370     		strb	r3, [r2, #1]
+ 328:Core/Src/balance_car/remote_control.c ****         return;
+ 1530              		.loc 1 328 9 is_stmt 1 view .LVU415
+ 1531 005e FFF7FEFF 		bl	RemoteControl_StartReceive
+ 1532              	.LVL115:
+ 329:Core/Src/balance_car/remote_control.c ****     }
+ 1533              		.loc 1 329 9 view .LVU416
+ 1534 0062 D2E7     		b	.L106
+ 1535              	.LVL116:
+ 1536              	.L110:
+ 335:Core/Src/balance_car/remote_control.c ****         s_rx_line[0] = '\0';
+ 1537              		.loc 1 335 9 view .LVU417
+ 335:Core/Src/balance_car/remote_control.c ****         s_rx_line[0] = '\0';
+ 1538              		.loc 1 335 20 is_stmt 0 view .LVU418
+ 1539 0064 0023     		movs	r3, #0
+ 1540 0066 074A     		ldr	r2, .L116+12
+ 1541              	.LVL117:
+ 335:Core/Src/balance_car/remote_control.c ****         s_rx_line[0] = '\0';
+ 1542              		.loc 1 335 20 view .LVU419
+ 1543 0068 1370     		strb	r3, [r2]
+ 336:Core/Src/balance_car/remote_control.c ****         RemoteControl_SetFault(REMOTE_FAULT_LINE_OVERFLOW);
+ 1544              		.loc 1 336 9 is_stmt 1 view .LVU420
+ 336:Core/Src/balance_car/remote_control.c ****         RemoteControl_SetFault(REMOTE_FAULT_LINE_OVERFLOW);
+ 1545              		.loc 1 336 22 is_stmt 0 view .LVU421
+ 1546 006a 074A     		ldr	r2, .L116+16
+ 1547 006c 1370     		strb	r3, [r2]
+ 337:Core/Src/balance_car/remote_control.c ****     }
+ 1548              		.loc 1 337 9 is_stmt 1 view .LVU422
+ 1549 006e 0420     		movs	r0, #4
+ 1550              	.LVL118:
+ 337:Core/Src/balance_car/remote_control.c ****     }
+ 1551              		.loc 1 337 9 is_stmt 0 view .LVU423
+ 1552 0070 FFF7FEFF 		bl	RemoteControl_SetFault
+ 1553              	.LVL119:
+ 337:Core/Src/balance_car/remote_control.c ****     }
+ 1554              		.loc 1 337 9 view .LVU424
+ 1555 0074 E1E7     		b	.L111
+ 1556              	.L117:
+ 1557 0076 00BF     		.align	2
+ 1558              	.L116:
+ 1559 0078 00380140 		.word	1073821696
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 43
+
+
+ 1560 007c 00000000 		.word	s_rx_byte
+ 1561 0080 00000000 		.word	g_remote_state
+ 1562 0084 00000000 		.word	s_rx_index
+ 1563 0088 00000000 		.word	s_rx_line
+ 1564 008c 00000000 		.word	s_line_ready
+ 1565              		.cfi_endproc
+ 1566              	.LFE81:
+ 1568              		.section	.text.HAL_UART_ErrorCallback,"ax",%progbits
+ 1569              		.align	1
+ 1570              		.global	HAL_UART_ErrorCallback
+ 1571              		.syntax unified
+ 1572              		.thumb
+ 1573              		.thumb_func
+ 1575              	HAL_UART_ErrorCallback:
+ 1576              	.LVL120:
+ 1577              	.LFB82:
+ 342:Core/Src/balance_car/remote_control.c **** 
+ 343:Core/Src/balance_car/remote_control.c **** void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
+ 344:Core/Src/balance_car/remote_control.c **** {
+ 1578              		.loc 1 344 1 is_stmt 1 view -0
+ 1579              		.cfi_startproc
+ 1580              		@ args = 0, pretend = 0, frame = 0
+ 1581              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1582              		.loc 1 344 1 is_stmt 0 view .LVU426
+ 1583 0000 08B5     		push	{r3, lr}
+ 1584              	.LCFI27:
+ 1585              		.cfi_def_cfa_offset 8
+ 1586              		.cfi_offset 3, -8
+ 1587              		.cfi_offset 14, -4
+ 345:Core/Src/balance_car/remote_control.c ****     if (huart->Instance == REMOTE_UART) {
+ 1588              		.loc 1 345 5 is_stmt 1 view .LVU427
+ 1589              		.loc 1 345 14 is_stmt 0 view .LVU428
+ 1590 0002 0268     		ldr	r2, [r0]
+ 1591              		.loc 1 345 8 view .LVU429
+ 1592 0004 034B     		ldr	r3, .L122
+ 1593 0006 9A42     		cmp	r2, r3
+ 1594 0008 00D0     		beq	.L121
+ 1595              	.LVL121:
+ 1596              	.L118:
+ 346:Core/Src/balance_car/remote_control.c ****         RemoteControl_StartReceive();
+ 347:Core/Src/balance_car/remote_control.c ****     }
+ 348:Core/Src/balance_car/remote_control.c **** }
+ 1597              		.loc 1 348 1 view .LVU430
+ 1598 000a 08BD     		pop	{r3, pc}
+ 1599              	.LVL122:
+ 1600              	.L121:
+ 346:Core/Src/balance_car/remote_control.c ****         RemoteControl_StartReceive();
+ 1601              		.loc 1 346 9 is_stmt 1 view .LVU431
+ 1602 000c FFF7FEFF 		bl	RemoteControl_StartReceive
+ 1603              	.LVL123:
+ 1604              		.loc 1 348 1 is_stmt 0 view .LVU432
+ 1605 0010 FBE7     		b	.L118
+ 1606              	.L123:
+ 1607 0012 00BF     		.align	2
+ 1608              	.L122:
+ 1609 0014 00380140 		.word	1073821696
+ 1610              		.cfi_endproc
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 44
+
+
+ 1611              	.LFE82:
+ 1613              		.section	.bss.s_next_telemetry_ms,"aw",%nobits
+ 1614              		.align	2
+ 1617              	s_next_telemetry_ms:
+ 1618 0000 00000000 		.space	4
+ 1619              		.section	.bss.s_parse_line,"aw",%nobits
+ 1620              		.align	2
+ 1623              	s_parse_line:
+ 1624 0000 00000000 		.space	32
+ 1624      00000000 
+ 1624      00000000 
+ 1624      00000000 
+ 1624      00000000 
+ 1625              		.section	.bss.s_line_ready,"aw",%nobits
+ 1628              	s_line_ready:
+ 1629 0000 00       		.space	1
+ 1630              		.section	.bss.s_rx_index,"aw",%nobits
+ 1633              	s_rx_index:
+ 1634 0000 00       		.space	1
+ 1635              		.section	.bss.s_rx_line,"aw",%nobits
+ 1636              		.align	2
+ 1639              	s_rx_line:
+ 1640 0000 00000000 		.space	32
+ 1640      00000000 
+ 1640      00000000 
+ 1640      00000000 
+ 1640      00000000 
+ 1641              		.section	.bss.s_rx_byte,"aw",%nobits
+ 1644              	s_rx_byte:
+ 1645 0000 00       		.space	1
+ 1646              		.section	.bss.s_huart_remote,"aw",%nobits
+ 1647              		.align	2
+ 1650              	s_huart_remote:
+ 1651 0000 00000000 		.space	72
+ 1651      00000000 
+ 1651      00000000 
+ 1651      00000000 
+ 1651      00000000 
+ 1652              		.global	g_remote_debug
+ 1653              		.section	.data.g_remote_debug,"aw"
+ 1654              		.align	2
+ 1657              	g_remote_debug:
+ 1658 0000 01       		.byte	1
+ 1659 0001 01       		.byte	1
+ 1660 0002 01       		.byte	1
+ 1661 0003 00       		.space	1
+ 1662 0004 0000803F 		.word	1065353216
+ 1663 0008 CDCC4C3F 		.word	1061997773
+ 1664 000c F4010000 		.word	500
+ 1665              		.global	g_remote_state
+ 1666              		.section	.bss.g_remote_state,"aw",%nobits
+ 1667              		.align	2
+ 1670              	g_remote_state:
+ 1671 0000 00000000 		.space	68
+ 1671      00000000 
+ 1671      00000000 
+ 1671      00000000 
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 45
+
+
+ 1671      00000000 
+ 1672              		.text
+ 1673              	.Letext0:
+ 1674              		.file 3 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ 1675              		.file 4 "F:/Msys2/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 1676              		.file 5 "F:/Msys2/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 1677              		.file 6 "F:/Msys2/mingw64/lib/gcc/arm-none-eabi/13.3.0/include/stddef.h"
+ 1678              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 1679              		.file 8 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h"
+ 1680              		.file 9 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
+ 1681              		.file 10 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h"
+ 1682              		.file 11 "Core/Inc/balance_car/remote_control.h"
+ 1683              		.file 12 "Core/Inc/balance_car/app_sensors.h"
+ 1684              		.file 13 "Core/Inc/balance_car/balance_control.h"
+ 1685              		.file 14 "F:/Msys2/mingw64/arm-none-eabi/include/stdio.h"
+ 1686              		.file 15 "F:/Msys2/mingw64/arm-none-eabi/include/stdlib.h"
+ 1687              		.file 16 "F:/Msys2/mingw64/arm-none-eabi/include/string.h"
+ 1688              		.file 17 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h"
+ 1689              		.file 18 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h"
+ 1690              		.file 19 "<built-in>"
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 46
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 remote_control.c
+   D:\TMP\ccgOOkAp.s:21     .text.RemoteControl_Clamp:00000000 $t
+   D:\TMP\ccgOOkAp.s:26     .text.RemoteControl_Clamp:00000000 RemoteControl_Clamp
+   D:\TMP\ccgOOkAp.s:91     .text.RemoteControl_SetFault:00000000 $t
+   D:\TMP\ccgOOkAp.s:96     .text.RemoteControl_SetFault:00000000 RemoteControl_SetFault
+   D:\TMP\ccgOOkAp.s:116    .text.RemoteControl_SetFault:0000000c $d
+   D:\TMP\ccgOOkAp.s:1670   .bss.g_remote_state:00000000 g_remote_state
+   D:\TMP\ccgOOkAp.s:121    .text.RemoteControl_CheckTimeout:00000000 $t
+   D:\TMP\ccgOOkAp.s:126    .text.RemoteControl_CheckTimeout:00000000 RemoteControl_CheckTimeout
+   D:\TMP\ccgOOkAp.s:204    .text.RemoteControl_CheckTimeout:0000003c $d
+   D:\TMP\ccgOOkAp.s:1657   .data.g_remote_debug:00000000 g_remote_debug
+   D:\TMP\ccgOOkAp.s:211    .text.RemoteControl_UartInit:00000000 $t
+   D:\TMP\ccgOOkAp.s:216    .text.RemoteControl_UartInit:00000000 RemoteControl_UartInit
+   D:\TMP\ccgOOkAp.s:411    .text.RemoteControl_UartInit:000000c0 $d
+   D:\TMP\ccgOOkAp.s:1650   .bss.s_huart_remote:00000000 s_huart_remote
+   D:\TMP\ccgOOkAp.s:420    .text.RemoteControl_StartReceive:00000000 $t
+   D:\TMP\ccgOOkAp.s:425    .text.RemoteControl_StartReceive:00000000 RemoteControl_StartReceive
+   D:\TMP\ccgOOkAp.s:458    .text.RemoteControl_StartReceive:00000018 $d
+   D:\TMP\ccgOOkAp.s:1644   .bss.s_rx_byte:00000000 s_rx_byte
+   D:\TMP\ccgOOkAp.s:464    .text.RemoteControl_MarkValid:00000000 $t
+   D:\TMP\ccgOOkAp.s:469    .text.RemoteControl_MarkValid:00000000 RemoteControl_MarkValid
+   D:\TMP\ccgOOkAp.s:522    .text.RemoteControl_MarkValid:0000002c $d
+   D:\TMP\ccgOOkAp.s:527    .text.RemoteControl_MarkInvalid:00000000 $t
+   D:\TMP\ccgOOkAp.s:532    .text.RemoteControl_MarkInvalid:00000000 RemoteControl_MarkInvalid
+   D:\TMP\ccgOOkAp.s:582    .text.RemoteControl_MarkInvalid:0000002c $d
+   D:\TMP\ccgOOkAp.s:587    .text.RemoteControl_ParseFloat:00000000 $t
+   D:\TMP\ccgOOkAp.s:592    .text.RemoteControl_ParseFloat:00000000 RemoteControl_ParseFloat
+   D:\TMP\ccgOOkAp.s:702    .rodata.RemoteControl_ProcessLine.str1.4:00000000 $d
+   D:\TMP\ccgOOkAp.s:724    .text.RemoteControl_ProcessLine:00000000 $t
+   D:\TMP\ccgOOkAp.s:729    .text.RemoteControl_ProcessLine:00000000 RemoteControl_ProcessLine
+   D:\TMP\ccgOOkAp.s:1019   .text.RemoteControl_ProcessLine:00000124 $d
+   D:\TMP\ccgOOkAp.s:1037   .rodata.RemoteControl_SendTelemetry.str1.4:00000000 $d
+   D:\TMP\ccgOOkAp.s:1042   .text.RemoteControl_SendTelemetry:00000000 $t
+   D:\TMP\ccgOOkAp.s:1047   .text.RemoteControl_SendTelemetry:00000000 RemoteControl_SendTelemetry
+   D:\TMP\ccgOOkAp.s:1177   .text.RemoteControl_SendTelemetry:00000094 $d
+   D:\TMP\ccgOOkAp.s:1186   .text.RemoteControl_Init:00000000 $t
+   D:\TMP\ccgOOkAp.s:1192   .text.RemoteControl_Init:00000000 RemoteControl_Init
+   D:\TMP\ccgOOkAp.s:1252   .text.RemoteControl_Init:00000034 $d
+   D:\TMP\ccgOOkAp.s:1633   .bss.s_rx_index:00000000 s_rx_index
+   D:\TMP\ccgOOkAp.s:1628   .bss.s_line_ready:00000000 s_line_ready
+   D:\TMP\ccgOOkAp.s:1617   .bss.s_next_telemetry_ms:00000000 s_next_telemetry_ms
+   D:\TMP\ccgOOkAp.s:1260   .text.RemoteControl_Background:00000000 $t
+   D:\TMP\ccgOOkAp.s:1266   .text.RemoteControl_Background:00000000 RemoteControl_Background
+   D:\TMP\ccgOOkAp.s:1376   .text.RemoteControl_Background:00000050 $d
+   D:\TMP\ccgOOkAp.s:1623   .bss.s_parse_line:00000000 s_parse_line
+   D:\TMP\ccgOOkAp.s:1639   .bss.s_rx_line:00000000 s_rx_line
+   D:\TMP\ccgOOkAp.s:1385   .text.RemoteControl_IRQHandler:00000000 $t
+   D:\TMP\ccgOOkAp.s:1391   .text.RemoteControl_IRQHandler:00000000 RemoteControl_IRQHandler
+   D:\TMP\ccgOOkAp.s:1411   .text.RemoteControl_IRQHandler:0000000c $d
+   D:\TMP\ccgOOkAp.s:1416   .text.HAL_UART_RxCpltCallback:00000000 $t
+   D:\TMP\ccgOOkAp.s:1422   .text.HAL_UART_RxCpltCallback:00000000 HAL_UART_RxCpltCallback
+   D:\TMP\ccgOOkAp.s:1559   .text.HAL_UART_RxCpltCallback:00000078 $d
+   D:\TMP\ccgOOkAp.s:1569   .text.HAL_UART_ErrorCallback:00000000 $t
+   D:\TMP\ccgOOkAp.s:1575   .text.HAL_UART_ErrorCallback:00000000 HAL_UART_ErrorCallback
+   D:\TMP\ccgOOkAp.s:1609   .text.HAL_UART_ErrorCallback:00000014 $d
+   D:\TMP\ccgOOkAp.s:1614   .bss.s_next_telemetry_ms:00000000 $d
+ARM GAS  D:\TMP\ccgOOkAp.s 			page 47
+
+
+   D:\TMP\ccgOOkAp.s:1620   .bss.s_parse_line:00000000 $d
+   D:\TMP\ccgOOkAp.s:1629   .bss.s_line_ready:00000000 $d
+   D:\TMP\ccgOOkAp.s:1634   .bss.s_rx_index:00000000 $d
+   D:\TMP\ccgOOkAp.s:1636   .bss.s_rx_line:00000000 $d
+   D:\TMP\ccgOOkAp.s:1645   .bss.s_rx_byte:00000000 $d
+   D:\TMP\ccgOOkAp.s:1647   .bss.s_huart_remote:00000000 $d
+   D:\TMP\ccgOOkAp.s:1654   .data.g_remote_debug:00000000 $d
+   D:\TMP\ccgOOkAp.s:1667   .bss.g_remote_state:00000000 $d
+
+UNDEFINED SYMBOLS
+__aeabi_fcmplt
+__aeabi_fcmpgt
+HAL_GetTick
+g_balance_debug
+HAL_GPIO_Init
+HAL_UART_Init
+HAL_NVIC_SetPriority
+HAL_NVIC_EnableIRQ
+HAL_UART_Receive_IT
+strncpy
+strtof
+strcmp
+strncmp
+__aeabi_fmul
+__aeabi_f2iz
+__aeabi_fadd
+snprintf
+HAL_UART_Transmit
+g_sensor_state
+memset
+HAL_UART_IRQHandler

@@ -11,6 +11,12 @@
 - 转向环 PID
 - TB6612 电机驱动
 - 双编码器测速
+- HC-05/HC-06 蓝牙串口遥控
+- Android 蓝牙遥控 APP
+- PC13 运行指示灯
+- SSD1306 OLED 状态显示
+- DHT11 温湿度采集
+- FSR402/RFP602 压力与重量趋势估算
 - Ozone + J-Link 调试变量入口
 
 调试阶段可以通过 Ozone 直接观察和修改全局变量，完成姿态校准、电机方向确认、编码器方向确认和 PID 参数调节。
@@ -29,6 +35,8 @@
 | GND | GND | GND |
 
 代码默认 MPU6050 地址为 `0x68`，即 AD0 接 GND 或悬空。
+
+MPU6050 单独使用 I2C1 的 PB8/PB9。
 
 ### TB6612 电机驱动
 
@@ -61,6 +69,14 @@
 
 如果编码器方向反了，可以交换 A/B 相，也可以在代码中给对应 delta 加负号。
 
+### 运行指示灯
+
+| 功能 | STM32 引脚 | 说明 |
+| --- | --- | --- |
+| 运行指示灯 | PC13 | 最小系统板常见板载 LED，运行允许时点亮 |
+
+PB6/PB7 已用于蓝牙串口，不再作为实体按键。启停通过 Android APP 的 `START` / `EMERGENCY STOP`，或 Ozone 修改 `g_balance_debug.run_enable` 完成。PC13 指示灯跟随 `run_enable` 亮灭。
+
 ### OLED 显示屏
 
 默认使用 0.96 寸 I2C SSD1306 128x64 OLED，地址 `0x3C`。
@@ -72,7 +88,25 @@
 | 3.3V | 3.3V | VCC |
 | GND | GND | GND |
 
-OLED 使用 I2C2，不占用 MPU6050 的 PB8/PB9。
+OLED 使用 I2C2 的 PB10/PB11，不与 MPU6050 共用 I2C1。
+
+### HC-05/HC-06 蓝牙模块
+
+蓝牙模块使用重映射后的 USART1 与 STM32 通信。手机 APP 只发送遥控命令，平衡控制仍由 STM32 完成。
+
+| STM32F103C8T6 | HC-05/HC-06 | 说明 |
+| --- | --- | --- |
+| PB6 / USART1_TX | RXD | STM32 发给蓝牙模块 |
+| PB7 / USART1_RX | TXD | 蓝牙模块发给 STM32 |
+| GND | GND | 必须与 STM32、电机电源共地 |
+| 3.3V 或 5V | VCC | 按模块板标注供电 |
+
+注意：
+
+- HC-05/HC-06 常见默认串口参数是 `9600 8N1`，当前代码也按 `9600` 配置。
+- 如果你的蓝牙模块已经改成 `115200`，需要把 `remote_control.c` 里的 `REMOTE_UART_BAUDRATE` 改成 `115200U`。
+- 很多 HC-05/HC-06 模块板的 `VCC` 可以接 5V，但串口电平仍建议按 3.3V 逻辑使用；如果模块 RXD 不耐 5V，需要确认电平安全。
+- 手机需要先在系统蓝牙设置里配对模块，常见配对码是 `1234` 或 `0000`。
 
 ### DHT11 温湿度模块
 
@@ -115,12 +149,19 @@ Core/Src/balance_car/
 | `mpu6050_hal.c/.h` | HAL I2C 版 MPU6050 初始化和原始数据读取 |
 | `motor_tb6612.c/.h` | TB6612 电机方向和 PWM 输出 |
 | `encoder_hal.c/.h` | TIM1/TIM2 编码器模式读取左右轮速度 |
-| `i2c_bus.c/.h` | I2C1/I2C2 总线初始化，MPU6050 用 I2C1，OLED 用 I2C2 |
+| `i2c_bus.c/.h` | I2C1/I2C2 总线初始化，MPU6050 使用 I2C1，OLED 使用 I2C2 |
 | `oled_ssd1306.c/.h` | SSD1306 128x64 I2C OLED 分页刷新 |
+| `remote_control.c/.h` | USART1 重映射 PB6/PB7 蓝牙遥控命令接收、解析、限幅和超时保护 |
 | `dht11.c/.h` | PC14 单总线读取 DHT11 温湿度 |
 | `fsr_adc.c/.h` | PA2 / ADC1_IN2 读取 RFP602 模拟电平 |
 | `app_sensors.c/.h` | 温湿度、ADC、电压、重量估算和 Ozone 状态变量 |
 | `display_ui.c/.h` | OLED 四行数据显示和后台刷新 |
+
+Android APP 工程在：
+
+```text
+android_bluetooth_remote/
+```
 
 CubeMX 生成的主入口在：
 
@@ -241,6 +282,8 @@ right_pwm = ave_pwm - dif_pwm / 2;
 g_balance_debug
 g_balance_state
 g_sensor_state
+g_remote_state
+g_remote_debug
 g_angle_pid
 g_speed_pid
 g_turn_pid
@@ -327,7 +370,53 @@ g_balance_state.az
 g_balance_state.angle
 ```
 
-### 5.4 三个 PID
+### 5.4 g_remote_state
+
+这是蓝牙遥控的接收状态。调 HC-05/HC-06、串口和 Android APP 时主要看它。
+
+| 变量 | 含义 |
+| --- | --- |
+| `link_active` | 1=最近 `timeout_ms` 内收到过有效遥控命令 |
+| `command_ready` | 1=收到完整命令行并等待后台解析，通常只会短暂出现 |
+| `parser_error` | 1=最近一次命令格式错误 |
+| `rx_count` | USART1 重映射 PB7 收到的字节数 |
+| `valid_cmd_count` | 有效命令计数 |
+| `invalid_cmd_count` | 无效命令计数 |
+| `timeout_count` | 遥控超时次数 |
+| `last_rx_ms` | 最近一次有效命令的系统毫秒时间 |
+| `fault_flags` | 遥控模块故障位 |
+| `speed_cmd` | 最近一次遥控速度目标，已经过限幅 |
+| `turn_cmd` | 最近一次遥控转向目标，已经过限幅 |
+| `last_command` | 最近一次完整命令字符串 |
+
+正常现象：
+
+- APP 点按钮或串口助手发命令时，`rx_count` 应该增加。
+- 命令格式正确时，`valid_cmd_count` 应该增加。
+- 发送 `SPD 0.5` 后，`speed_cmd` 和 `g_balance_debug.speed_target` 应变为 `0.5`。
+- 发送 `TURN 0.4` 后，`turn_cmd` 和 `g_balance_debug.turn_target` 应变为 `0.4`。
+- 超过 500ms 没收到有效命令时，`link_active` 变 0，`speed_target/turn_target` 自动清零。
+
+### 5.5 g_remote_debug
+
+这是蓝牙遥控功能的调试配置，可以在 Ozone 中临时修改。
+
+| 变量 | 含义 | 默认值 |
+| --- | --- | --- |
+| `enable` | 1=允许遥控命令改变目标，0=忽略遥控命令 | 1 |
+| `allow_run_command` | 1=允许 APP 的 `RUN 1/RUN 0` 控制启停 | 1 |
+| `timeout_stop_enable` | 1=遥控超时后自动清零速度和转向目标 | 1 |
+| `speed_limit` | 遥控速度目标绝对值限幅 | 1.0 |
+| `turn_limit` | 遥控转向目标绝对值限幅 | 0.8 |
+| `timeout_ms` | 遥控超时时间，单位 ms | 500 |
+
+调试建议：
+
+- 第一次联调时可以先保持 `run_enable = 0`，只看 `speed_target/turn_target` 是否会跟随 APP 变化。
+- 如果你只想用 Ozone 启动，不想让 APP 启动小车，可以把 `allow_run_command = 0`。
+- 如果松开 APP 方向键后车还继续走，优先看 `timeout_stop_enable` 是否为 1，以及 `timeout_count` 是否会增加。
+
+### 5.6 三个 PID
 
 | PID | 作用 | 调试顺序 |
 | --- | --- | --- |
@@ -886,6 +975,193 @@ g_sensor_state.fsr_g_per_count
 
 FSR402 受受力面积、安装结构和材料回弹影响很大，建议只把它当作估算重量或压力趋势显示。
 
+### 6.9 蓝牙遥控调试
+
+蓝牙遥控建议分三步调：先确认 STM32 串口能收命令，再确认手机 APP 能连蓝牙，最后再接电机电源实车测试。
+
+#### 6.9.1 先用 USB-TTL 测 STM32 串口
+
+先不要接电机电源，用 USB-TTL 临时代替蓝牙模块。
+
+| USB-TTL | STM32 |
+| --- | --- |
+| TXD | PB7 / USART1_RX |
+| RXD | PB6 / USART1_TX |
+| GND | GND |
+
+串口助手设置：
+
+```text
+9600 8N1
+```
+
+发送命令时每条后面都要带换行 `\n`：
+
+```text
+RUN 1
+SPD 0.5
+TURN 0.4
+STOP
+RUN 0
+```
+
+Ozone 观察：
+
+```c
+g_remote_state.rx_count
+g_remote_state.valid_cmd_count
+g_remote_state.invalid_cmd_count
+g_remote_state.last_command
+g_remote_state.speed_cmd
+g_remote_state.turn_cmd
+g_remote_state.link_active
+g_balance_debug.run_enable
+g_balance_debug.speed_target
+g_balance_debug.turn_target
+```
+
+调好标准：
+
+- 串口每发一个字符，`rx_count` 增加。
+- 每发一条正确命令，`valid_cmd_count` 增加。
+- `last_command` 能看到最近一条命令。
+- `RUN 1` 能让 `run_enable` 变 1。
+- `RUN 0` 能让 `run_enable` 变 0，并清零速度和转向。
+- `SPD 0.5` 能让 `speed_target` 变 0.5。
+- `TURN 0.4` 能让 `turn_target` 变 0.4。
+
+如果 `rx_count` 不动，优先检查 PB6/PB7 是否接反、USB-TTL 是否共地、波特率是否是 9600。
+
+#### 6.9.2 手机配对 HC-05/HC-06
+
+先在手机系统蓝牙设置里搜索并配对蓝牙模块。常见名称是 `HC-05` 或 `HC-06`，常见配对码是：
+
+```text
+1234
+0000
+```
+
+调好标准：
+
+- 手机系统蓝牙列表中能看到模块。
+- 输入密码后显示已配对。
+- 蓝牙模块指示灯通常会从快速闪烁变为慢闪或连接状态闪烁，具体看模块型号。
+
+如果搜不到模块，先只给蓝牙模块供电测试；如果能搜到但配对失败，换 `1234/0000`，并确认模块没有进入 AT 模式。
+
+#### 6.9.3 编译并安装 Android APP
+
+APP 源码在：
+
+```text
+android_bluetooth_remote/
+```
+
+用 Android Studio 打开这个目录，等待 Gradle Sync 完成，然后连接 Android 手机，点击 Run 安装。
+
+APP 使用流程：
+
+1. 先在手机系统蓝牙里配对 HC-05/HC-06。
+2. 打开 APP，界面会固定为横屏实体遥控器面板风格。
+3. 点击 `刷新设备`。
+4. 选择已配对的 HC-05/HC-06。
+5. 点击 `连接`。
+6. 点击中间下方的 `START` 发送 `RUN 1`。
+7. 左侧摇杆上下控制前进/后退，松开后速度自动归零。
+8. 右侧摇杆左右控制左转/右转，松开后转向自动归零。
+9. 中间区域会同步显示车上 OLED 的四行内容。
+10. 点击中间下方的 `EMERGENCY STOP` 发送 `RUN 0`。
+
+APP 控制对应命令：
+
+| APP 操作 | 发送给 STM32 |
+| --- | --- |
+| 启动 | `RUN 1` |
+| 急停 | `RUN 0` |
+| 左摇杆向上 | `SPD 正值` |
+| 左摇杆向下 | `SPD 负值` |
+| 左摇杆松开 | `SPD 0` |
+| 右摇杆向左 | `TURN 正值` |
+| 右摇杆向右 | `TURN 负值` |
+| 右摇杆松开 | `TURN 0` |
+| 速度归零 | `STOP` |
+
+STM32 每隔约 500ms 会通过蓝牙回传一行 OLED 数据：
+
+```text
+OLED Temp:25.0 C|Humi:60 %|Weight:120 g|ADC:1234
+```
+
+APP 收到后会拆成四行显示，尽量和车上 OLED 内容保持一致：
+
+```text
+Temp: 25.0 C
+Humi: 60 %
+Weight: 120 g
+ADC: 1234
+```
+
+如果车的前进后退方向反了，优先改 APP 里发送的 `SPD` 正负号；如果左右转向反了，优先改 APP 里发送的 `TURN` 正负号。不要再动已经调好的角度环、电机方向和编码器方向。
+
+#### 6.9.4 蓝牙和 STM32 联调
+
+接线：
+
+| HC-05/HC-06 | STM32 |
+| --- | --- |
+| TXD | PB7 / USART1_RX |
+| RXD | PB6 / USART1_TX |
+| GND | GND |
+| VCC | 按模块板标注接 3.3V 或 5V |
+
+Ozone 观察：
+
+```c
+g_remote_state.rx_count
+g_remote_state.valid_cmd_count
+g_remote_state.last_command
+g_remote_state.fault_flags
+g_balance_debug.speed_target
+g_balance_debug.turn_target
+g_balance_debug.run_enable
+```
+
+调好标准：
+
+- APP 点击启动，`last_command` 显示 `RUN 1`，`run_enable` 变 1。
+- 左摇杆向上，`last_command` 显示 `SPD 正值`，`speed_target` 变正。
+- 左摇杆向下，`last_command` 显示 `SPD 负值`，`speed_target` 变负。
+- 松开左摇杆，`speed_target` 回到 0。
+- 右摇杆左右移动，`turn_target` 正负变化。
+- 超过 500ms 没有新命令时，`speed_target/turn_target` 自动回 0，但 `run_enable` 不会被强制关掉。
+
+如果 APP 显示已连接但 `rx_count` 不增加，基本就是硬件链路问题：检查 `蓝牙 TXD -> PB7`、`蓝牙 RXD -> PB6`、共地、波特率是否一致。
+
+#### 6.9.5 架空和落地测试
+
+先把车轮架空，再接电机电源。
+
+架空时观察：
+
+```c
+g_balance_state.left_pwm
+g_balance_state.right_pwm
+g_balance_state.left_speed
+g_balance_state.right_speed
+g_balance_debug.speed_target
+g_balance_debug.turn_target
+```
+
+调好标准：
+
+- 前进时两个轮子方向一致。
+- 后退时两个轮子方向一致且与前进相反。
+- 左转/右转时左右轮出现可控差速。
+- 松开摇杆后 `speed_target/turn_target` 回到 0。
+- PWM 不长期打满。
+
+落地测试时先用手扶住车，只给很小的遥控动作。只要出现越跑越快、方向明显反、角度大幅振荡，立即急停，再回到 Ozone 看变量。
+
 ## 7. 方向反了怎么办
 
 方向问题不要同时改多个地方。一次只改一处。
@@ -998,7 +1274,19 @@ g_sensor_state.oled_probe_mask
 g_sensor_state.oled_fail_step
 ```
 
-如果 `oled_fail_step == 2` 且 `oled_probe_mask == 0`，说明 PB10/PB11 上没有探测到 `0x3C` 或 `0x3D` OLED，应优先检查 SCL/SDA 是否接反、供电/GND、模块是否真的是 I2C 版本。
+如果 `oled_fail_step == 2` 且 `oled_probe_mask == 0`，说明 PB10/PB11 的 I2C2 总线上没有探测到 `0x3C` 或 `0x3D` OLED，应优先检查 SCL/SDA 是否接反、供电/GND、模块是否真的是 I2C 版本。
+
+`g_remote_state.fault_flags` 是蓝牙遥控模块故障位。
+
+| 值 | 含义 | 排查方向 |
+| --- | --- | --- |
+| `0x00000000` | 无故障 | 正常 |
+| `0x00000001` | USART1 初始化失败 | 检查 HAL UART 是否启用、PB6/PB7 是否被其他外设占用 |
+| `0x00000002` | UART 接收中断重启失败 | 检查 USART1 中断和 HAL UART 状态 |
+| `0x00000004` | 命令行过长溢出 | APP 或串口助手发送的单条命令超过 31 字节 |
+| `0x00000008` | 命令格式错误 | 检查命令是否是 `RUN/SPD/TURN/STOP/PING`，并且是否带换行 |
+
+如果 `rx_count` 增加但 `valid_cmd_count` 不增加，通常是命令格式不对或没有发送 `\n`。
 
 ## 9. 脱离 Ozone 后自启动
 
@@ -1126,7 +1414,10 @@ HEX/BIN 只适合烧录，不适合看变量。
 - `main.c` 中是否还调用 `BalanceCar_Init()` 和 `BalanceCar_Background()`
 - `stm32f1xx_hal_msp.c` 中是否仍保留 SWD，不要禁用 SWD
 - `Makefile` 是否仍包含 `Core/Src/balance_car/*.c`
-- `stm32f1xx_hal_conf.h` 是否启用了 `HAL_I2C_MODULE_ENABLED`、`HAL_TIM_MODULE_ENABLED` 和 `HAL_ADC_MODULE_ENABLED`
+- `Makefile` 是否仍包含 `Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c`
+- `stm32f1xx_hal_conf.h` 是否启用了 `HAL_I2C_MODULE_ENABLED`、`HAL_TIM_MODULE_ENABLED`、`HAL_ADC_MODULE_ENABLED` 和 `HAL_UART_MODULE_ENABLED`
+- OLED 是否仍接在 PB10/PB11 的 I2C2
+- PB6/PB7 是否仍留给 USART1 重映射蓝牙遥控，不要再接实体按键
 
 ## 11. 安全建议
 
