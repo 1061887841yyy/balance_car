@@ -39,14 +39,12 @@ C_SOURCES =  \
 Core/Src/main.c \
 Core/Src/balance_car/balance_control.c \
 Core/Src/balance_car/app_sensors.c \
-Core/Src/balance_car/display_ui.c \
 Core/Src/balance_car/dht11.c \
 Core/Src/balance_car/encoder_hal.c \
 Core/Src/balance_car/hx711.c \
 Core/Src/balance_car/i2c_bus.c \
 Core/Src/balance_car/motor_tb6612.c \
 Core/Src/balance_car/mpu6050_hal.c \
-Core/Src/balance_car/oled_ssd1306.c \
 Core/Src/balance_car/pid.c \
 Core/Src/balance_car/remote_control.c \
 Core/Src/stm32f1xx_it.c \

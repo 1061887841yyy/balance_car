@@ -6,12 +6,12 @@
 #include <string.h>
 #include <stdio.h>
 
-#define REMOTE_UART                         USART1
+#define REMOTE_UART                         USART3
 #define REMOTE_UART_BAUDRATE                9600U
 #define REMOTE_UART_TX_PORT                 GPIOB
-#define REMOTE_UART_TX_PIN                  GPIO_PIN_6
+#define REMOTE_UART_TX_PIN                  GPIO_PIN_10
 #define REMOTE_UART_RX_PORT                 GPIOB
-#define REMOTE_UART_RX_PIN                  GPIO_PIN_7
+#define REMOTE_UART_RX_PIN                  GPIO_PIN_11
 #define REMOTE_LINE_MAX                     31U
 #define REMOTE_TELEMETRY_PERIOD_MS          500U
 #define REMOTE_DEBUG_PERIOD_MS              100U
@@ -66,9 +66,7 @@ static HAL_StatusTypeDef RemoteControl_UartInit(void)
     GPIO_InitTypeDef gpio = {0};
 
     __HAL_RCC_GPIOB_CLK_ENABLE();
-    __HAL_RCC_AFIO_CLK_ENABLE();
-    __HAL_RCC_USART1_CLK_ENABLE();
-    __HAL_AFIO_REMAP_USART1_ENABLE();
+    __HAL_RCC_USART3_CLK_ENABLE();
 
     gpio.Pin = REMOTE_UART_TX_PIN;
     gpio.Mode = GPIO_MODE_AF_PP;
@@ -95,8 +93,8 @@ static HAL_StatusTypeDef RemoteControl_UartInit(void)
         return HAL_ERROR;
     }
 
-    HAL_NVIC_SetPriority(USART1_IRQn, 2U, 0U);
-    HAL_NVIC_EnableIRQ(USART1_IRQn);
+    HAL_NVIC_SetPriority(USART3_IRQn, 2U, 0U);
+    HAL_NVIC_EnableIRQ(USART3_IRQn);
     return HAL_OK;
 }
 

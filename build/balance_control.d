@@ -26,9 +26,9 @@ build/balance_control.o: Core/Src/balance_car/balance_control.c \
  Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h \
  Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h \
  Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h \
- Core/Inc/balance_car/app_sensors.h Core/Inc/balance_car/display_ui.h \
- Core/Inc/balance_car/encoder_hal.h Core/Inc/balance_car/motor_tb6612.h \
- Core/Inc/balance_car/mpu6050_hal.h Core/Inc/balance_car/remote_control.h
+ Core/Inc/balance_car/app_sensors.h Core/Inc/balance_car/encoder_hal.h \
+ Core/Inc/balance_car/motor_tb6612.h Core/Inc/balance_car/mpu6050_hal.h \
+ Core/Inc/balance_car/remote_control.h
 Core/Inc/balance_car/balance_control.h:
 Core/Inc/balance_car/pid.h:
 Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:
@@ -60,7 +60,6 @@ Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h:
 Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h:
 Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:
 Core/Inc/balance_car/app_sensors.h:
-Core/Inc/balance_car/display_ui.h:
 Core/Inc/balance_car/encoder_hal.h:
 Core/Inc/balance_car/motor_tb6612.h:
 Core/Inc/balance_car/mpu6050_hal.h:

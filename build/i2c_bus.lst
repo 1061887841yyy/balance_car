@@ -1,4 +1,4 @@
-ARM GAS  D:\TMP\ccEMovMU.s 			page 1
+ARM GAS  D:\TMP\ccnnmyn1.s 			page 1
 
 
    1              		.cpu cortex-m3
@@ -29,13 +29,11 @@ ARM GAS  D:\TMP\ccEMovMU.s 			page 1
    1:Core/Src/balance_car/i2c_bus.c **** #include "balance_car/i2c_bus.h"
    2:Core/Src/balance_car/i2c_bus.c **** 
    3:Core/Src/balance_car/i2c_bus.c **** static I2C_HandleTypeDef s_hi2c1;
-   4:Core/Src/balance_car/i2c_bus.c **** static I2C_HandleTypeDef s_hi2c2;
-   5:Core/Src/balance_car/i2c_bus.c **** static uint8_t s_i2c1_initialized;
-   6:Core/Src/balance_car/i2c_bus.c **** static uint8_t s_i2c2_initialized;
-   7:Core/Src/balance_car/i2c_bus.c **** 
-   8:Core/Src/balance_car/i2c_bus.c **** HAL_StatusTypeDef BalanceI2C1_Init(void)
-   9:Core/Src/balance_car/i2c_bus.c **** {
-  27              		.loc 1 9 1 view -0
+   4:Core/Src/balance_car/i2c_bus.c **** static uint8_t s_i2c1_initialized;
+   5:Core/Src/balance_car/i2c_bus.c **** 
+   6:Core/Src/balance_car/i2c_bus.c **** HAL_StatusTypeDef BalanceI2C1_Init(void)
+   7:Core/Src/balance_car/i2c_bus.c **** {
+  27              		.loc 1 7 1 view -0
   28              		.cfi_startproc
   29              		@ args = 0, pretend = 0, frame = 0
   30              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -44,119 +42,119 @@ ARM GAS  D:\TMP\ccEMovMU.s 			page 1
   33              		.cfi_def_cfa_offset 8
   34              		.cfi_offset 3, -8
   35              		.cfi_offset 14, -4
-  10:Core/Src/balance_car/i2c_bus.c ****     if (s_i2c1_initialized != 0U) {
-  36              		.loc 1 10 5 view .LVU1
-  37              		.loc 1 10 28 is_stmt 0 view .LVU2
+   8:Core/Src/balance_car/i2c_bus.c ****     if (s_i2c1_initialized != 0U) {
+  36              		.loc 1 8 5 view .LVU1
+  37              		.loc 1 8 28 is_stmt 0 view .LVU2
   38 0002 0E4B     		ldr	r3, .L7
   39 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
-  40              		.loc 1 10 8 view .LVU3
+  40              		.loc 1 8 8 view .LVU3
   41 0006 0BB1     		cbz	r3, .L6
-  11:Core/Src/balance_car/i2c_bus.c ****         return HAL_OK;
-  42              		.loc 1 11 16 view .LVU4
+   9:Core/Src/balance_car/i2c_bus.c ****         return HAL_OK;
+  42              		.loc 1 9 16 view .LVU4
   43 0008 0020     		movs	r0, #0
   44              	.L2:
-  12:Core/Src/balance_car/i2c_bus.c ****     }
-  13:Core/Src/balance_car/i2c_bus.c **** 
-  14:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Instance = I2C1;
-ARM GAS  D:\TMP\ccEMovMU.s 			page 2
+  10:Core/Src/balance_car/i2c_bus.c ****     }
+  11:Core/Src/balance_car/i2c_bus.c **** 
+  12:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Instance = I2C1;
+  13:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.ClockSpeed = 400000U;
+  14:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
+ARM GAS  D:\TMP\ccnnmyn1.s 			page 2
 
 
-  15:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.ClockSpeed = 400000U;
-  16:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
-  17:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.OwnAddress1 = 0U;
-  18:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-  19:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
-  20:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.OwnAddress2 = 0U;
-  21:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
-  22:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-  23:Core/Src/balance_car/i2c_bus.c **** 
-  24:Core/Src/balance_car/i2c_bus.c ****     if (HAL_I2C_Init(&s_hi2c1) != HAL_OK) {
-  25:Core/Src/balance_car/i2c_bus.c ****         return HAL_ERROR;
-  26:Core/Src/balance_car/i2c_bus.c ****     }
-  27:Core/Src/balance_car/i2c_bus.c **** 
-  28:Core/Src/balance_car/i2c_bus.c ****     s_i2c1_initialized = 1U;
-  29:Core/Src/balance_car/i2c_bus.c ****     return HAL_OK;
-  30:Core/Src/balance_car/i2c_bus.c **** }
-  45              		.loc 1 30 1 view .LVU5
+  15:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.OwnAddress1 = 0U;
+  16:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  17:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  18:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.OwnAddress2 = 0U;
+  19:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  20:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  21:Core/Src/balance_car/i2c_bus.c **** 
+  22:Core/Src/balance_car/i2c_bus.c ****     if (HAL_I2C_Init(&s_hi2c1) != HAL_OK) {
+  23:Core/Src/balance_car/i2c_bus.c ****         return HAL_ERROR;
+  24:Core/Src/balance_car/i2c_bus.c ****     }
+  25:Core/Src/balance_car/i2c_bus.c **** 
+  26:Core/Src/balance_car/i2c_bus.c ****     s_i2c1_initialized = 1U;
+  27:Core/Src/balance_car/i2c_bus.c ****     return HAL_OK;
+  28:Core/Src/balance_car/i2c_bus.c **** }
+  45              		.loc 1 28 1 view .LVU5
   46 000a 08BD     		pop	{r3, pc}
   47              	.L6:
-  14:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.ClockSpeed = 400000U;
-  48              		.loc 1 14 5 is_stmt 1 view .LVU6
-  14:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.ClockSpeed = 400000U;
-  49              		.loc 1 14 22 is_stmt 0 view .LVU7
+  12:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.ClockSpeed = 400000U;
+  48              		.loc 1 12 5 is_stmt 1 view .LVU6
+  12:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.ClockSpeed = 400000U;
+  49              		.loc 1 12 22 is_stmt 0 view .LVU7
   50 000c 0C48     		ldr	r0, .L7+4
   51 000e 0D4B     		ldr	r3, .L7+8
   52 0010 0360     		str	r3, [r0]
-  15:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
-  53              		.loc 1 15 5 is_stmt 1 view .LVU8
-  15:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
-  54              		.loc 1 15 29 is_stmt 0 view .LVU9
+  13:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
+  53              		.loc 1 13 5 is_stmt 1 view .LVU8
+  13:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
+  54              		.loc 1 13 29 is_stmt 0 view .LVU9
   55 0012 0D4B     		ldr	r3, .L7+12
   56 0014 4360     		str	r3, [r0, #4]
-  16:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.OwnAddress1 = 0U;
-  57              		.loc 1 16 5 is_stmt 1 view .LVU10
-  16:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.OwnAddress1 = 0U;
-  58              		.loc 1 16 28 is_stmt 0 view .LVU11
+  14:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.OwnAddress1 = 0U;
+  57              		.loc 1 14 5 is_stmt 1 view .LVU10
+  14:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.OwnAddress1 = 0U;
+  58              		.loc 1 14 28 is_stmt 0 view .LVU11
   59 0016 0023     		movs	r3, #0
   60 0018 8360     		str	r3, [r0, #8]
-  17:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-  61              		.loc 1 17 5 is_stmt 1 view .LVU12
-  17:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-  62              		.loc 1 17 30 is_stmt 0 view .LVU13
+  15:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  61              		.loc 1 15 5 is_stmt 1 view .LVU12
+  15:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  62              		.loc 1 15 30 is_stmt 0 view .LVU13
   63 001a C360     		str	r3, [r0, #12]
-  18:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
-  64              		.loc 1 18 5 is_stmt 1 view .LVU14
-  18:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
-  65              		.loc 1 18 33 is_stmt 0 view .LVU15
+  16:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  64              		.loc 1 16 5 is_stmt 1 view .LVU14
+  16:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  65              		.loc 1 16 33 is_stmt 0 view .LVU15
   66 001c 4FF48042 		mov	r2, #16384
   67 0020 0261     		str	r2, [r0, #16]
-  19:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.OwnAddress2 = 0U;
-  68              		.loc 1 19 5 is_stmt 1 view .LVU16
-  19:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.OwnAddress2 = 0U;
-  69              		.loc 1 19 34 is_stmt 0 view .LVU17
+  17:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.OwnAddress2 = 0U;
+  68              		.loc 1 17 5 is_stmt 1 view .LVU16
+  17:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.OwnAddress2 = 0U;
+  69              		.loc 1 17 34 is_stmt 0 view .LVU17
   70 0022 4361     		str	r3, [r0, #20]
-  20:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
-  71              		.loc 1 20 5 is_stmt 1 view .LVU18
-  20:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
-ARM GAS  D:\TMP\ccEMovMU.s 			page 3
-
-
-  72              		.loc 1 20 30 is_stmt 0 view .LVU19
+  18:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  71              		.loc 1 18 5 is_stmt 1 view .LVU18
+  18:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  72              		.loc 1 18 30 is_stmt 0 view .LVU19
   73 0024 8361     		str	r3, [r0, #24]
-  21:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-  74              		.loc 1 21 5 is_stmt 1 view .LVU20
-  21:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-  75              		.loc 1 21 34 is_stmt 0 view .LVU21
+ARM GAS  D:\TMP\ccnnmyn1.s 			page 3
+
+
+  19:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  74              		.loc 1 19 5 is_stmt 1 view .LVU20
+  19:Core/Src/balance_car/i2c_bus.c ****     s_hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  75              		.loc 1 19 34 is_stmt 0 view .LVU21
   76 0026 C361     		str	r3, [r0, #28]
-  22:Core/Src/balance_car/i2c_bus.c **** 
-  77              		.loc 1 22 5 is_stmt 1 view .LVU22
-  22:Core/Src/balance_car/i2c_bus.c **** 
-  78              		.loc 1 22 32 is_stmt 0 view .LVU23
+  20:Core/Src/balance_car/i2c_bus.c **** 
+  77              		.loc 1 20 5 is_stmt 1 view .LVU22
+  20:Core/Src/balance_car/i2c_bus.c **** 
+  78              		.loc 1 20 32 is_stmt 0 view .LVU23
   79 0028 0362     		str	r3, [r0, #32]
-  24:Core/Src/balance_car/i2c_bus.c ****         return HAL_ERROR;
-  80              		.loc 1 24 5 is_stmt 1 view .LVU24
-  24:Core/Src/balance_car/i2c_bus.c ****         return HAL_ERROR;
-  81              		.loc 1 24 9 is_stmt 0 view .LVU25
+  22:Core/Src/balance_car/i2c_bus.c ****         return HAL_ERROR;
+  80              		.loc 1 22 5 is_stmt 1 view .LVU24
+  22:Core/Src/balance_car/i2c_bus.c ****         return HAL_ERROR;
+  81              		.loc 1 22 9 is_stmt 0 view .LVU25
   82 002a FFF7FEFF 		bl	HAL_I2C_Init
   83              	.LVL0:
-  24:Core/Src/balance_car/i2c_bus.c ****         return HAL_ERROR;
-  84              		.loc 1 24 8 discriminator 1 view .LVU26
+  22:Core/Src/balance_car/i2c_bus.c ****         return HAL_ERROR;
+  84              		.loc 1 22 8 discriminator 1 view .LVU26
   85 002e 18B9     		cbnz	r0, .L4
-  28:Core/Src/balance_car/i2c_bus.c ****     return HAL_OK;
-  86              		.loc 1 28 5 is_stmt 1 view .LVU27
-  28:Core/Src/balance_car/i2c_bus.c ****     return HAL_OK;
-  87              		.loc 1 28 24 is_stmt 0 view .LVU28
+  26:Core/Src/balance_car/i2c_bus.c ****     return HAL_OK;
+  86              		.loc 1 26 5 is_stmt 1 view .LVU27
+  26:Core/Src/balance_car/i2c_bus.c ****     return HAL_OK;
+  87              		.loc 1 26 24 is_stmt 0 view .LVU28
   88 0030 024B     		ldr	r3, .L7
   89 0032 0122     		movs	r2, #1
   90 0034 1A70     		strb	r2, [r3]
-  29:Core/Src/balance_car/i2c_bus.c **** }
-  91              		.loc 1 29 5 is_stmt 1 view .LVU29
-  29:Core/Src/balance_car/i2c_bus.c **** }
-  92              		.loc 1 29 12 is_stmt 0 view .LVU30
+  27:Core/Src/balance_car/i2c_bus.c **** }
+  91              		.loc 1 27 5 is_stmt 1 view .LVU29
+  27:Core/Src/balance_car/i2c_bus.c **** }
+  92              		.loc 1 27 12 is_stmt 0 view .LVU30
   93 0036 E8E7     		b	.L2
   94              	.L4:
-  25:Core/Src/balance_car/i2c_bus.c ****     }
-  95              		.loc 1 25 16 view .LVU31
+  23:Core/Src/balance_car/i2c_bus.c ****     }
+  95              		.loc 1 23 16 view .LVU31
   96 0038 0120     		movs	r0, #1
   97 003a E6E7     		b	.L2
   98              	.L8:
@@ -176,21 +174,21 @@ ARM GAS  D:\TMP\ccEMovMU.s 			page 1
  113              		.thumb_func
  115              	BalanceI2C1_GetHandle:
  116              	.LFB66:
-  31:Core/Src/balance_car/i2c_bus.c **** 
-  32:Core/Src/balance_car/i2c_bus.c **** I2C_HandleTypeDef *BalanceI2C1_GetHandle(void)
-ARM GAS  D:\TMP\ccEMovMU.s 			page 4
+  29:Core/Src/balance_car/i2c_bus.c **** 
+  30:Core/Src/balance_car/i2c_bus.c **** I2C_HandleTypeDef *BalanceI2C1_GetHandle(void)
+  31:Core/Src/balance_car/i2c_bus.c **** {
+ 117              		.loc 1 31 1 is_stmt 1 view -0
+ARM GAS  D:\TMP\ccnnmyn1.s 			page 4
 
 
-  33:Core/Src/balance_car/i2c_bus.c **** {
- 117              		.loc 1 33 1 is_stmt 1 view -0
  118              		.cfi_startproc
  119              		@ args = 0, pretend = 0, frame = 0
  120              		@ frame_needed = 0, uses_anonymous_args = 0
  121              		@ link register save eliminated.
-  34:Core/Src/balance_car/i2c_bus.c ****     return &s_hi2c1;
- 122              		.loc 1 34 5 view .LVU33
-  35:Core/Src/balance_car/i2c_bus.c **** }
- 123              		.loc 1 35 1 is_stmt 0 view .LVU34
+  32:Core/Src/balance_car/i2c_bus.c ****     return &s_hi2c1;
+ 122              		.loc 1 32 5 view .LVU33
+  33:Core/Src/balance_car/i2c_bus.c **** }
+ 123              		.loc 1 33 1 is_stmt 0 view .LVU34
  124 0000 0048     		ldr	r0, .L10
  125 0002 7047     		bx	lr
  126              	.L11:
@@ -199,472 +197,249 @@ ARM GAS  D:\TMP\ccEMovMU.s 			page 1
  129 0004 00000000 		.word	s_hi2c1
  130              		.cfi_endproc
  131              	.LFE66:
- 133              		.section	.text.BalanceI2C2_Init,"ax",%progbits
+ 133              		.section	.text.HAL_I2C_MspInit,"ax",%progbits
  134              		.align	1
- 135              		.global	BalanceI2C2_Init
+ 135              		.global	HAL_I2C_MspInit
  136              		.syntax unified
  137              		.thumb
  138              		.thumb_func
- 140              	BalanceI2C2_Init:
- 141              	.LFB67:
-  36:Core/Src/balance_car/i2c_bus.c **** 
-  37:Core/Src/balance_car/i2c_bus.c **** HAL_StatusTypeDef BalanceI2C2_Init(void)
-  38:Core/Src/balance_car/i2c_bus.c **** {
- 142              		.loc 1 38 1 is_stmt 1 view -0
- 143              		.cfi_startproc
- 144              		@ args = 0, pretend = 0, frame = 0
- 145              		@ frame_needed = 0, uses_anonymous_args = 0
- 146 0000 08B5     		push	{r3, lr}
- 147              	.LCFI1:
- 148              		.cfi_def_cfa_offset 8
- 149              		.cfi_offset 3, -8
- 150              		.cfi_offset 14, -4
-  39:Core/Src/balance_car/i2c_bus.c ****     if (s_i2c2_initialized != 0U) {
- 151              		.loc 1 39 5 view .LVU36
- 152              		.loc 1 39 28 is_stmt 0 view .LVU37
- 153 0002 0E4B     		ldr	r3, .L18
- 154 0004 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 155              		.loc 1 39 8 view .LVU38
- 156 0006 0BB1     		cbz	r3, .L17
-  40:Core/Src/balance_car/i2c_bus.c ****         return HAL_OK;
- 157              		.loc 1 40 16 view .LVU39
- 158 0008 0020     		movs	r0, #0
- 159              	.L13:
-  41:Core/Src/balance_car/i2c_bus.c ****     }
-  42:Core/Src/balance_car/i2c_bus.c **** 
-  43:Core/Src/balance_car/i2c_bus.c ****     s_hi2c2.Instance = I2C2;
-  44:Core/Src/balance_car/i2c_bus.c ****     s_hi2c2.Init.ClockSpeed = 400000U;
-  45:Core/Src/balance_car/i2c_bus.c ****     s_hi2c2.Init.DutyCycle = I2C_DUTYCYCLE_2;
-  46:Core/Src/balance_car/i2c_bus.c ****     s_hi2c2.Init.OwnAddress1 = 0U;
-  47:Core/Src/balance_car/i2c_bus.c ****     s_hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-  48:Core/Src/balance_car/i2c_bus.c ****     s_hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
-ARM GAS  D:\TMP\ccEMovMU.s 			page 5
+ 140              	HAL_I2C_MspInit:
+ 141              	.LVL1:
+ 142              	.LFB67:
+  34:Core/Src/balance_car/i2c_bus.c **** 
+  35:Core/Src/balance_car/i2c_bus.c **** void HAL_I2C_MspInit(I2C_HandleTypeDef *hi2c)
+  36:Core/Src/balance_car/i2c_bus.c **** {
+ 143              		.loc 1 36 1 is_stmt 1 view -0
+ 144              		.cfi_startproc
+ 145              		@ args = 0, pretend = 0, frame = 32
+ 146              		@ frame_needed = 0, uses_anonymous_args = 0
+ 147              		.loc 1 36 1 is_stmt 0 view .LVU36
+ 148 0000 00B5     		push	{lr}
+ 149              	.LCFI1:
+ 150              		.cfi_def_cfa_offset 4
+ 151              		.cfi_offset 14, -4
+ 152 0002 89B0     		sub	sp, sp, #36
+ 153              	.LCFI2:
+ 154              		.cfi_def_cfa_offset 40
+  37:Core/Src/balance_car/i2c_bus.c ****     GPIO_InitTypeDef gpio = {0};
+ 155              		.loc 1 37 5 is_stmt 1 view .LVU37
+ 156              		.loc 1 37 22 is_stmt 0 view .LVU38
+ 157 0004 0023     		movs	r3, #0
+ 158 0006 0493     		str	r3, [sp, #16]
+ 159 0008 0593     		str	r3, [sp, #20]
+ 160 000a 0693     		str	r3, [sp, #24]
+ 161 000c 0793     		str	r3, [sp, #28]
+  38:Core/Src/balance_car/i2c_bus.c **** 
+  39:Core/Src/balance_car/i2c_bus.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
+ 162              		.loc 1 39 5 is_stmt 1 view .LVU39
+ 163              	.LBB2:
+ 164              		.loc 1 39 5 view .LVU40
+ 165              		.loc 1 39 5 view .LVU41
+ 166 000e 03F18043 		add	r3, r3, #1073741824
+ 167 0012 03F50433 		add	r3, r3, #135168
+ 168 0016 9A69     		ldr	r2, [r3, #24]
+ARM GAS  D:\TMP\ccnnmyn1.s 			page 5
 
 
-  49:Core/Src/balance_car/i2c_bus.c ****     s_hi2c2.Init.OwnAddress2 = 0U;
-  50:Core/Src/balance_car/i2c_bus.c ****     s_hi2c2.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
-  51:Core/Src/balance_car/i2c_bus.c ****     s_hi2c2.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-  52:Core/Src/balance_car/i2c_bus.c **** 
-  53:Core/Src/balance_car/i2c_bus.c ****     if (HAL_I2C_Init(&s_hi2c2) != HAL_OK) {
-  54:Core/Src/balance_car/i2c_bus.c ****         return HAL_ERROR;
-  55:Core/Src/balance_car/i2c_bus.c ****     }
-  56:Core/Src/balance_car/i2c_bus.c **** 
-  57:Core/Src/balance_car/i2c_bus.c ****     s_i2c2_initialized = 1U;
-  58:Core/Src/balance_car/i2c_bus.c ****     return HAL_OK;
-  59:Core/Src/balance_car/i2c_bus.c **** }
- 160              		.loc 1 59 1 view .LVU40
- 161 000a 08BD     		pop	{r3, pc}
- 162              	.L17:
-  43:Core/Src/balance_car/i2c_bus.c ****     s_hi2c2.Init.ClockSpeed = 400000U;
- 163              		.loc 1 43 5 is_stmt 1 view .LVU41
-  43:Core/Src/balance_car/i2c_bus.c ****     s_hi2c2.Init.ClockSpeed = 400000U;
- 164              		.loc 1 43 22 is_stmt 0 view .LVU42
- 165 000c 0C48     		ldr	r0, .L18+4
- 166 000e 0D4B     		ldr	r3, .L18+8
- 167 0010 0360     		str	r3, [r0]
-  44:Core/Src/balance_car/i2c_bus.c ****     s_hi2c2.Init.DutyCycle = I2C_DUTYCYCLE_2;
- 168              		.loc 1 44 5 is_stmt 1 view .LVU43
-  44:Core/Src/balance_car/i2c_bus.c ****     s_hi2c2.Init.DutyCycle = I2C_DUTYCYCLE_2;
- 169              		.loc 1 44 29 is_stmt 0 view .LVU44
- 170 0012 0D4B     		ldr	r3, .L18+12
- 171 0014 4360     		str	r3, [r0, #4]
-  45:Core/Src/balance_car/i2c_bus.c ****     s_hi2c2.Init.OwnAddress1 = 0U;
- 172              		.loc 1 45 5 is_stmt 1 view .LVU45
-  45:Core/Src/balance_car/i2c_bus.c ****     s_hi2c2.Init.OwnAddress1 = 0U;
- 173              		.loc 1 45 28 is_stmt 0 view .LVU46
- 174 0016 0023     		movs	r3, #0
- 175 0018 8360     		str	r3, [r0, #8]
-  46:Core/Src/balance_car/i2c_bus.c ****     s_hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
- 176              		.loc 1 46 5 is_stmt 1 view .LVU47
-  46:Core/Src/balance_car/i2c_bus.c ****     s_hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
- 177              		.loc 1 46 30 is_stmt 0 view .LVU48
- 178 001a C360     		str	r3, [r0, #12]
-  47:Core/Src/balance_car/i2c_bus.c ****     s_hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
- 179              		.loc 1 47 5 is_stmt 1 view .LVU49
-  47:Core/Src/balance_car/i2c_bus.c ****     s_hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
- 180              		.loc 1 47 33 is_stmt 0 view .LVU50
- 181 001c 4FF48042 		mov	r2, #16384
- 182 0020 0261     		str	r2, [r0, #16]
-  48:Core/Src/balance_car/i2c_bus.c ****     s_hi2c2.Init.OwnAddress2 = 0U;
- 183              		.loc 1 48 5 is_stmt 1 view .LVU51
-  48:Core/Src/balance_car/i2c_bus.c ****     s_hi2c2.Init.OwnAddress2 = 0U;
- 184              		.loc 1 48 34 is_stmt 0 view .LVU52
- 185 0022 4361     		str	r3, [r0, #20]
-  49:Core/Src/balance_car/i2c_bus.c ****     s_hi2c2.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
- 186              		.loc 1 49 5 is_stmt 1 view .LVU53
-  49:Core/Src/balance_car/i2c_bus.c ****     s_hi2c2.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
- 187              		.loc 1 49 30 is_stmt 0 view .LVU54
- 188 0024 8361     		str	r3, [r0, #24]
-  50:Core/Src/balance_car/i2c_bus.c ****     s_hi2c2.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
- 189              		.loc 1 50 5 is_stmt 1 view .LVU55
-  50:Core/Src/balance_car/i2c_bus.c ****     s_hi2c2.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-ARM GAS  D:\TMP\ccEMovMU.s 			page 6
+ 169 0018 42F00802 		orr	r2, r2, #8
+ 170 001c 9A61     		str	r2, [r3, #24]
+ 171              		.loc 1 39 5 view .LVU42
+ 172 001e 9B69     		ldr	r3, [r3, #24]
+ 173 0020 03F00803 		and	r3, r3, #8
+ 174 0024 0193     		str	r3, [sp, #4]
+ 175              		.loc 1 39 5 view .LVU43
+ 176 0026 019B     		ldr	r3, [sp, #4]
+ 177              	.LBE2:
+ 178              		.loc 1 39 5 view .LVU44
+  40:Core/Src/balance_car/i2c_bus.c **** 
+  41:Core/Src/balance_car/i2c_bus.c ****     if (hi2c->Instance == I2C1) {
+ 179              		.loc 1 41 5 view .LVU45
+ 180              		.loc 1 41 13 is_stmt 0 view .LVU46
+ 181 0028 0268     		ldr	r2, [r0]
+ 182              		.loc 1 41 8 view .LVU47
+ 183 002a 164B     		ldr	r3, .L17
+ 184 002c 9A42     		cmp	r2, r3
+ 185 002e 02D0     		beq	.L16
+ 186              	.LVL2:
+ 187              	.L12:
+  42:Core/Src/balance_car/i2c_bus.c ****         __HAL_RCC_AFIO_CLK_ENABLE();
+  43:Core/Src/balance_car/i2c_bus.c ****         __HAL_RCC_I2C1_CLK_ENABLE();
+  44:Core/Src/balance_car/i2c_bus.c ****         __HAL_AFIO_REMAP_I2C1_ENABLE();
+  45:Core/Src/balance_car/i2c_bus.c **** 
+  46:Core/Src/balance_car/i2c_bus.c ****         gpio.Pin = GPIO_PIN_8 | GPIO_PIN_9;
+  47:Core/Src/balance_car/i2c_bus.c ****     } else {
+  48:Core/Src/balance_car/i2c_bus.c ****         return;
+  49:Core/Src/balance_car/i2c_bus.c ****     }
+  50:Core/Src/balance_car/i2c_bus.c **** 
+  51:Core/Src/balance_car/i2c_bus.c ****     gpio.Mode = GPIO_MODE_AF_OD;
+  52:Core/Src/balance_car/i2c_bus.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+  53:Core/Src/balance_car/i2c_bus.c ****     HAL_GPIO_Init(GPIOB, &gpio);
+  54:Core/Src/balance_car/i2c_bus.c **** }
+ 188              		.loc 1 54 1 view .LVU48
+ 189 0030 09B0     		add	sp, sp, #36
+ 190              	.LCFI3:
+ 191              		.cfi_remember_state
+ 192              		.cfi_def_cfa_offset 4
+ 193              		@ sp needed
+ 194 0032 5DF804FB 		ldr	pc, [sp], #4
+ 195              	.LVL3:
+ 196              	.L16:
+ 197              	.LCFI4:
+ 198              		.cfi_restore_state
+  42:Core/Src/balance_car/i2c_bus.c ****         __HAL_RCC_AFIO_CLK_ENABLE();
+ 199              		.loc 1 42 9 is_stmt 1 view .LVU49
+ 200              	.LBB3:
+  42:Core/Src/balance_car/i2c_bus.c ****         __HAL_RCC_AFIO_CLK_ENABLE();
+ 201              		.loc 1 42 9 view .LVU50
+  42:Core/Src/balance_car/i2c_bus.c ****         __HAL_RCC_AFIO_CLK_ENABLE();
+ 202              		.loc 1 42 9 view .LVU51
+ 203 0036 03F5DE33 		add	r3, r3, #113664
+ 204 003a 9A69     		ldr	r2, [r3, #24]
+ 205 003c 42F00102 		orr	r2, r2, #1
+ 206 0040 9A61     		str	r2, [r3, #24]
+  42:Core/Src/balance_car/i2c_bus.c ****         __HAL_RCC_AFIO_CLK_ENABLE();
+ARM GAS  D:\TMP\ccnnmyn1.s 			page 6
 
 
- 190              		.loc 1 50 34 is_stmt 0 view .LVU56
- 191 0026 C361     		str	r3, [r0, #28]
-  51:Core/Src/balance_car/i2c_bus.c **** 
- 192              		.loc 1 51 5 is_stmt 1 view .LVU57
-  51:Core/Src/balance_car/i2c_bus.c **** 
- 193              		.loc 1 51 32 is_stmt 0 view .LVU58
- 194 0028 0362     		str	r3, [r0, #32]
-  53:Core/Src/balance_car/i2c_bus.c ****         return HAL_ERROR;
- 195              		.loc 1 53 5 is_stmt 1 view .LVU59
-  53:Core/Src/balance_car/i2c_bus.c ****         return HAL_ERROR;
- 196              		.loc 1 53 9 is_stmt 0 view .LVU60
- 197 002a FFF7FEFF 		bl	HAL_I2C_Init
- 198              	.LVL1:
-  53:Core/Src/balance_car/i2c_bus.c ****         return HAL_ERROR;
- 199              		.loc 1 53 8 discriminator 1 view .LVU61
- 200 002e 18B9     		cbnz	r0, .L15
-  57:Core/Src/balance_car/i2c_bus.c ****     return HAL_OK;
- 201              		.loc 1 57 5 is_stmt 1 view .LVU62
-  57:Core/Src/balance_car/i2c_bus.c ****     return HAL_OK;
- 202              		.loc 1 57 24 is_stmt 0 view .LVU63
- 203 0030 024B     		ldr	r3, .L18
- 204 0032 0122     		movs	r2, #1
- 205 0034 1A70     		strb	r2, [r3]
-  58:Core/Src/balance_car/i2c_bus.c **** }
- 206              		.loc 1 58 5 is_stmt 1 view .LVU64
-  58:Core/Src/balance_car/i2c_bus.c **** }
- 207              		.loc 1 58 12 is_stmt 0 view .LVU65
- 208 0036 E8E7     		b	.L13
- 209              	.L15:
-  54:Core/Src/balance_car/i2c_bus.c ****     }
- 210              		.loc 1 54 16 view .LVU66
- 211 0038 0120     		movs	r0, #1
- 212 003a E6E7     		b	.L13
- 213              	.L19:
- 214              		.align	2
- 215              	.L18:
- 216 003c 00000000 		.word	s_i2c2_initialized
- 217 0040 00000000 		.word	s_hi2c2
- 218 0044 00580040 		.word	1073764352
- 219 0048 801A0600 		.word	400000
- 220              		.cfi_endproc
- 221              	.LFE67:
- 223              		.section	.text.BalanceI2C2_GetHandle,"ax",%progbits
- 224              		.align	1
- 225              		.global	BalanceI2C2_GetHandle
- 226              		.syntax unified
- 227              		.thumb
- 228              		.thumb_func
- 230              	BalanceI2C2_GetHandle:
- 231              	.LFB68:
-  60:Core/Src/balance_car/i2c_bus.c **** 
-  61:Core/Src/balance_car/i2c_bus.c **** I2C_HandleTypeDef *BalanceI2C2_GetHandle(void)
-  62:Core/Src/balance_car/i2c_bus.c **** {
- 232              		.loc 1 62 1 is_stmt 1 view -0
- 233              		.cfi_startproc
- 234              		@ args = 0, pretend = 0, frame = 0
- 235              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  D:\TMP\ccEMovMU.s 			page 7
+ 207              		.loc 1 42 9 view .LVU52
+ 208 0042 9A69     		ldr	r2, [r3, #24]
+ 209 0044 02F00102 		and	r2, r2, #1
+ 210 0048 0292     		str	r2, [sp, #8]
+  42:Core/Src/balance_car/i2c_bus.c ****         __HAL_RCC_AFIO_CLK_ENABLE();
+ 211              		.loc 1 42 9 view .LVU53
+ 212 004a 029A     		ldr	r2, [sp, #8]
+ 213              	.LBE3:
+  42:Core/Src/balance_car/i2c_bus.c ****         __HAL_RCC_AFIO_CLK_ENABLE();
+ 214              		.loc 1 42 9 view .LVU54
+  43:Core/Src/balance_car/i2c_bus.c ****         __HAL_AFIO_REMAP_I2C1_ENABLE();
+ 215              		.loc 1 43 9 view .LVU55
+ 216              	.LBB4:
+  43:Core/Src/balance_car/i2c_bus.c ****         __HAL_AFIO_REMAP_I2C1_ENABLE();
+ 217              		.loc 1 43 9 view .LVU56
+  43:Core/Src/balance_car/i2c_bus.c ****         __HAL_AFIO_REMAP_I2C1_ENABLE();
+ 218              		.loc 1 43 9 view .LVU57
+ 219 004c DA69     		ldr	r2, [r3, #28]
+ 220 004e 42F40012 		orr	r2, r2, #2097152
+ 221 0052 DA61     		str	r2, [r3, #28]
+  43:Core/Src/balance_car/i2c_bus.c ****         __HAL_AFIO_REMAP_I2C1_ENABLE();
+ 222              		.loc 1 43 9 view .LVU58
+ 223 0054 DB69     		ldr	r3, [r3, #28]
+ 224 0056 03F40013 		and	r3, r3, #2097152
+ 225 005a 0393     		str	r3, [sp, #12]
+  43:Core/Src/balance_car/i2c_bus.c ****         __HAL_AFIO_REMAP_I2C1_ENABLE();
+ 226              		.loc 1 43 9 view .LVU59
+ 227 005c 039B     		ldr	r3, [sp, #12]
+ 228              	.LBE4:
+  43:Core/Src/balance_car/i2c_bus.c ****         __HAL_AFIO_REMAP_I2C1_ENABLE();
+ 229              		.loc 1 43 9 view .LVU60
+  44:Core/Src/balance_car/i2c_bus.c **** 
+ 230              		.loc 1 44 9 view .LVU61
+ 231              	.LBB5:
+  44:Core/Src/balance_car/i2c_bus.c **** 
+ 232              		.loc 1 44 9 view .LVU62
+ 233 005e 0A4A     		ldr	r2, .L17+4
+ 234 0060 5368     		ldr	r3, [r2, #4]
+ 235              	.LVL4:
+  44:Core/Src/balance_car/i2c_bus.c **** 
+ 236              		.loc 1 44 9 view .LVU63
+  44:Core/Src/balance_car/i2c_bus.c **** 
+ 237              		.loc 1 44 9 view .LVU64
+ 238 0062 43F0E063 		orr	r3, r3, #117440512
+ 239              	.LVL5:
+  44:Core/Src/balance_car/i2c_bus.c **** 
+ 240              		.loc 1 44 9 is_stmt 0 view .LVU65
+ 241 0066 43F00203 		orr	r3, r3, #2
+ 242              	.LVL6:
+  44:Core/Src/balance_car/i2c_bus.c **** 
+ 243              		.loc 1 44 9 is_stmt 1 view .LVU66
+ 244 006a 5360     		str	r3, [r2, #4]
+ 245              	.LBE5:
+  44:Core/Src/balance_car/i2c_bus.c **** 
+ 246              		.loc 1 44 9 view .LVU67
+  46:Core/Src/balance_car/i2c_bus.c ****     } else {
+ 247              		.loc 1 46 9 view .LVU68
+ARM GAS  D:\TMP\ccnnmyn1.s 			page 7
 
 
- 236              		@ link register save eliminated.
-  63:Core/Src/balance_car/i2c_bus.c ****     return &s_hi2c2;
- 237              		.loc 1 63 5 view .LVU68
-  64:Core/Src/balance_car/i2c_bus.c **** }
- 238              		.loc 1 64 1 is_stmt 0 view .LVU69
- 239 0000 0048     		ldr	r0, .L21
- 240 0002 7047     		bx	lr
- 241              	.L22:
- 242              		.align	2
- 243              	.L21:
- 244 0004 00000000 		.word	s_hi2c2
- 245              		.cfi_endproc
- 246              	.LFE68:
- 248              		.section	.text.HAL_I2C_MspInit,"ax",%progbits
- 249              		.align	1
- 250              		.global	HAL_I2C_MspInit
- 251              		.syntax unified
- 252              		.thumb
- 253              		.thumb_func
- 255              	HAL_I2C_MspInit:
- 256              	.LVL2:
- 257              	.LFB69:
-  65:Core/Src/balance_car/i2c_bus.c **** 
-  66:Core/Src/balance_car/i2c_bus.c **** void HAL_I2C_MspInit(I2C_HandleTypeDef *hi2c)
-  67:Core/Src/balance_car/i2c_bus.c **** {
- 258              		.loc 1 67 1 is_stmt 1 view -0
- 259              		.cfi_startproc
- 260              		@ args = 0, pretend = 0, frame = 32
- 261              		@ frame_needed = 0, uses_anonymous_args = 0
- 262              		.loc 1 67 1 is_stmt 0 view .LVU71
- 263 0000 00B5     		push	{lr}
- 264              	.LCFI2:
- 265              		.cfi_def_cfa_offset 4
- 266              		.cfi_offset 14, -4
- 267 0002 89B0     		sub	sp, sp, #36
- 268              	.LCFI3:
- 269              		.cfi_def_cfa_offset 40
-  68:Core/Src/balance_car/i2c_bus.c ****     GPIO_InitTypeDef gpio = {0};
- 270              		.loc 1 68 5 is_stmt 1 view .LVU72
- 271              		.loc 1 68 22 is_stmt 0 view .LVU73
- 272 0004 0023     		movs	r3, #0
- 273 0006 0493     		str	r3, [sp, #16]
- 274 0008 0593     		str	r3, [sp, #20]
- 275 000a 0693     		str	r3, [sp, #24]
- 276 000c 0793     		str	r3, [sp, #28]
-  69:Core/Src/balance_car/i2c_bus.c **** 
-  70:Core/Src/balance_car/i2c_bus.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
- 277              		.loc 1 70 5 is_stmt 1 view .LVU74
- 278              	.LBB2:
- 279              		.loc 1 70 5 view .LVU75
- 280              		.loc 1 70 5 view .LVU76
- 281 000e 03F18043 		add	r3, r3, #1073741824
- 282 0012 03F50433 		add	r3, r3, #135168
- 283 0016 9A69     		ldr	r2, [r3, #24]
- 284 0018 42F00802 		orr	r2, r2, #8
- 285 001c 9A61     		str	r2, [r3, #24]
- 286              		.loc 1 70 5 view .LVU77
-ARM GAS  D:\TMP\ccEMovMU.s 			page 8
+  46:Core/Src/balance_car/i2c_bus.c ****     } else {
+ 248              		.loc 1 46 18 is_stmt 0 view .LVU69
+ 249 006c 4FF44073 		mov	r3, #768
+ 250              	.LVL7:
+  46:Core/Src/balance_car/i2c_bus.c ****     } else {
+ 251              		.loc 1 46 18 view .LVU70
+ 252 0070 0493     		str	r3, [sp, #16]
+ 253              	.LVL8:
+  51:Core/Src/balance_car/i2c_bus.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+ 254              		.loc 1 51 5 is_stmt 1 view .LVU71
+  51:Core/Src/balance_car/i2c_bus.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+ 255              		.loc 1 51 15 is_stmt 0 view .LVU72
+ 256 0072 1223     		movs	r3, #18
+ 257 0074 0593     		str	r3, [sp, #20]
+  52:Core/Src/balance_car/i2c_bus.c ****     HAL_GPIO_Init(GPIOB, &gpio);
+ 258              		.loc 1 52 5 is_stmt 1 view .LVU73
+  52:Core/Src/balance_car/i2c_bus.c ****     HAL_GPIO_Init(GPIOB, &gpio);
+ 259              		.loc 1 52 16 is_stmt 0 view .LVU74
+ 260 0076 0323     		movs	r3, #3
+ 261 0078 0793     		str	r3, [sp, #28]
+  53:Core/Src/balance_car/i2c_bus.c **** }
+ 262              		.loc 1 53 5 is_stmt 1 view .LVU75
+ 263 007a 04A9     		add	r1, sp, #16
+ 264 007c 0348     		ldr	r0, .L17+8
+ 265              	.LVL9:
+  53:Core/Src/balance_car/i2c_bus.c **** }
+ 266              		.loc 1 53 5 is_stmt 0 view .LVU76
+ 267 007e FFF7FEFF 		bl	HAL_GPIO_Init
+ 268              	.LVL10:
+ 269 0082 D5E7     		b	.L12
+ 270              	.L18:
+ 271              		.align	2
+ 272              	.L17:
+ 273 0084 00540040 		.word	1073763328
+ 274 0088 00000140 		.word	1073807360
+ 275 008c 000C0140 		.word	1073810432
+ 276              		.cfi_endproc
+ 277              	.LFE67:
+ 279              		.section	.bss.s_i2c1_initialized,"aw",%nobits
+ 282              	s_i2c1_initialized:
+ 283 0000 00       		.space	1
+ 284              		.section	.bss.s_hi2c1,"aw",%nobits
+ 285              		.align	2
+ 288              	s_hi2c1:
+ 289 0000 00000000 		.space	84
+ 289      00000000 
+ 289      00000000 
+ 289      00000000 
+ 289      00000000 
+ 290              		.text
+ 291              	.Letext0:
+ 292              		.file 2 "F:/Msys2/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 293              		.file 3 "F:/Msys2/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 294              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ 295              		.file 5 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 296              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h"
+ 297              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
+ARM GAS  D:\TMP\ccnnmyn1.s 			page 8
 
 
- 287 001e 9B69     		ldr	r3, [r3, #24]
- 288 0020 03F00803 		and	r3, r3, #8
- 289 0024 0093     		str	r3, [sp]
- 290              		.loc 1 70 5 view .LVU78
- 291 0026 009B     		ldr	r3, [sp]
- 292              	.LBE2:
- 293              		.loc 1 70 5 view .LVU79
-  71:Core/Src/balance_car/i2c_bus.c **** 
-  72:Core/Src/balance_car/i2c_bus.c ****     if (hi2c->Instance == I2C1) {
- 294              		.loc 1 72 5 view .LVU80
- 295              		.loc 1 72 13 is_stmt 0 view .LVU81
- 296 0028 0368     		ldr	r3, [r0]
- 297              		.loc 1 72 8 view .LVU82
- 298 002a 1E4A     		ldr	r2, .L30
- 299 002c 9342     		cmp	r3, r2
- 300 002e 1AD0     		beq	.L29
-  73:Core/Src/balance_car/i2c_bus.c ****         __HAL_RCC_AFIO_CLK_ENABLE();
-  74:Core/Src/balance_car/i2c_bus.c ****         __HAL_RCC_I2C1_CLK_ENABLE();
-  75:Core/Src/balance_car/i2c_bus.c ****         __HAL_AFIO_REMAP_I2C1_ENABLE();
-  76:Core/Src/balance_car/i2c_bus.c **** 
-  77:Core/Src/balance_car/i2c_bus.c ****         gpio.Pin = GPIO_PIN_8 | GPIO_PIN_9;
-  78:Core/Src/balance_car/i2c_bus.c ****     } else if (hi2c->Instance == I2C2) {
- 301              		.loc 1 78 12 is_stmt 1 view .LVU83
- 302              		.loc 1 78 15 is_stmt 0 view .LVU84
- 303 0030 1D4A     		ldr	r2, .L30+4
- 304 0032 9342     		cmp	r3, r2
- 305 0034 14D1     		bne	.L23
-  79:Core/Src/balance_car/i2c_bus.c ****         __HAL_RCC_I2C2_CLK_ENABLE();
- 306              		.loc 1 79 9 is_stmt 1 view .LVU85
- 307              	.LBB3:
- 308              		.loc 1 79 9 view .LVU86
- 309              		.loc 1 79 9 view .LVU87
- 310 0036 1D4B     		ldr	r3, .L30+8
- 311 0038 DA69     		ldr	r2, [r3, #28]
- 312 003a 42F48002 		orr	r2, r2, #4194304
- 313 003e DA61     		str	r2, [r3, #28]
- 314              		.loc 1 79 9 view .LVU88
- 315 0040 DB69     		ldr	r3, [r3, #28]
- 316 0042 03F48003 		and	r3, r3, #4194304
- 317 0046 0393     		str	r3, [sp, #12]
- 318              		.loc 1 79 9 view .LVU89
- 319 0048 039B     		ldr	r3, [sp, #12]
- 320              	.LBE3:
- 321              		.loc 1 79 9 view .LVU90
-  80:Core/Src/balance_car/i2c_bus.c **** 
-  81:Core/Src/balance_car/i2c_bus.c ****         gpio.Pin = GPIO_PIN_10 | GPIO_PIN_11;
- 322              		.loc 1 81 9 view .LVU91
- 323              		.loc 1 81 18 is_stmt 0 view .LVU92
- 324 004a 4FF44063 		mov	r3, #3072
- 325 004e 0493     		str	r3, [sp, #16]
- 326              	.L25:
-  82:Core/Src/balance_car/i2c_bus.c ****     } else {
-  83:Core/Src/balance_car/i2c_bus.c ****         return;
-  84:Core/Src/balance_car/i2c_bus.c ****     }
-  85:Core/Src/balance_car/i2c_bus.c **** 
-  86:Core/Src/balance_car/i2c_bus.c ****     gpio.Mode = GPIO_MODE_AF_OD;
- 327              		.loc 1 86 5 is_stmt 1 view .LVU93
-ARM GAS  D:\TMP\ccEMovMU.s 			page 9
-
-
- 328              		.loc 1 86 15 is_stmt 0 view .LVU94
- 329 0050 1223     		movs	r3, #18
- 330 0052 0593     		str	r3, [sp, #20]
-  87:Core/Src/balance_car/i2c_bus.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
- 331              		.loc 1 87 5 is_stmt 1 view .LVU95
- 332              		.loc 1 87 16 is_stmt 0 view .LVU96
- 333 0054 0323     		movs	r3, #3
- 334 0056 0793     		str	r3, [sp, #28]
-  88:Core/Src/balance_car/i2c_bus.c ****     HAL_GPIO_Init(GPIOB, &gpio);
- 335              		.loc 1 88 5 is_stmt 1 view .LVU97
- 336 0058 04A9     		add	r1, sp, #16
- 337 005a 1548     		ldr	r0, .L30+12
- 338              	.LVL3:
- 339              		.loc 1 88 5 is_stmt 0 view .LVU98
- 340 005c FFF7FEFF 		bl	HAL_GPIO_Init
- 341              	.LVL4:
- 342              	.L23:
-  89:Core/Src/balance_car/i2c_bus.c **** }
- 343              		.loc 1 89 1 view .LVU99
- 344 0060 09B0     		add	sp, sp, #36
- 345              	.LCFI4:
- 346              		.cfi_remember_state
- 347              		.cfi_def_cfa_offset 4
- 348              		@ sp needed
- 349 0062 5DF804FB 		ldr	pc, [sp], #4
- 350              	.LVL5:
- 351              	.L29:
- 352              	.LCFI5:
- 353              		.cfi_restore_state
-  73:Core/Src/balance_car/i2c_bus.c ****         __HAL_RCC_I2C1_CLK_ENABLE();
- 354              		.loc 1 73 9 is_stmt 1 view .LVU100
- 355              	.LBB4:
-  73:Core/Src/balance_car/i2c_bus.c ****         __HAL_RCC_I2C1_CLK_ENABLE();
- 356              		.loc 1 73 9 view .LVU101
-  73:Core/Src/balance_car/i2c_bus.c ****         __HAL_RCC_I2C1_CLK_ENABLE();
- 357              		.loc 1 73 9 view .LVU102
- 358 0066 114B     		ldr	r3, .L30+8
- 359 0068 9A69     		ldr	r2, [r3, #24]
- 360 006a 42F00102 		orr	r2, r2, #1
- 361 006e 9A61     		str	r2, [r3, #24]
-  73:Core/Src/balance_car/i2c_bus.c ****         __HAL_RCC_I2C1_CLK_ENABLE();
- 362              		.loc 1 73 9 view .LVU103
- 363 0070 9A69     		ldr	r2, [r3, #24]
- 364 0072 02F00102 		and	r2, r2, #1
- 365 0076 0192     		str	r2, [sp, #4]
-  73:Core/Src/balance_car/i2c_bus.c ****         __HAL_RCC_I2C1_CLK_ENABLE();
- 366              		.loc 1 73 9 view .LVU104
- 367 0078 019A     		ldr	r2, [sp, #4]
- 368              	.LBE4:
-  73:Core/Src/balance_car/i2c_bus.c ****         __HAL_RCC_I2C1_CLK_ENABLE();
- 369              		.loc 1 73 9 view .LVU105
-  74:Core/Src/balance_car/i2c_bus.c ****         __HAL_AFIO_REMAP_I2C1_ENABLE();
- 370              		.loc 1 74 9 view .LVU106
- 371              	.LBB5:
-  74:Core/Src/balance_car/i2c_bus.c ****         __HAL_AFIO_REMAP_I2C1_ENABLE();
- 372              		.loc 1 74 9 view .LVU107
-  74:Core/Src/balance_car/i2c_bus.c ****         __HAL_AFIO_REMAP_I2C1_ENABLE();
-ARM GAS  D:\TMP\ccEMovMU.s 			page 10
-
-
- 373              		.loc 1 74 9 view .LVU108
- 374 007a DA69     		ldr	r2, [r3, #28]
- 375 007c 42F40012 		orr	r2, r2, #2097152
- 376 0080 DA61     		str	r2, [r3, #28]
-  74:Core/Src/balance_car/i2c_bus.c ****         __HAL_AFIO_REMAP_I2C1_ENABLE();
- 377              		.loc 1 74 9 view .LVU109
- 378 0082 DB69     		ldr	r3, [r3, #28]
- 379 0084 03F40013 		and	r3, r3, #2097152
- 380 0088 0293     		str	r3, [sp, #8]
-  74:Core/Src/balance_car/i2c_bus.c ****         __HAL_AFIO_REMAP_I2C1_ENABLE();
- 381              		.loc 1 74 9 view .LVU110
- 382 008a 029B     		ldr	r3, [sp, #8]
- 383              	.LBE5:
-  74:Core/Src/balance_car/i2c_bus.c ****         __HAL_AFIO_REMAP_I2C1_ENABLE();
- 384              		.loc 1 74 9 view .LVU111
-  75:Core/Src/balance_car/i2c_bus.c **** 
- 385              		.loc 1 75 9 view .LVU112
- 386              	.LBB6:
-  75:Core/Src/balance_car/i2c_bus.c **** 
- 387              		.loc 1 75 9 view .LVU113
- 388 008c 094A     		ldr	r2, .L30+16
- 389 008e 5368     		ldr	r3, [r2, #4]
- 390              	.LVL6:
-  75:Core/Src/balance_car/i2c_bus.c **** 
- 391              		.loc 1 75 9 view .LVU114
-  75:Core/Src/balance_car/i2c_bus.c **** 
- 392              		.loc 1 75 9 view .LVU115
- 393 0090 43F0E063 		orr	r3, r3, #117440512
- 394              	.LVL7:
-  75:Core/Src/balance_car/i2c_bus.c **** 
- 395              		.loc 1 75 9 is_stmt 0 view .LVU116
- 396 0094 43F00203 		orr	r3, r3, #2
- 397              	.LVL8:
-  75:Core/Src/balance_car/i2c_bus.c **** 
- 398              		.loc 1 75 9 is_stmt 1 view .LVU117
- 399 0098 5360     		str	r3, [r2, #4]
- 400              	.LBE6:
-  75:Core/Src/balance_car/i2c_bus.c **** 
- 401              		.loc 1 75 9 view .LVU118
-  77:Core/Src/balance_car/i2c_bus.c ****     } else if (hi2c->Instance == I2C2) {
- 402              		.loc 1 77 9 view .LVU119
-  77:Core/Src/balance_car/i2c_bus.c ****     } else if (hi2c->Instance == I2C2) {
- 403              		.loc 1 77 18 is_stmt 0 view .LVU120
- 404 009a 4FF44073 		mov	r3, #768
- 405              	.LVL9:
-  77:Core/Src/balance_car/i2c_bus.c ****     } else if (hi2c->Instance == I2C2) {
- 406              		.loc 1 77 18 view .LVU121
- 407 009e 0493     		str	r3, [sp, #16]
- 408              	.LVL10:
-  77:Core/Src/balance_car/i2c_bus.c ****     } else if (hi2c->Instance == I2C2) {
- 409              		.loc 1 77 18 view .LVU122
- 410 00a0 D6E7     		b	.L25
- 411              	.L31:
- 412 00a2 00BF     		.align	2
- 413              	.L30:
- 414 00a4 00540040 		.word	1073763328
- 415 00a8 00580040 		.word	1073764352
-ARM GAS  D:\TMP\ccEMovMU.s 			page 11
-
-
- 416 00ac 00100240 		.word	1073876992
- 417 00b0 000C0140 		.word	1073810432
- 418 00b4 00000140 		.word	1073807360
- 419              		.cfi_endproc
- 420              	.LFE69:
- 422              		.section	.bss.s_i2c2_initialized,"aw",%nobits
- 425              	s_i2c2_initialized:
- 426 0000 00       		.space	1
- 427              		.section	.bss.s_i2c1_initialized,"aw",%nobits
- 430              	s_i2c1_initialized:
- 431 0000 00       		.space	1
- 432              		.section	.bss.s_hi2c2,"aw",%nobits
- 433              		.align	2
- 436              	s_hi2c2:
- 437 0000 00000000 		.space	84
- 437      00000000 
- 437      00000000 
- 437      00000000 
- 437      00000000 
- 438              		.section	.bss.s_hi2c1,"aw",%nobits
- 439              		.align	2
- 442              	s_hi2c1:
- 443 0000 00000000 		.space	84
- 443      00000000 
- 443      00000000 
- 443      00000000 
- 443      00000000 
- 444              		.text
- 445              	.Letext0:
- 446              		.file 2 "F:/Msys2/mingw64/arm-none-eabi/include/machine/_default_types.h"
- 447              		.file 3 "F:/Msys2/mingw64/arm-none-eabi/include/sys/_stdint.h"
- 448              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
- 449              		.file 5 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
- 450              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h"
- 451              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
- 452              		.file 8 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h"
-ARM GAS  D:\TMP\ccEMovMU.s 			page 12
+ 298              		.file 8 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h"
+ARM GAS  D:\TMP\ccnnmyn1.s 			page 9
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 i2c_bus.c
-   D:\TMP\ccEMovMU.s:19     .text.BalanceI2C1_Init:00000000 $t
-   D:\TMP\ccEMovMU.s:25     .text.BalanceI2C1_Init:00000000 BalanceI2C1_Init
-   D:\TMP\ccEMovMU.s:101    .text.BalanceI2C1_Init:0000003c $d
-   D:\TMP\ccEMovMU.s:430    .bss.s_i2c1_initialized:00000000 s_i2c1_initialized
-   D:\TMP\ccEMovMU.s:442    .bss.s_hi2c1:00000000 s_hi2c1
-   D:\TMP\ccEMovMU.s:109    .text.BalanceI2C1_GetHandle:00000000 $t
-   D:\TMP\ccEMovMU.s:115    .text.BalanceI2C1_GetHandle:00000000 BalanceI2C1_GetHandle
-   D:\TMP\ccEMovMU.s:129    .text.BalanceI2C1_GetHandle:00000004 $d
-   D:\TMP\ccEMovMU.s:134    .text.BalanceI2C2_Init:00000000 $t
-   D:\TMP\ccEMovMU.s:140    .text.BalanceI2C2_Init:00000000 BalanceI2C2_Init
-   D:\TMP\ccEMovMU.s:216    .text.BalanceI2C2_Init:0000003c $d
-   D:\TMP\ccEMovMU.s:425    .bss.s_i2c2_initialized:00000000 s_i2c2_initialized
-   D:\TMP\ccEMovMU.s:436    .bss.s_hi2c2:00000000 s_hi2c2
-   D:\TMP\ccEMovMU.s:224    .text.BalanceI2C2_GetHandle:00000000 $t
-   D:\TMP\ccEMovMU.s:230    .text.BalanceI2C2_GetHandle:00000000 BalanceI2C2_GetHandle
-   D:\TMP\ccEMovMU.s:244    .text.BalanceI2C2_GetHandle:00000004 $d
-   D:\TMP\ccEMovMU.s:249    .text.HAL_I2C_MspInit:00000000 $t
-   D:\TMP\ccEMovMU.s:255    .text.HAL_I2C_MspInit:00000000 HAL_I2C_MspInit
-   D:\TMP\ccEMovMU.s:414    .text.HAL_I2C_MspInit:000000a4 $d
-   D:\TMP\ccEMovMU.s:426    .bss.s_i2c2_initialized:00000000 $d
-   D:\TMP\ccEMovMU.s:431    .bss.s_i2c1_initialized:00000000 $d
-   D:\TMP\ccEMovMU.s:433    .bss.s_hi2c2:00000000 $d
-   D:\TMP\ccEMovMU.s:439    .bss.s_hi2c1:00000000 $d
+   D:\TMP\ccnnmyn1.s:19     .text.BalanceI2C1_Init:00000000 $t
+   D:\TMP\ccnnmyn1.s:25     .text.BalanceI2C1_Init:00000000 BalanceI2C1_Init
+   D:\TMP\ccnnmyn1.s:101    .text.BalanceI2C1_Init:0000003c $d
+   D:\TMP\ccnnmyn1.s:282    .bss.s_i2c1_initialized:00000000 s_i2c1_initialized
+   D:\TMP\ccnnmyn1.s:288    .bss.s_hi2c1:00000000 s_hi2c1
+   D:\TMP\ccnnmyn1.s:109    .text.BalanceI2C1_GetHandle:00000000 $t
+   D:\TMP\ccnnmyn1.s:115    .text.BalanceI2C1_GetHandle:00000000 BalanceI2C1_GetHandle
+   D:\TMP\ccnnmyn1.s:129    .text.BalanceI2C1_GetHandle:00000004 $d
+   D:\TMP\ccnnmyn1.s:134    .text.HAL_I2C_MspInit:00000000 $t
+   D:\TMP\ccnnmyn1.s:140    .text.HAL_I2C_MspInit:00000000 HAL_I2C_MspInit
+   D:\TMP\ccnnmyn1.s:273    .text.HAL_I2C_MspInit:00000084 $d
+   D:\TMP\ccnnmyn1.s:283    .bss.s_i2c1_initialized:00000000 $d
+   D:\TMP\ccnnmyn1.s:285    .bss.s_hi2c1:00000000 $d
 
 UNDEFINED SYMBOLS
 HAL_I2C_Init

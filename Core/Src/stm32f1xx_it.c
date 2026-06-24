@@ -201,7 +201,7 @@ void SysTick_Handler(void)
 
 /* USER CODE BEGIN 1 */
 
-void USART1_IRQHandler(void)
+void USART3_IRQHandler(void)
 {
   RemoteControl_IRQHandler();
 }

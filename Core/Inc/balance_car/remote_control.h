@@ -17,7 +17,7 @@ typedef struct {
     uint8_t command_ready;        /* Ozone观察: 1=收到完整命令行并等待后台解析，通常只会短暂为1 */
     uint8_t parser_error;         /* Ozone观察: 1=最近一次命令格式错误 */
     uint8_t reserved;             /* 保留 */
-    uint32_t rx_count;            /* Ozone观察: USART1重映射PB7收到的字节数 */
+    uint32_t rx_count;            /* Ozone观察: USART3 PB11收到的字节数 */
     uint32_t valid_cmd_count;     /* Ozone观察: 有效命令计数 */
     uint32_t invalid_cmd_count;   /* Ozone观察: 无效命令计数 */
     uint32_t timeout_count;       /* Ozone观察: 遥控超时次数 */

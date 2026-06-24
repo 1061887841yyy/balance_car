@@ -14,7 +14,6 @@
 - HC-05/HC-06 蓝牙串口遥控
 - Android 蓝牙遥控 APP
 - PC13 运行指示灯
-- SSD1306 OLED 状态显示
 - DHT11 温湿度采集
 - XFW-XH711/HX711 称重模块
 - Ozone + J-Link 调试变量入口
@@ -75,29 +74,20 @@ MPU6050 单独使用 I2C1 的 PB8/PB9。
 | --- | --- | --- |
 | 运行指示灯 | PC13 | 最小系统板常见板载 LED，运行允许时点亮 |
 
-PB6/PB7 已用于蓝牙串口，不再作为实体按键。启停通过 Android APP 的 `START` / `EMERGENCY STOP`，或 Ozone 修改 `g_balance_debug.run_enable` 完成。PC13 指示灯跟随 `run_enable` 亮灭。
+PB6/PB7 当前未作为实体按键使用。启停通过 Android APP 的 `START` / `EMERGENCY STOP`，或 Ozone 修改 `g_balance_debug.run_enable` 完成。PC13 指示灯跟随 `run_enable` 亮灭。
 
 ### OLED 显示屏
 
-默认使用 0.96 寸 I2C SSD1306 128x64 OLED，地址 `0x3C`。
-
-| 功能 | STM32 引脚 | OLED |
-| --- | --- | --- |
-| I2C2_SCL | PB10 | SCL |
-| I2C2_SDA | PB11 | SDA |
-| 3.3V | 3.3V | VCC |
-| GND | GND | GND |
-
-OLED 使用 I2C2 的 PB10/PB11，不与 MPU6050 共用 I2C1。
+OLED 已从当前固件中移除，不再初始化或刷新。PB10/PB11 已改给蓝牙 USART3 使用。
 
 ### HC-05/HC-06 蓝牙模块
 
-蓝牙模块使用重映射后的 USART1 与 STM32 通信。手机 APP 只发送遥控命令，平衡控制仍由 STM32 完成。
+蓝牙模块使用默认 USART3 与 STM32 通信。手机 APP 只发送遥控命令，平衡控制仍由 STM32 完成。
 
 | STM32F103C8T6 | HC-05/HC-06 | 说明 |
 | --- | --- | --- |
-| PB6 / USART1_TX | RXD | STM32 发给蓝牙模块 |
-| PB7 / USART1_RX | TXD | 蓝牙模块发给 STM32 |
+| PB10 / USART3_TX | RXD | STM32 发给蓝牙模块 |
+| PB11 / USART3_RX | TXD | 蓝牙模块发给 STM32 |
 | GND | GND | 必须与 STM32、电机电源共地 |
 | 3.3V 或 5V | VCC | 按模块板标注供电 |
 
@@ -158,13 +148,13 @@ Core/Src/balance_car/
 | `mpu6050_hal.c/.h` | HAL I2C 版 MPU6050 初始化和原始数据读取 |
 | `motor_tb6612.c/.h` | TB6612 电机方向和 PWM 输出 |
 | `encoder_hal.c/.h` | TIM1/TIM2 编码器模式读取左右轮速度 |
-| `i2c_bus.c/.h` | I2C1/I2C2 总线初始化，MPU6050 使用 I2C1，OLED 使用 I2C2 |
-| `oled_ssd1306.c/.h` | SSD1306 128x64 I2C OLED 分页刷新 |
-| `remote_control.c/.h` | USART1 重映射 PB6/PB7 蓝牙遥控命令接收、解析、限幅和超时保护 |
+| `i2c_bus.c/.h` | I2C1 总线初始化，MPU6050 使用 I2C1 |
+| `oled_ssd1306.c/.h` | OLED 驱动源码保留，但当前不参与编译 |
+| `remote_control.c/.h` | USART3 PB10/PB11 蓝牙遥控命令接收、解析、限幅和超时保护 |
 | `dht11.c/.h` | PC14 单总线读取 DHT11 温湿度 |
 | `hx711.c/.h` | PB12/PB13 读取 XFW-XH711/HX711 称重模块 |
 | `app_sensors.c/.h` | 温湿度、XH711 重量计算和 Ozone 状态变量 |
-| `display_ui.c/.h` | OLED 四行数据显示和后台刷新 |
+| `display_ui.c/.h` | OLED UI 源码保留，但当前不参与编译 |
 
 Android APP 工程在：
 
@@ -351,7 +341,7 @@ g_turn_pid
 
 ### 5.3 g_sensor_state
 
-这是 OLED、DHT11 和 XFW-XH711 的观察与校准入口。
+这是 DHT11 和 XFW-XH711 的观察与校准入口。OLED 当前已从固件中移除，`oled_*` 字段保留但不会更新。
 
 | 变量 | 含义 |
 | --- | --- |
@@ -400,7 +390,7 @@ g_balance_state.angle
 | `link_active` | 1=最近 `timeout_ms` 内收到过有效遥控命令 |
 | `command_ready` | 1=收到完整命令行并等待后台解析，通常只会短暂出现 |
 | `parser_error` | 1=最近一次命令格式错误 |
-| `rx_count` | USART1 重映射 PB7 收到的字节数 |
+| `rx_count` | USART3 PB11 收到的字节数 |
 | `valid_cmd_count` | 有效命令计数 |
 | `invalid_cmd_count` | 无效命令计数 |
 | `timeout_count` | 遥控超时次数 |
@@ -1117,8 +1107,8 @@ g_sensor_state.hx711_g_per_count
 
 | USB-TTL | STM32 |
 | --- | --- |
-| TXD | PB7 / USART1_RX |
-| RXD | PB6 / USART1_TX |
+| TXD | PB11 / USART3_RX |
+| RXD | PB10 / USART3_TX |
 | GND | GND |
 
 串口助手设置：
@@ -1164,7 +1154,7 @@ g_balance_debug.turn_target
 - `TURN 0.4` 能让 `turn_target` 变 0.4。
 - `CTL 0.5 0.4` 能同时让 `speed_target` 变 0.5、`turn_target` 变 0.4。
 
-如果 `rx_count` 不动，优先检查 PB6/PB7 是否接反、USB-TTL 是否共地、波特率是否是 9600。
+如果 `rx_count` 不动，优先检查 PB10/PB11 是否接反、USB-TTL 是否共地、波特率是否是 9600。
 
 #### 6.9.2 手机配对 HC-05/HC-06
 
@@ -1250,8 +1240,8 @@ Raw: 123456
 
 | HC-05/HC-06 | STM32 |
 | --- | --- |
-| TXD | PB7 / USART1_RX |
-| RXD | PB6 / USART1_TX |
+| TXD | PB11 / USART3_RX |
+| RXD | PB10 / USART3_TX |
 | GND | GND |
 | VCC | 按模块板标注接 3.3V 或 5V |
 
@@ -1276,7 +1266,7 @@ g_balance_debug.run_enable
 - 右摇杆左右移动，`turn_target` 正负变化。
 - 超过 500ms 没有新命令时，`speed_target/turn_target` 自动回 0，但 `run_enable` 不会被强制关掉。
 
-如果 APP 显示已连接但 `rx_count` 不增加，基本就是硬件链路问题：检查 `蓝牙 TXD -> PB7`、`蓝牙 RXD -> PB6`、共地、波特率是否一致。
+如果 APP 显示已连接但 `rx_count` 不增加，基本就是硬件链路问题：检查 `蓝牙 TXD -> PB11`、`蓝牙 RXD -> PB10`、共地、波特率是否一致。
 
 #### 6.9.5 架空和落地测试
 
@@ -1422,8 +1412,8 @@ g_sensor_state.oled_fail_step
 | 值 | 含义 | 排查方向 |
 | --- | --- | --- |
 | `0x00000000` | 无故障 | 正常 |
-| `0x00000001` | USART1 初始化失败 | 检查 HAL UART 是否启用、PB6/PB7 是否被其他外设占用 |
-| `0x00000002` | UART 接收中断重启失败 | 检查 USART1 中断和 HAL UART 状态 |
+| `0x00000001` | USART3 初始化失败 | 检查 HAL UART 是否启用、PB10/PB11 是否被其他外设占用 |
+| `0x00000002` | UART 接收中断重启失败 | 检查 USART3 中断和 HAL UART 状态 |
 | `0x00000004` | 命令行过长溢出 | APP 或串口助手发送的单条命令超过 31 字节 |
 | `0x00000008` | 命令格式错误 | 检查命令是否是 `RUN/SPD/TURN/CTL/STOP/PING`，并且是否带换行 |
 
@@ -1557,8 +1547,8 @@ HEX/BIN 只适合烧录，不适合看变量。
 - `Makefile` 是否仍包含 `Core/Src/balance_car/*.c`
 - `Makefile` 是否仍包含 `Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c`
 - `stm32f1xx_hal_conf.h` 是否启用了 `HAL_I2C_MODULE_ENABLED`、`HAL_TIM_MODULE_ENABLED` 和 `HAL_UART_MODULE_ENABLED`
-- OLED 是否仍接在 PB10/PB11 的 I2C2
-- PB6/PB7 是否仍留给 USART1 重映射蓝牙遥控，不要再接实体按键
+- OLED 是否仍保持禁用，不参与编译
+- PB10/PB11 是否仍留给 USART3 蓝牙，不要再接 OLED I2C2
 - PB12/PB13 是否仍留给 XFW-XH711，不要被其它外设占用
 
 ## 11. 安全建议

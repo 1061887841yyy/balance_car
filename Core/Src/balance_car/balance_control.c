@@ -1,7 +1,6 @@
 #include "balance_car/balance_control.h"
 
 #include "balance_car/app_sensors.h"
-#include "balance_car/display_ui.h"
 #include "balance_car/encoder_hal.h"
 #include "balance_car/motor_tb6612.h"
 #include "balance_car/mpu6050_hal.h"
@@ -272,7 +271,6 @@ HAL_StatusTypeDef BalanceCar_Init(void)
     g_balance_state.mpu_id = Mpu6050_GetLastId();
 
     (void)AppSensors_Init();
-    (void)DisplayUi_Init();
     (void)RemoteControl_Init();
 
     s_htim4.Instance = TIM4;
@@ -293,7 +291,6 @@ HAL_StatusTypeDef BalanceCar_Init(void)
 void BalanceCar_Background(void)
 {
     AppSensors_Background();
-    DisplayUi_Background();
     RemoteControl_Background();
 
     if (g_balance_debug.clear_fault_request != 0U) {
