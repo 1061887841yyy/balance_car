@@ -5,6 +5,7 @@
 #include "balance_car/encoder_hal.h"
 #include "balance_car/motor_tb6612.h"
 #include "balance_car/mpu6050_hal.h"
+#include "balance_car/remote_control.h"
 #include <math.h>
 
 #define PI_F                         3.14159f
@@ -12,23 +13,22 @@
 #define SPEED_LOOP_PERIOD_S          0.05f
 #define ENCODER_MAGNET_LINES         13.0f
 #define MOTOR_REDUCTION_RATIO        30.0f
-#define RUN_BUTTON_PORT              GPIOB
-#define RUN_BUTTON_PIN               GPIO_PIN_6
 #define RUN_LED_PORT                 GPIOC
 #define RUN_LED_PIN                  GPIO_PIN_13
 #define RUN_LED_ON                   GPIO_PIN_RESET
 #define RUN_LED_OFF                  GPIO_PIN_SET
-#define RUN_BUTTON_DEBOUNCE_MS       20U
 
 volatile BalanceCarDebug_t g_balance_debug = {
     .run_enable = 0U,          /* Ozone: 默认停机；确认车架空和传感器正常后再改为1 */
     .reset_pid_request = 0U,   /* Ozone: 写1可清PID历史，适合每次重新调参前使用 */
     .clear_fault_request = 0U, /* Ozone: 写1可清故障标志，硬件问题没修好会再次置位 */
-    .speed_target = 1.0f,      /* Ozone: 调平衡阶段保持0；速度环稳定后再小幅给目标 */
+    .speed_target = 0.0f,      /* Ozone: 调平衡阶段保持0；速度环稳定后再小幅给目标 */
     .turn_target = 0.0f,       /* Ozone: 调平衡阶段保持0；转向环稳定后再小幅给目标 */
     .gyro_y_offset = 20,    /* Ozone: 静止时观察g_balance_state.gy，把零漂填到这里 */
+    .gyro_z_offset = -60.0f,     /* Ozone: 静止时观察g_balance_state.gz，把Z轴零漂填到这里 */
+    .turn_gyro_scale = 60.0f,  /* Ozone: turn_target=1时目标Z轴角速度约60deg/s，可按手感调 */
     .angle_offset = 2.4f,      /* Ozone: 竖直时调这个，让g_balance_state.angle接近0 */
-    .fall_angle_limit = 12.0f, /* Ozone: 倒车保护阈值，超过后自动停机 */
+    .fall_angle_limit = 20.0f, /* Ozone: 倒车保护阈值，超过后自动停机 */
 };
 
 volatile BalanceCarState_t g_balance_state = {0}; /* Ozone: 运行状态观察区，不建议手动修改 */
@@ -45,8 +45,8 @@ PID_t g_angle_pid = {       /* Ozone: 角度环，第一阶段只调这个 */
 };
 
 PID_t g_speed_pid = {       /* Ozone: 速度环，角度环稳定后再调 */
-    .Kp = 0.2f,
-    .Ki = 0.0f,
+    .Kp = 0.8f,
+    .Ki = 0.3f,
     .Kd = 0.0f,
     .OutMax = 5.0f,
     .OutMin = -5.0f,
@@ -58,8 +58,8 @@ PID_t g_turn_pid = {        /* Ozone: 转向环，速度环稳定后最后调 */
     .Kp = 0,
     .Ki = 0,
     .Kd = 0.0f,
-    .OutMax = 50.0f,
-    .OutMin = -50.0f,
+    .OutMax = 3.0f,
+    .OutMin = -3.0f,
     .ErrorIntMax = 20.0f,
     .ErrorIntMin = -20.0f,
 };
@@ -67,24 +67,9 @@ PID_t g_turn_pid = {        /* Ozone: 转向环，速度环稳定后最后调 */
 static TIM_HandleTypeDef s_htim4;
 static volatile uint8_t s_angle_tick_pending;
 static volatile uint8_t s_speed_tick_pending;
-static volatile uint8_t s_button_toggle_pending;
 static uint8_t s_last_run_enable;
-static uint8_t s_button_sample;
-static uint8_t s_button_stable;
-static uint8_t s_button_debounce_count;
 static float s_angle;
 static float s_dif_pwm;
-
-static void BalanceCar_ButtonPinInit(void)
-{
-    GPIO_InitTypeDef gpio = {0};
-
-    gpio.Pin = RUN_BUTTON_PIN;
-    gpio.Mode = GPIO_MODE_INPUT;
-    gpio.Pull = GPIO_PULLUP;
-    gpio.Speed = GPIO_SPEED_FREQ_LOW;
-    HAL_GPIO_Init(RUN_BUTTON_PORT, &gpio);
-}
 
 static void BalanceCar_RunLedInit(void)
 {
@@ -119,44 +104,17 @@ static void BalanceCar_ClearRuntimeFaults(void)
 
 static void BalanceCar_ButtonInit(void)
 {
-    __HAL_RCC_GPIOB_CLK_ENABLE();
     __HAL_RCC_GPIOC_CLK_ENABLE();
 
-    BalanceCar_ButtonPinInit();
     BalanceCar_RunLedInit();
 
-    s_button_sample = (HAL_GPIO_ReadPin(RUN_BUTTON_PORT, RUN_BUTTON_PIN) == GPIO_PIN_RESET) ? 1U : 0U;
-    s_button_stable = s_button_sample;
-    s_button_debounce_count = 0U;
-    g_balance_state.button_raw = s_button_sample;
-    g_balance_state.button_stable = s_button_stable;
     g_balance_state.button_toggle = 0U;
+    g_balance_state.button_raw = 0U;
+    g_balance_state.button_stable = 0U;
 }
 
 static void BalanceCar_ButtonTick1ms(void)
 {
-    uint8_t sample = (HAL_GPIO_ReadPin(RUN_BUTTON_PORT, RUN_BUTTON_PIN) == GPIO_PIN_RESET) ? 1U : 0U;
-    g_balance_state.button_raw = sample;
-
-    if (sample != s_button_sample) {
-        s_button_sample = sample;
-        s_button_debounce_count = 0U;
-        BalanceCar_RunLedApply();
-        return;
-    }
-
-    if (s_button_debounce_count < RUN_BUTTON_DEBOUNCE_MS) {
-        s_button_debounce_count++;
-        if (s_button_debounce_count == RUN_BUTTON_DEBOUNCE_MS && s_button_stable != s_button_sample) {
-            s_button_stable = s_button_sample;
-            g_balance_state.button_stable = s_button_stable;
-            if (s_button_stable != 0U) {
-                s_button_toggle_pending = 1U;
-                g_balance_state.button_toggle ^= 1U;
-            }
-        }
-    }
-
     BalanceCar_RunLedApply();
 }
 
@@ -213,6 +171,8 @@ static void BalanceCar_RunAngleLoop(void)
     g_balance_state.gz = raw.gz;
 
     float gy_calibrated = (float)raw.gy - g_balance_debug.gyro_y_offset;
+    float gz_calibrated = (float)raw.gz - g_balance_debug.gyro_z_offset;
+    float gyro_z_rate = gz_calibrated / 32768.0f * 2000.0f;
     float angle_acc = -atan2f((float)raw.ax, (float)raw.az) / PI_F * 180.0f;
     angle_acc += g_balance_debug.angle_offset;
 
@@ -223,6 +183,7 @@ static void BalanceCar_RunAngleLoop(void)
     g_balance_state.angle_acc = angle_acc;
     g_balance_state.angle_gyro = angle_gyro;
     g_balance_state.angle = s_angle;
+    g_balance_state.gyro_z_rate = gyro_z_rate;
 
     if (s_angle > g_balance_debug.fall_angle_limit || s_angle < -g_balance_debug.fall_angle_limit) {
         BalanceCar_SetFault(BALANCE_FAULT_FALL);
@@ -278,10 +239,12 @@ static void BalanceCar_RunSpeedLoop(void)
     PID_Update(&g_speed_pid);
     g_angle_pid.Target = g_speed_pid.Out;
 
-    g_turn_pid.Target = g_balance_debug.turn_target;
-    g_turn_pid.Actual = dif_speed;
+    float turn_rate_target = -g_balance_debug.turn_target * g_balance_debug.turn_gyro_scale;
+    g_balance_state.turn_rate_target = turn_rate_target;
+    g_turn_pid.Target = turn_rate_target;
+    g_turn_pid.Actual = g_balance_state.gyro_z_rate;
     PID_Update(&g_turn_pid);
-    s_dif_pwm = g_turn_pid.Out;
+    s_dif_pwm = g_turn_pid.Out * 5.0f;
 }
 
 HAL_StatusTypeDef BalanceCar_Init(void)
@@ -310,6 +273,7 @@ HAL_StatusTypeDef BalanceCar_Init(void)
 
     (void)AppSensors_Init();
     (void)DisplayUi_Init();
+    (void)RemoteControl_Init();
 
     s_htim4.Instance = TIM4;
     s_htim4.Init.Prescaler = 64U - 1U;
@@ -330,20 +294,7 @@ void BalanceCar_Background(void)
 {
     AppSensors_Background();
     DisplayUi_Background();
-
-    if (s_button_toggle_pending != 0U) {
-        s_button_toggle_pending = 0U;
-        if (g_balance_debug.run_enable == 0U) {
-            BalanceCar_ClearRuntimeFaults();
-            BalanceCar_ResetPidAndOutputs();
-            s_angle = g_balance_state.angle;
-            g_balance_debug.run_enable = 1U;
-        } else {
-            g_balance_debug.run_enable = 0U;
-            BalanceCar_Stop();
-        }
-        BalanceCar_RunLedApply();
-    }
+    RemoteControl_Background();
 
     if (g_balance_debug.clear_fault_request != 0U) {
         g_balance_debug.clear_fault_request = 0U;

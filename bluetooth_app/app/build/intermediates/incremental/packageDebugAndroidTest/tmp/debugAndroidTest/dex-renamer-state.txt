@@ -1,0 +1,4 @@
+#Tue Jun 23 10:20:23 CST 2026
+base.0=F\:\\STM32CubeMX\\project\\balance_car\\balance_car_bluetooth\\balance_car\\android_bluetooth_remote\\app\\build\\intermediates\\dex\\debugAndroidTest\\mergeProjectDexDebugAndroidTest\\0\\classes.dex
+path.0=0/classes.dex
+renamed.0=classes.dex

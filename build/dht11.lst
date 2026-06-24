@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 1
+ARM GAS  D:\TMP\ccODVYxi.s 			page 1
 
 
    1              		.cpu cortex-m3
@@ -31,79 +31,80 @@ ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 1
    4:Core/Src/balance_car/dht11.c **** #define DHT11_PIN  GPIO_PIN_14
    5:Core/Src/balance_car/dht11.c **** 
    6:Core/Src/balance_car/dht11.c **** static uint8_t s_dwt_ready;
-   7:Core/Src/balance_car/dht11.c **** 
-   8:Core/Src/balance_car/dht11.c **** static void Dht11_SetOutput(void)
-   9:Core/Src/balance_car/dht11.c **** {
-  10:Core/Src/balance_car/dht11.c ****     GPIO_InitTypeDef gpio = {0};
-  11:Core/Src/balance_car/dht11.c **** 
-  12:Core/Src/balance_car/dht11.c ****     gpio.Pin = DHT11_PIN;
-  13:Core/Src/balance_car/dht11.c ****     gpio.Mode = GPIO_MODE_OUTPUT_OD;
-  14:Core/Src/balance_car/dht11.c ****     gpio.Pull = GPIO_PULLUP;
-  15:Core/Src/balance_car/dht11.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
-  16:Core/Src/balance_car/dht11.c ****     HAL_GPIO_Init(DHT11_PORT, &gpio);
-  17:Core/Src/balance_car/dht11.c **** }
-  18:Core/Src/balance_car/dht11.c **** 
-  19:Core/Src/balance_car/dht11.c **** static void Dht11_SetInput(void)
-  20:Core/Src/balance_car/dht11.c **** {
-  21:Core/Src/balance_car/dht11.c ****     GPIO_InitTypeDef gpio = {0};
-  22:Core/Src/balance_car/dht11.c **** 
-  23:Core/Src/balance_car/dht11.c ****     gpio.Pin = DHT11_PIN;
-  24:Core/Src/balance_car/dht11.c ****     gpio.Mode = GPIO_MODE_INPUT;
-  25:Core/Src/balance_car/dht11.c ****     gpio.Pull = GPIO_PULLUP;
-  26:Core/Src/balance_car/dht11.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
-  27:Core/Src/balance_car/dht11.c ****     HAL_GPIO_Init(DHT11_PORT, &gpio);
-  28:Core/Src/balance_car/dht11.c **** }
-  29:Core/Src/balance_car/dht11.c **** 
-  30:Core/Src/balance_car/dht11.c **** static void Dht11_DwtInit(void)
-  31:Core/Src/balance_car/dht11.c **** {
-  26              		.loc 1 31 1 view -0
+   7:Core/Src/balance_car/dht11.c **** static uint8_t s_fail_step;
+   8:Core/Src/balance_car/dht11.c **** 
+   9:Core/Src/balance_car/dht11.c **** static void Dht11_SetOutput(void)
+  10:Core/Src/balance_car/dht11.c **** {
+  11:Core/Src/balance_car/dht11.c ****     GPIO_InitTypeDef gpio = {0};
+  12:Core/Src/balance_car/dht11.c **** 
+  13:Core/Src/balance_car/dht11.c ****     gpio.Pin = DHT11_PIN;
+  14:Core/Src/balance_car/dht11.c ****     gpio.Mode = GPIO_MODE_OUTPUT_OD;
+  15:Core/Src/balance_car/dht11.c ****     gpio.Pull = GPIO_PULLUP;
+  16:Core/Src/balance_car/dht11.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+  17:Core/Src/balance_car/dht11.c ****     HAL_GPIO_Init(DHT11_PORT, &gpio);
+  18:Core/Src/balance_car/dht11.c **** }
+  19:Core/Src/balance_car/dht11.c **** 
+  20:Core/Src/balance_car/dht11.c **** static void Dht11_SetInput(void)
+  21:Core/Src/balance_car/dht11.c **** {
+  22:Core/Src/balance_car/dht11.c ****     GPIO_InitTypeDef gpio = {0};
+  23:Core/Src/balance_car/dht11.c **** 
+  24:Core/Src/balance_car/dht11.c ****     gpio.Pin = DHT11_PIN;
+  25:Core/Src/balance_car/dht11.c ****     gpio.Mode = GPIO_MODE_INPUT;
+  26:Core/Src/balance_car/dht11.c ****     gpio.Pull = GPIO_PULLUP;
+  27:Core/Src/balance_car/dht11.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+  28:Core/Src/balance_car/dht11.c ****     HAL_GPIO_Init(DHT11_PORT, &gpio);
+  29:Core/Src/balance_car/dht11.c **** }
+  30:Core/Src/balance_car/dht11.c **** 
+  31:Core/Src/balance_car/dht11.c **** static void Dht11_DwtInit(void)
+  32:Core/Src/balance_car/dht11.c **** {
+  26              		.loc 1 32 1 view -0
+ARM GAS  D:\TMP\ccODVYxi.s 			page 2
+
+
   27              		.cfi_startproc
-ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 2
-
-
   28              		@ args = 0, pretend = 0, frame = 0
   29              		@ frame_needed = 0, uses_anonymous_args = 0
   30              		@ link register save eliminated.
-  32:Core/Src/balance_car/dht11.c ****     if (s_dwt_ready != 0U) {
-  31              		.loc 1 32 5 view .LVU1
-  32              		.loc 1 32 21 is_stmt 0 view .LVU2
+  33:Core/Src/balance_car/dht11.c ****     if (s_dwt_ready != 0U) {
+  31              		.loc 1 33 5 view .LVU1
+  32              		.loc 1 33 21 is_stmt 0 view .LVU2
   33 0000 0A4B     		ldr	r3, .L3
   34 0002 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
-  35              		.loc 1 32 8 view .LVU3
+  35              		.loc 1 33 8 view .LVU3
   36 0004 83B9     		cbnz	r3, .L1
-  33:Core/Src/balance_car/dht11.c ****         return;
-  34:Core/Src/balance_car/dht11.c ****     }
-  35:Core/Src/balance_car/dht11.c **** 
-  36:Core/Src/balance_car/dht11.c ****     CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
-  37              		.loc 1 36 5 is_stmt 1 view .LVU4
-  38              		.loc 1 36 14 is_stmt 0 view .LVU5
+  34:Core/Src/balance_car/dht11.c ****         return;
+  35:Core/Src/balance_car/dht11.c ****     }
+  36:Core/Src/balance_car/dht11.c **** 
+  37:Core/Src/balance_car/dht11.c ****     CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
+  37              		.loc 1 37 5 is_stmt 1 view .LVU4
+  38              		.loc 1 37 14 is_stmt 0 view .LVU5
   39 0006 0A4A     		ldr	r2, .L3+4
   40 0008 D2F8FC30 		ldr	r3, [r2, #252]
-  41              		.loc 1 36 22 view .LVU6
+  41              		.loc 1 37 22 view .LVU6
   42 000c 43F08073 		orr	r3, r3, #16777216
   43 0010 C2F8FC30 		str	r3, [r2, #252]
-  37:Core/Src/balance_car/dht11.c ****     DWT->CYCCNT = 0U;
-  44              		.loc 1 37 5 is_stmt 1 view .LVU7
-  45              		.loc 1 37 17 is_stmt 0 view .LVU8
+  38:Core/Src/balance_car/dht11.c ****     DWT->CYCCNT = 0U;
+  44              		.loc 1 38 5 is_stmt 1 view .LVU7
+  45              		.loc 1 38 17 is_stmt 0 view .LVU8
   46 0014 074B     		ldr	r3, .L3+8
   47 0016 0022     		movs	r2, #0
   48 0018 5A60     		str	r2, [r3, #4]
-  38:Core/Src/balance_car/dht11.c ****     DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
-  49              		.loc 1 38 5 is_stmt 1 view .LVU9
-  50              		.loc 1 38 8 is_stmt 0 view .LVU10
+  39:Core/Src/balance_car/dht11.c ****     DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
+  49              		.loc 1 39 5 is_stmt 1 view .LVU9
+  50              		.loc 1 39 8 is_stmt 0 view .LVU10
   51 001a 1A68     		ldr	r2, [r3]
-  52              		.loc 1 38 15 view .LVU11
+  52              		.loc 1 39 15 view .LVU11
   53 001c 42F00102 		orr	r2, r2, #1
   54 0020 1A60     		str	r2, [r3]
-  39:Core/Src/balance_car/dht11.c ****     s_dwt_ready = 1U;
-  55              		.loc 1 39 5 is_stmt 1 view .LVU12
-  56              		.loc 1 39 17 is_stmt 0 view .LVU13
+  40:Core/Src/balance_car/dht11.c ****     s_dwt_ready = 1U;
+  55              		.loc 1 40 5 is_stmt 1 view .LVU12
+  56              		.loc 1 40 17 is_stmt 0 view .LVU13
   57 0022 024B     		ldr	r3, .L3
   58 0024 0122     		movs	r2, #1
   59 0026 1A70     		strb	r2, [r3]
   60              	.L1:
-  40:Core/Src/balance_car/dht11.c **** }
-  61              		.loc 1 40 1 view .LVU14
+  41:Core/Src/balance_car/dht11.c **** }
+  61              		.loc 1 41 1 view .LVU14
   62 0028 7047     		bx	lr
   63              	.L4:
   64 002a 00BF     		.align	2
@@ -117,14 +118,14 @@ ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 1
   73              		.align	1
   74              		.syntax unified
   75              		.thumb
+ARM GAS  D:\TMP\ccODVYxi.s 			page 3
+
+
   76              		.thumb_func
-ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 3
-
-
   78              	Dht11_SetInput:
   79              	.LFB66:
-  20:Core/Src/balance_car/dht11.c ****     GPIO_InitTypeDef gpio = {0};
-  80              		.loc 1 20 1 is_stmt 1 view -0
+  21:Core/Src/balance_car/dht11.c ****     GPIO_InitTypeDef gpio = {0};
+  80              		.loc 1 21 1 is_stmt 1 view -0
   81              		.cfi_startproc
   82              		@ args = 0, pretend = 0, frame = 16
   83              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -135,52 +136,52 @@ ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 1
   88 0002 85B0     		sub	sp, sp, #20
   89              	.LCFI1:
   90              		.cfi_def_cfa_offset 24
-  21:Core/Src/balance_car/dht11.c **** 
-  91              		.loc 1 21 5 view .LVU16
-  21:Core/Src/balance_car/dht11.c **** 
-  92              		.loc 1 21 22 is_stmt 0 view .LVU17
+  22:Core/Src/balance_car/dht11.c **** 
+  91              		.loc 1 22 5 view .LVU16
+  22:Core/Src/balance_car/dht11.c **** 
+  92              		.loc 1 22 22 is_stmt 0 view .LVU17
   93 0004 0023     		movs	r3, #0
   94 0006 0093     		str	r3, [sp]
   95 0008 0193     		str	r3, [sp, #4]
   96 000a 0293     		str	r3, [sp, #8]
   97 000c 0393     		str	r3, [sp, #12]
-  23:Core/Src/balance_car/dht11.c ****     gpio.Mode = GPIO_MODE_INPUT;
-  98              		.loc 1 23 5 is_stmt 1 view .LVU18
-  23:Core/Src/balance_car/dht11.c ****     gpio.Mode = GPIO_MODE_INPUT;
-  99              		.loc 1 23 14 is_stmt 0 view .LVU19
+  24:Core/Src/balance_car/dht11.c ****     gpio.Mode = GPIO_MODE_INPUT;
+  98              		.loc 1 24 5 is_stmt 1 view .LVU18
+  24:Core/Src/balance_car/dht11.c ****     gpio.Mode = GPIO_MODE_INPUT;
+  99              		.loc 1 24 14 is_stmt 0 view .LVU19
  100 000e 4FF48043 		mov	r3, #16384
  101 0012 0093     		str	r3, [sp]
-  24:Core/Src/balance_car/dht11.c ****     gpio.Pull = GPIO_PULLUP;
- 102              		.loc 1 24 5 is_stmt 1 view .LVU20
-  25:Core/Src/balance_car/dht11.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
- 103              		.loc 1 25 5 view .LVU21
-  25:Core/Src/balance_car/dht11.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
- 104              		.loc 1 25 15 is_stmt 0 view .LVU22
+  25:Core/Src/balance_car/dht11.c ****     gpio.Pull = GPIO_PULLUP;
+ 102              		.loc 1 25 5 is_stmt 1 view .LVU20
+  26:Core/Src/balance_car/dht11.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+ 103              		.loc 1 26 5 view .LVU21
+  26:Core/Src/balance_car/dht11.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+ 104              		.loc 1 26 15 is_stmt 0 view .LVU22
  105 0014 0123     		movs	r3, #1
  106 0016 0293     		str	r3, [sp, #8]
-  26:Core/Src/balance_car/dht11.c ****     HAL_GPIO_Init(DHT11_PORT, &gpio);
- 107              		.loc 1 26 5 is_stmt 1 view .LVU23
-  26:Core/Src/balance_car/dht11.c ****     HAL_GPIO_Init(DHT11_PORT, &gpio);
- 108              		.loc 1 26 16 is_stmt 0 view .LVU24
+  27:Core/Src/balance_car/dht11.c ****     HAL_GPIO_Init(DHT11_PORT, &gpio);
+ 107              		.loc 1 27 5 is_stmt 1 view .LVU23
+  27:Core/Src/balance_car/dht11.c ****     HAL_GPIO_Init(DHT11_PORT, &gpio);
+ 108              		.loc 1 27 16 is_stmt 0 view .LVU24
  109 0018 0323     		movs	r3, #3
  110 001a 0393     		str	r3, [sp, #12]
-  27:Core/Src/balance_car/dht11.c **** }
- 111              		.loc 1 27 5 is_stmt 1 view .LVU25
+  28:Core/Src/balance_car/dht11.c **** }
+ 111              		.loc 1 28 5 is_stmt 1 view .LVU25
  112 001c 6946     		mov	r1, sp
  113 001e 0348     		ldr	r0, .L7
  114 0020 FFF7FEFF 		bl	HAL_GPIO_Init
  115              	.LVL0:
-  28:Core/Src/balance_car/dht11.c **** 
- 116              		.loc 1 28 1 is_stmt 0 view .LVU26
+  29:Core/Src/balance_car/dht11.c **** 
+ 116              		.loc 1 29 1 is_stmt 0 view .LVU26
  117 0024 05B0     		add	sp, sp, #20
  118              	.LCFI2:
  119              		.cfi_def_cfa_offset 4
  120              		@ sp needed
  121 0026 5DF804FB 		ldr	pc, [sp], #4
+ARM GAS  D:\TMP\ccODVYxi.s 			page 4
+
+
  122              	.L8:
-ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 4
-
-
  123 002a 00BF     		.align	2
  124              	.L7:
  125 002c 00100140 		.word	1073811456
@@ -193,8 +194,8 @@ ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 1
  133              		.thumb_func
  135              	Dht11_SetOutput:
  136              	.LFB65:
-   9:Core/Src/balance_car/dht11.c ****     GPIO_InitTypeDef gpio = {0};
- 137              		.loc 1 9 1 is_stmt 1 view -0
+  10:Core/Src/balance_car/dht11.c ****     GPIO_InitTypeDef gpio = {0};
+ 137              		.loc 1 10 1 is_stmt 1 view -0
  138              		.cfi_startproc
  139              		@ args = 0, pretend = 0, frame = 16
  140              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -205,50 +206,50 @@ ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 1
  145 0002 85B0     		sub	sp, sp, #20
  146              	.LCFI4:
  147              		.cfi_def_cfa_offset 24
-  10:Core/Src/balance_car/dht11.c **** 
- 148              		.loc 1 10 5 view .LVU28
-  10:Core/Src/balance_car/dht11.c **** 
- 149              		.loc 1 10 22 is_stmt 0 view .LVU29
+  11:Core/Src/balance_car/dht11.c **** 
+ 148              		.loc 1 11 5 view .LVU28
+  11:Core/Src/balance_car/dht11.c **** 
+ 149              		.loc 1 11 22 is_stmt 0 view .LVU29
  150 0004 0023     		movs	r3, #0
  151 0006 0093     		str	r3, [sp]
  152 0008 0193     		str	r3, [sp, #4]
  153 000a 0293     		str	r3, [sp, #8]
  154 000c 0393     		str	r3, [sp, #12]
-  12:Core/Src/balance_car/dht11.c ****     gpio.Mode = GPIO_MODE_OUTPUT_OD;
- 155              		.loc 1 12 5 is_stmt 1 view .LVU30
-  12:Core/Src/balance_car/dht11.c ****     gpio.Mode = GPIO_MODE_OUTPUT_OD;
- 156              		.loc 1 12 14 is_stmt 0 view .LVU31
+  13:Core/Src/balance_car/dht11.c ****     gpio.Mode = GPIO_MODE_OUTPUT_OD;
+ 155              		.loc 1 13 5 is_stmt 1 view .LVU30
+  13:Core/Src/balance_car/dht11.c ****     gpio.Mode = GPIO_MODE_OUTPUT_OD;
+ 156              		.loc 1 13 14 is_stmt 0 view .LVU31
  157 000e 4FF48043 		mov	r3, #16384
  158 0012 0093     		str	r3, [sp]
-  13:Core/Src/balance_car/dht11.c ****     gpio.Pull = GPIO_PULLUP;
- 159              		.loc 1 13 5 is_stmt 1 view .LVU32
-  13:Core/Src/balance_car/dht11.c ****     gpio.Pull = GPIO_PULLUP;
- 160              		.loc 1 13 15 is_stmt 0 view .LVU33
+  14:Core/Src/balance_car/dht11.c ****     gpio.Pull = GPIO_PULLUP;
+ 159              		.loc 1 14 5 is_stmt 1 view .LVU32
+  14:Core/Src/balance_car/dht11.c ****     gpio.Pull = GPIO_PULLUP;
+ 160              		.loc 1 14 15 is_stmt 0 view .LVU33
  161 0014 1123     		movs	r3, #17
  162 0016 0193     		str	r3, [sp, #4]
-  14:Core/Src/balance_car/dht11.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
- 163              		.loc 1 14 5 is_stmt 1 view .LVU34
-  14:Core/Src/balance_car/dht11.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
- 164              		.loc 1 14 15 is_stmt 0 view .LVU35
+  15:Core/Src/balance_car/dht11.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+ 163              		.loc 1 15 5 is_stmt 1 view .LVU34
+  15:Core/Src/balance_car/dht11.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+ 164              		.loc 1 15 15 is_stmt 0 view .LVU35
  165 0018 0123     		movs	r3, #1
  166 001a 0293     		str	r3, [sp, #8]
-  15:Core/Src/balance_car/dht11.c ****     HAL_GPIO_Init(DHT11_PORT, &gpio);
- 167              		.loc 1 15 5 is_stmt 1 view .LVU36
-  15:Core/Src/balance_car/dht11.c ****     HAL_GPIO_Init(DHT11_PORT, &gpio);
- 168              		.loc 1 15 16 is_stmt 0 view .LVU37
+  16:Core/Src/balance_car/dht11.c ****     HAL_GPIO_Init(DHT11_PORT, &gpio);
+ 167              		.loc 1 16 5 is_stmt 1 view .LVU36
+  16:Core/Src/balance_car/dht11.c ****     HAL_GPIO_Init(DHT11_PORT, &gpio);
+ 168              		.loc 1 16 16 is_stmt 0 view .LVU37
  169 001c 0323     		movs	r3, #3
+ARM GAS  D:\TMP\ccODVYxi.s 			page 5
+
+
  170 001e 0393     		str	r3, [sp, #12]
-ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 5
-
-
-  16:Core/Src/balance_car/dht11.c **** }
- 171              		.loc 1 16 5 is_stmt 1 view .LVU38
+  17:Core/Src/balance_car/dht11.c **** }
+ 171              		.loc 1 17 5 is_stmt 1 view .LVU38
  172 0020 6946     		mov	r1, sp
  173 0022 0348     		ldr	r0, .L11
  174 0024 FFF7FEFF 		bl	HAL_GPIO_Init
  175              	.LVL1:
-  17:Core/Src/balance_car/dht11.c **** 
- 176              		.loc 1 17 1 is_stmt 0 view .LVU39
+  18:Core/Src/balance_car/dht11.c **** 
+ 176              		.loc 1 18 1 is_stmt 0 view .LVU39
  177 0028 05B0     		add	sp, sp, #20
  178              	.LCFI5:
  179              		.cfi_def_cfa_offset 4
@@ -267,10 +268,10 @@ ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 1
  193              		.thumb_func
  195              	Dht11_Micros:
  196              	.LFB68:
-  41:Core/Src/balance_car/dht11.c **** 
-  42:Core/Src/balance_car/dht11.c **** static uint32_t Dht11_Micros(void)
-  43:Core/Src/balance_car/dht11.c **** {
- 197              		.loc 1 43 1 is_stmt 1 view -0
+  42:Core/Src/balance_car/dht11.c **** 
+  43:Core/Src/balance_car/dht11.c **** static uint32_t Dht11_Micros(void)
+  44:Core/Src/balance_car/dht11.c **** {
+ 197              		.loc 1 44 1 is_stmt 1 view -0
  198              		.cfi_startproc
  199              		@ args = 0, pretend = 0, frame = 0
  200              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -279,28 +280,28 @@ ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 1
  203              		.cfi_def_cfa_offset 8
  204              		.cfi_offset 4, -8
  205              		.cfi_offset 14, -4
-  44:Core/Src/balance_car/dht11.c ****     return DWT->CYCCNT / (HAL_RCC_GetHCLKFreq() / 1000000U);
- 206              		.loc 1 44 5 view .LVU41
- 207              		.loc 1 44 15 is_stmt 0 view .LVU42
+  45:Core/Src/balance_car/dht11.c ****     return DWT->CYCCNT / (HAL_RCC_GetHCLKFreq() / 1000000U);
+ 206              		.loc 1 45 5 view .LVU41
+ 207              		.loc 1 45 15 is_stmt 0 view .LVU42
  208 0002 054B     		ldr	r3, .L15
  209 0004 5C68     		ldr	r4, [r3, #4]
- 210              		.loc 1 44 27 view .LVU43
+ 210              		.loc 1 45 27 view .LVU43
  211 0006 FFF7FEFF 		bl	HAL_RCC_GetHCLKFreq
  212              	.LVL2:
- 213              		.loc 1 44 49 discriminator 1 view .LVU44
+ 213              		.loc 1 45 49 discriminator 1 view .LVU44
  214 000a 044B     		ldr	r3, .L15+4
  215 000c A3FB0030 		umull	r3, r0, r3, r0
  216 0010 800C     		lsrs	r0, r0, #18
-  45:Core/Src/balance_car/dht11.c **** }
- 217              		.loc 1 45 1 view .LVU45
+  46:Core/Src/balance_car/dht11.c **** }
+ 217              		.loc 1 46 1 view .LVU45
  218 0012 B4FBF0F0 		udiv	r0, r4, r0
  219 0016 10BD     		pop	{r4, pc}
  220              	.L16:
  221              		.align	2
+ARM GAS  D:\TMP\ccODVYxi.s 			page 6
+
+
  222              	.L15:
-ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 6
-
-
  223 0018 001000E0 		.word	-536866816
  224 001c 83DE1B43 		.word	1125899907
  225              		.cfi_endproc
@@ -313,14 +314,14 @@ ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 1
  234              	Dht11_WaitForState:
  235              	.LVL3:
  236              	.LFB69:
-  46:Core/Src/balance_car/dht11.c **** 
-  47:Core/Src/balance_car/dht11.c **** static HAL_StatusTypeDef Dht11_WaitForState(GPIO_PinState state, uint32_t timeout_us)
-  48:Core/Src/balance_car/dht11.c **** {
- 237              		.loc 1 48 1 is_stmt 1 view -0
+  47:Core/Src/balance_car/dht11.c **** 
+  48:Core/Src/balance_car/dht11.c **** static HAL_StatusTypeDef Dht11_WaitForState(GPIO_PinState state, uint32_t timeout_us)
+  49:Core/Src/balance_car/dht11.c **** {
+ 237              		.loc 1 49 1 is_stmt 1 view -0
  238              		.cfi_startproc
  239              		@ args = 0, pretend = 0, frame = 0
  240              		@ frame_needed = 0, uses_anonymous_args = 0
- 241              		.loc 1 48 1 is_stmt 0 view .LVU47
+ 241              		.loc 1 49 1 is_stmt 0 view .LVU47
  242 0000 70B5     		push	{r4, r5, r6, lr}
  243              	.LCFI7:
  244              		.cfi_def_cfa_offset 16
@@ -330,57 +331,57 @@ ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 1
  248              		.cfi_offset 14, -4
  249 0002 0446     		mov	r4, r0
  250 0004 0E46     		mov	r6, r1
-  49:Core/Src/balance_car/dht11.c ****     uint32_t start = Dht11_Micros();
- 251              		.loc 1 49 5 is_stmt 1 view .LVU48
- 252              		.loc 1 49 22 is_stmt 0 view .LVU49
+  50:Core/Src/balance_car/dht11.c ****     uint32_t start = Dht11_Micros();
+ 251              		.loc 1 50 5 is_stmt 1 view .LVU48
+ 252              		.loc 1 50 22 is_stmt 0 view .LVU49
  253 0006 FFF7FEFF 		bl	Dht11_Micros
  254              	.LVL4:
- 255              		.loc 1 49 22 view .LVU50
+ 255              		.loc 1 50 22 view .LVU50
  256 000a 0546     		mov	r5, r0
  257              	.LVL5:
-  50:Core/Src/balance_car/dht11.c **** 
-  51:Core/Src/balance_car/dht11.c ****     while (HAL_GPIO_ReadPin(DHT11_PORT, DHT11_PIN) != state) {
- 258              		.loc 1 51 5 is_stmt 1 view .LVU51
+  51:Core/Src/balance_car/dht11.c **** 
+  52:Core/Src/balance_car/dht11.c ****     while (HAL_GPIO_ReadPin(DHT11_PORT, DHT11_PIN) != state) {
+ 258              		.loc 1 52 5 is_stmt 1 view .LVU51
  259              	.L18:
- 260              		.loc 1 51 52 view .LVU52
- 261              		.loc 1 51 12 is_stmt 0 view .LVU53
+ 260              		.loc 1 52 52 view .LVU52
+ 261              		.loc 1 52 12 is_stmt 0 view .LVU53
  262 000c 4FF48041 		mov	r1, #16384
  263 0010 0648     		ldr	r0, .L24
  264 0012 FFF7FEFF 		bl	HAL_GPIO_ReadPin
  265              	.LVL6:
- 266              		.loc 1 51 52 discriminator 1 view .LVU54
+ 266              		.loc 1 52 52 discriminator 1 view .LVU54
  267 0016 A042     		cmp	r0, r4
  268 0018 06D0     		beq	.L23
-  52:Core/Src/balance_car/dht11.c ****         if ((Dht11_Micros() - start) > timeout_us) {
- 269              		.loc 1 52 9 is_stmt 1 view .LVU55
- 270              		.loc 1 52 14 is_stmt 0 view .LVU56
+  53:Core/Src/balance_car/dht11.c ****         if ((Dht11_Micros() - start) > timeout_us) {
+ 269              		.loc 1 53 9 is_stmt 1 view .LVU55
+ 270              		.loc 1 53 14 is_stmt 0 view .LVU56
  271 001a FFF7FEFF 		bl	Dht11_Micros
  272              	.LVL7:
- 273              		.loc 1 52 29 discriminator 1 view .LVU57
+ 273              		.loc 1 53 29 discriminator 1 view .LVU57
+ARM GAS  D:\TMP\ccODVYxi.s 			page 7
+
+
  274 001e 401B     		subs	r0, r0, r5
-ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 7
-
-
- 275              		.loc 1 52 12 discriminator 1 view .LVU58
+ 275              		.loc 1 53 12 discriminator 1 view .LVU58
  276 0020 B042     		cmp	r0, r6
  277 0022 F3D9     		bls	.L18
-  53:Core/Src/balance_car/dht11.c ****             return HAL_TIMEOUT;
- 278              		.loc 1 53 20 view .LVU59
+  54:Core/Src/balance_car/dht11.c ****             return HAL_TIMEOUT;
+ 278              		.loc 1 54 20 view .LVU59
  279 0024 0320     		movs	r0, #3
  280 0026 00E0     		b	.L19
  281              	.L23:
-  54:Core/Src/balance_car/dht11.c ****         }
-  55:Core/Src/balance_car/dht11.c ****     }
-  56:Core/Src/balance_car/dht11.c ****     return HAL_OK;
- 282              		.loc 1 56 12 view .LVU60
+  55:Core/Src/balance_car/dht11.c ****         }
+  56:Core/Src/balance_car/dht11.c ****     }
+  57:Core/Src/balance_car/dht11.c ****     return HAL_OK;
+ 282              		.loc 1 57 12 view .LVU60
  283 0028 0020     		movs	r0, #0
  284              	.L19:
-  57:Core/Src/balance_car/dht11.c **** }
- 285              		.loc 1 57 1 view .LVU61
+  58:Core/Src/balance_car/dht11.c **** }
+ 285              		.loc 1 58 1 view .LVU61
  286 002a 70BD     		pop	{r4, r5, r6, pc}
  287              	.LVL8:
  288              	.L25:
- 289              		.loc 1 57 1 view .LVU62
+ 289              		.loc 1 58 1 view .LVU62
  290              		.align	2
  291              	.L24:
  292 002c 00100140 		.word	1073811456
@@ -394,10 +395,10 @@ ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 1
  301              		.thumb_func
  303              	Dht11_Init:
  304              	.LFB70:
-  58:Core/Src/balance_car/dht11.c **** 
-  59:Core/Src/balance_car/dht11.c **** HAL_StatusTypeDef Dht11_Init(void)
-  60:Core/Src/balance_car/dht11.c **** {
- 305              		.loc 1 60 1 is_stmt 1 view -0
+  59:Core/Src/balance_car/dht11.c **** 
+  60:Core/Src/balance_car/dht11.c **** HAL_StatusTypeDef Dht11_Init(void)
+  61:Core/Src/balance_car/dht11.c **** {
+ 305              		.loc 1 61 1 is_stmt 1 view -0
  306              		.cfi_startproc
  307              		@ args = 0, pretend = 0, frame = 8
  308              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -408,38 +409,38 @@ ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 1
  313 0002 83B0     		sub	sp, sp, #12
  314              	.LCFI9:
  315              		.cfi_def_cfa_offset 16
-  61:Core/Src/balance_car/dht11.c ****     __HAL_RCC_GPIOC_CLK_ENABLE();
- 316              		.loc 1 61 5 view .LVU64
+  62:Core/Src/balance_car/dht11.c ****     __HAL_RCC_GPIOC_CLK_ENABLE();
+ 316              		.loc 1 62 5 view .LVU64
  317              	.LBB2:
- 318              		.loc 1 61 5 view .LVU65
- 319              		.loc 1 61 5 view .LVU66
+ 318              		.loc 1 62 5 view .LVU65
+ 319              		.loc 1 62 5 view .LVU66
  320 0004 084B     		ldr	r3, .L28
  321 0006 9A69     		ldr	r2, [r3, #24]
  322 0008 42F01002 		orr	r2, r2, #16
  323 000c 9A61     		str	r2, [r3, #24]
- 324              		.loc 1 61 5 view .LVU67
-ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 8
+ARM GAS  D:\TMP\ccODVYxi.s 			page 8
 
 
+ 324              		.loc 1 62 5 view .LVU67
  325 000e 9B69     		ldr	r3, [r3, #24]
  326 0010 03F01003 		and	r3, r3, #16
  327 0014 0193     		str	r3, [sp, #4]
- 328              		.loc 1 61 5 view .LVU68
+ 328              		.loc 1 62 5 view .LVU68
  329 0016 019B     		ldr	r3, [sp, #4]
  330              	.LBE2:
- 331              		.loc 1 61 5 view .LVU69
-  62:Core/Src/balance_car/dht11.c ****     Dht11_DwtInit();
- 332              		.loc 1 62 5 view .LVU70
+ 331              		.loc 1 62 5 view .LVU69
+  63:Core/Src/balance_car/dht11.c ****     Dht11_DwtInit();
+ 332              		.loc 1 63 5 view .LVU70
  333 0018 FFF7FEFF 		bl	Dht11_DwtInit
  334              	.LVL9:
-  63:Core/Src/balance_car/dht11.c ****     Dht11_SetInput();
- 335              		.loc 1 63 5 view .LVU71
+  64:Core/Src/balance_car/dht11.c ****     Dht11_SetInput();
+ 335              		.loc 1 64 5 view .LVU71
  336 001c FFF7FEFF 		bl	Dht11_SetInput
  337              	.LVL10:
-  64:Core/Src/balance_car/dht11.c ****     return HAL_OK;
- 338              		.loc 1 64 5 view .LVU72
-  65:Core/Src/balance_car/dht11.c **** }
- 339              		.loc 1 65 1 is_stmt 0 view .LVU73
+  65:Core/Src/balance_car/dht11.c ****     return HAL_OK;
+ 338              		.loc 1 65 5 view .LVU72
+  66:Core/Src/balance_car/dht11.c **** }
+ 339              		.loc 1 66 1 is_stmt 0 view .LVU73
  340 0020 0020     		movs	r0, #0
  341 0022 03B0     		add	sp, sp, #12
  342              	.LCFI10:
@@ -460,429 +461,536 @@ ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 1
  358              		.thumb_func
  360              	Dht11_StartRead:
  361              	.LFB71:
-  66:Core/Src/balance_car/dht11.c **** 
-  67:Core/Src/balance_car/dht11.c **** HAL_StatusTypeDef Dht11_StartRead(void)
-  68:Core/Src/balance_car/dht11.c **** {
- 362              		.loc 1 68 1 is_stmt 1 view -0
+  67:Core/Src/balance_car/dht11.c **** 
+  68:Core/Src/balance_car/dht11.c **** HAL_StatusTypeDef Dht11_StartRead(void)
+  69:Core/Src/balance_car/dht11.c **** {
+ 362              		.loc 1 69 1 is_stmt 1 view -0
  363              		.cfi_startproc
  364              		@ args = 0, pretend = 0, frame = 0
  365              		@ frame_needed = 0, uses_anonymous_args = 0
- 366 0000 08B5     		push	{r3, lr}
+ 366 0000 10B5     		push	{r4, lr}
  367              	.LCFI11:
  368              		.cfi_def_cfa_offset 8
- 369              		.cfi_offset 3, -8
+ 369              		.cfi_offset 4, -8
  370              		.cfi_offset 14, -4
-  69:Core/Src/balance_car/dht11.c ****     Dht11_SetOutput();
- 371              		.loc 1 69 5 view .LVU75
- 372 0002 FFF7FEFF 		bl	Dht11_SetOutput
- 373              	.LVL11:
-  70:Core/Src/balance_car/dht11.c ****     HAL_GPIO_WritePin(DHT11_PORT, DHT11_PIN, GPIO_PIN_RESET);
- 374              		.loc 1 70 5 view .LVU76
-ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 9
+  70:Core/Src/balance_car/dht11.c ****     s_fail_step = 0U;
+ 371              		.loc 1 70 5 view .LVU75
+ 372              		.loc 1 70 17 is_stmt 0 view .LVU76
+ 373 0002 0024     		movs	r4, #0
+ 374 0004 054B     		ldr	r3, .L32
+ARM GAS  D:\TMP\ccODVYxi.s 			page 9
 
 
- 375 0006 0022     		movs	r2, #0
- 376 0008 4FF48041 		mov	r1, #16384
- 377 000c 0248     		ldr	r0, .L32
- 378 000e FFF7FEFF 		bl	HAL_GPIO_WritePin
- 379              	.LVL12:
-  71:Core/Src/balance_car/dht11.c ****     return HAL_OK;
- 380              		.loc 1 71 5 view .LVU77
-  72:Core/Src/balance_car/dht11.c **** }
- 381              		.loc 1 72 1 is_stmt 0 view .LVU78
- 382 0012 0020     		movs	r0, #0
- 383 0014 08BD     		pop	{r3, pc}
- 384              	.L33:
- 385 0016 00BF     		.align	2
- 386              	.L32:
- 387 0018 00100140 		.word	1073811456
- 388              		.cfi_endproc
- 389              	.LFE71:
- 391              		.global	__aeabi_ui2f
- 392              		.global	__aeabi_fmul
- 393              		.global	__aeabi_fadd
- 394              		.section	.text.Dht11_FinishRead,"ax",%progbits
- 395              		.align	1
- 396              		.global	Dht11_FinishRead
- 397              		.syntax unified
- 398              		.thumb
- 399              		.thumb_func
- 401              	Dht11_FinishRead:
- 402              	.LVL13:
- 403              	.LFB72:
-  73:Core/Src/balance_car/dht11.c **** 
-  74:Core/Src/balance_car/dht11.c **** HAL_StatusTypeDef Dht11_FinishRead(Dht11Reading_t *reading)
-  75:Core/Src/balance_car/dht11.c **** {
- 404              		.loc 1 75 1 is_stmt 1 view -0
- 405              		.cfi_startproc
- 406              		@ args = 0, pretend = 0, frame = 8
- 407              		@ frame_needed = 0, uses_anonymous_args = 0
- 408              		.loc 1 75 1 is_stmt 0 view .LVU80
- 409 0000 2DE9F043 		push	{r4, r5, r6, r7, r8, r9, lr}
- 410              	.LCFI12:
- 411              		.cfi_def_cfa_offset 28
- 412              		.cfi_offset 4, -28
- 413              		.cfi_offset 5, -24
- 414              		.cfi_offset 6, -20
- 415              		.cfi_offset 7, -16
- 416              		.cfi_offset 8, -12
- 417              		.cfi_offset 9, -8
- 418              		.cfi_offset 14, -4
- 419 0004 83B0     		sub	sp, sp, #12
- 420              	.LCFI13:
- 421              		.cfi_def_cfa_offset 40
-  76:Core/Src/balance_car/dht11.c ****     uint8_t data[5] = {0};
- 422              		.loc 1 76 5 is_stmt 1 view .LVU81
- 423              		.loc 1 76 13 is_stmt 0 view .LVU82
- 424 0006 0023     		movs	r3, #0
- 425 0008 0093     		str	r3, [sp]
- 426 000a 8DF80430 		strb	r3, [sp, #4]
-  77:Core/Src/balance_car/dht11.c **** 
-ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 10
+ 375 0006 1C70     		strb	r4, [r3]
+  71:Core/Src/balance_car/dht11.c ****     Dht11_SetOutput();
+ 376              		.loc 1 71 5 is_stmt 1 view .LVU77
+ 377 0008 FFF7FEFF 		bl	Dht11_SetOutput
+ 378              	.LVL11:
+  72:Core/Src/balance_car/dht11.c ****     HAL_GPIO_WritePin(DHT11_PORT, DHT11_PIN, GPIO_PIN_RESET);
+ 379              		.loc 1 72 5 view .LVU78
+ 380 000c 2246     		mov	r2, r4
+ 381 000e 4FF48041 		mov	r1, #16384
+ 382 0012 0348     		ldr	r0, .L32+4
+ 383 0014 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 384              	.LVL12:
+  73:Core/Src/balance_car/dht11.c ****     return HAL_OK;
+ 385              		.loc 1 73 5 view .LVU79
+  74:Core/Src/balance_car/dht11.c **** }
+ 386              		.loc 1 74 1 is_stmt 0 view .LVU80
+ 387 0018 2046     		mov	r0, r4
+ 388 001a 10BD     		pop	{r4, pc}
+ 389              	.L33:
+ 390              		.align	2
+ 391              	.L32:
+ 392 001c 00000000 		.word	s_fail_step
+ 393 0020 00100140 		.word	1073811456
+ 394              		.cfi_endproc
+ 395              	.LFE71:
+ 397              		.global	__aeabi_ui2f
+ 398              		.global	__aeabi_fmul
+ 399              		.global	__aeabi_fadd
+ 400              		.section	.text.Dht11_FinishRead,"ax",%progbits
+ 401              		.align	1
+ 402              		.global	Dht11_FinishRead
+ 403              		.syntax unified
+ 404              		.thumb
+ 405              		.thumb_func
+ 407              	Dht11_FinishRead:
+ 408              	.LVL13:
+ 409              	.LFB72:
+  75:Core/Src/balance_car/dht11.c **** 
+  76:Core/Src/balance_car/dht11.c **** HAL_StatusTypeDef Dht11_FinishRead(Dht11Reading_t *reading)
+  77:Core/Src/balance_car/dht11.c **** {
+ 410              		.loc 1 77 1 is_stmt 1 view -0
+ 411              		.cfi_startproc
+ 412              		@ args = 0, pretend = 0, frame = 8
+ 413              		@ frame_needed = 0, uses_anonymous_args = 0
+ 414              		.loc 1 77 1 is_stmt 0 view .LVU82
+ 415 0000 2DE9F043 		push	{r4, r5, r6, r7, r8, r9, lr}
+ 416              	.LCFI12:
+ 417              		.cfi_def_cfa_offset 28
+ 418              		.cfi_offset 4, -28
+ 419              		.cfi_offset 5, -24
+ 420              		.cfi_offset 6, -20
+ 421              		.cfi_offset 7, -16
+ 422              		.cfi_offset 8, -12
+ 423              		.cfi_offset 9, -8
+ 424              		.cfi_offset 14, -4
+ 425 0004 83B0     		sub	sp, sp, #12
+ 426              	.LCFI13:
+ARM GAS  D:\TMP\ccODVYxi.s 			page 10
 
 
-  78:Core/Src/balance_car/dht11.c ****     if (reading == 0) {
- 427              		.loc 1 78 5 is_stmt 1 view .LVU83
- 428              		.loc 1 78 8 is_stmt 0 view .LVU84
- 429 000e 0028     		cmp	r0, #0
- 430 0010 6FD0     		beq	.L39
- 431 0012 0646     		mov	r6, r0
-  79:Core/Src/balance_car/dht11.c ****         return HAL_ERROR;
-  80:Core/Src/balance_car/dht11.c ****     }
-  81:Core/Src/balance_car/dht11.c **** 
-  82:Core/Src/balance_car/dht11.c ****     Dht11_SetInput();
- 432              		.loc 1 82 5 is_stmt 1 view .LVU85
- 433 0014 FFF7FEFF 		bl	Dht11_SetInput
- 434              	.LVL14:
-  83:Core/Src/balance_car/dht11.c ****     if (Dht11_WaitForState(GPIO_PIN_RESET, 100U) != HAL_OK) {
- 435              		.loc 1 83 5 view .LVU86
- 436              		.loc 1 83 9 is_stmt 0 view .LVU87
- 437 0018 6421     		movs	r1, #100
- 438 001a 0020     		movs	r0, #0
- 439 001c FFF7FEFF 		bl	Dht11_WaitForState
- 440              	.LVL15:
- 441              		.loc 1 83 8 discriminator 1 view .LVU88
- 442 0020 0028     		cmp	r0, #0
- 443 0022 6BD1     		bne	.L40
-  84:Core/Src/balance_car/dht11.c ****         return HAL_TIMEOUT;
-  85:Core/Src/balance_car/dht11.c ****     }
-  86:Core/Src/balance_car/dht11.c ****     if (Dht11_WaitForState(GPIO_PIN_SET, 100U) != HAL_OK) {
- 444              		.loc 1 86 5 is_stmt 1 view .LVU89
- 445              		.loc 1 86 9 is_stmt 0 view .LVU90
- 446 0024 6421     		movs	r1, #100
- 447 0026 0120     		movs	r0, #1
- 448 0028 FFF7FEFF 		bl	Dht11_WaitForState
- 449              	.LVL16:
- 450              		.loc 1 86 8 discriminator 1 view .LVU91
- 451 002c 0028     		cmp	r0, #0
- 452 002e 67D1     		bne	.L41
+ 427              		.cfi_def_cfa_offset 40
+  78:Core/Src/balance_car/dht11.c ****     uint8_t data[5] = {0};
+ 428              		.loc 1 78 5 is_stmt 1 view .LVU83
+ 429              		.loc 1 78 13 is_stmt 0 view .LVU84
+ 430 0006 0023     		movs	r3, #0
+ 431 0008 0093     		str	r3, [sp]
+ 432 000a 8DF80430 		strb	r3, [sp, #4]
+  79:Core/Src/balance_car/dht11.c **** 
+  80:Core/Src/balance_car/dht11.c ****     if (reading == 0) {
+ 433              		.loc 1 80 5 is_stmt 1 view .LVU85
+ 434              		.loc 1 80 8 is_stmt 0 view .LVU86
+ 435 000e 0028     		cmp	r0, #0
+ 436 0010 00F08E80 		beq	.L44
+ 437 0014 0646     		mov	r6, r0
+  81:Core/Src/balance_car/dht11.c ****         return HAL_ERROR;
+  82:Core/Src/balance_car/dht11.c ****     }
+  83:Core/Src/balance_car/dht11.c **** 
+  84:Core/Src/balance_car/dht11.c ****     Dht11_SetInput();
+ 438              		.loc 1 84 5 is_stmt 1 view .LVU87
+ 439 0016 FFF7FEFF 		bl	Dht11_SetInput
+ 440              	.LVL14:
+  85:Core/Src/balance_car/dht11.c ****     if (Dht11_WaitForState(GPIO_PIN_RESET, 100U) != HAL_OK) {
+ 441              		.loc 1 85 5 view .LVU88
+ 442              		.loc 1 85 9 is_stmt 0 view .LVU89
+ 443 001a 6421     		movs	r1, #100
+ 444 001c 0020     		movs	r0, #0
+ 445 001e FFF7FEFF 		bl	Dht11_WaitForState
+ 446              	.LVL15:
+ 447              		.loc 1 85 8 discriminator 1 view .LVU90
+ 448 0022 60B9     		cbnz	r0, .L47
+  86:Core/Src/balance_car/dht11.c ****         s_fail_step = 1U;
   87:Core/Src/balance_car/dht11.c ****         return HAL_TIMEOUT;
   88:Core/Src/balance_car/dht11.c ****     }
-  89:Core/Src/balance_car/dht11.c ****     if (Dht11_WaitForState(GPIO_PIN_RESET, 100U) != HAL_OK) {
- 453              		.loc 1 89 5 is_stmt 1 view .LVU92
- 454              		.loc 1 89 9 is_stmt 0 view .LVU93
- 455 0030 6421     		movs	r1, #100
- 456 0032 FFF7FEFF 		bl	Dht11_WaitForState
- 457              	.LVL17:
- 458              		.loc 1 89 8 discriminator 1 view .LVU94
- 459 0036 0546     		mov	r5, r0
- 460 0038 0028     		cmp	r0, #0
- 461 003a 63D1     		bne	.L42
- 462              	.LBB3:
-  90:Core/Src/balance_car/dht11.c ****         return HAL_TIMEOUT;
-  91:Core/Src/balance_car/dht11.c ****     }
-  92:Core/Src/balance_car/dht11.c **** 
-  93:Core/Src/balance_car/dht11.c ****     for (uint8_t bit = 0U; bit < 40U; bit++) {
- 463              		.loc 1 93 18 view .LVU95
- 464 003c 0446     		mov	r4, r0
- 465 003e 01E0     		b	.L36
- 466              	.LVL18:
- 467              	.L37:
-ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 11
+  89:Core/Src/balance_car/dht11.c ****     if (Dht11_WaitForState(GPIO_PIN_SET, 100U) != HAL_OK) {
+ 449              		.loc 1 89 5 is_stmt 1 view .LVU91
+ 450              		.loc 1 89 9 is_stmt 0 view .LVU92
+ 451 0024 6421     		movs	r1, #100
+ 452 0026 0120     		movs	r0, #1
+ 453 0028 FFF7FEFF 		bl	Dht11_WaitForState
+ 454              	.LVL16:
+ 455              		.loc 1 89 8 discriminator 1 view .LVU93
+ 456 002c 60B9     		cbnz	r0, .L48
+  90:Core/Src/balance_car/dht11.c ****         s_fail_step = 2U;
+  91:Core/Src/balance_car/dht11.c ****         return HAL_TIMEOUT;
+  92:Core/Src/balance_car/dht11.c ****     }
+  93:Core/Src/balance_car/dht11.c ****     if (Dht11_WaitForState(GPIO_PIN_RESET, 100U) != HAL_OK) {
+ 457              		.loc 1 93 5 is_stmt 1 view .LVU94
+ 458              		.loc 1 93 9 is_stmt 0 view .LVU95
+ 459 002e 6421     		movs	r1, #100
+ 460 0030 0020     		movs	r0, #0
+ 461 0032 FFF7FEFF 		bl	Dht11_WaitForState
+ 462              	.LVL17:
+ 463              		.loc 1 93 8 discriminator 1 view .LVU96
+ 464 0036 0546     		mov	r5, r0
+ 465 0038 58B9     		cbnz	r0, .L49
+ 466              	.LBB3:
+  94:Core/Src/balance_car/dht11.c ****         s_fail_step = 3U;
+ARM GAS  D:\TMP\ccODVYxi.s 			page 11
 
 
- 468              		.loc 1 93 42 is_stmt 1 discriminator 2 view .LVU96
- 469 0040 0134     		adds	r4, r4, #1
- 470              	.LVL19:
- 471              		.loc 1 93 42 is_stmt 0 discriminator 2 view .LVU97
- 472 0042 E4B2     		uxtb	r4, r4
- 473              	.LVL20:
- 474              	.L36:
- 475              		.loc 1 93 32 is_stmt 1 discriminator 1 view .LVU98
- 476 0044 272C     		cmp	r4, #39
- 477 0046 24D8     		bhi	.L47
- 478              	.LBB4:
-  94:Core/Src/balance_car/dht11.c ****         uint32_t high_start;
- 479              		.loc 1 94 9 view .LVU99
-  95:Core/Src/balance_car/dht11.c ****         uint32_t high_width;
- 480              		.loc 1 95 9 view .LVU100
-  96:Core/Src/balance_car/dht11.c **** 
-  97:Core/Src/balance_car/dht11.c ****         if (Dht11_WaitForState(GPIO_PIN_SET, 80U) != HAL_OK) {
- 481              		.loc 1 97 9 view .LVU101
- 482              		.loc 1 97 13 is_stmt 0 view .LVU102
- 483 0048 5021     		movs	r1, #80
- 484 004a 0120     		movs	r0, #1
- 485 004c FFF7FEFF 		bl	Dht11_WaitForState
- 486              	.LVL21:
- 487              		.loc 1 97 12 discriminator 1 view .LVU103
- 488 0050 0028     		cmp	r0, #0
- 489 0052 59D1     		bne	.L43
-  98:Core/Src/balance_car/dht11.c ****             return HAL_TIMEOUT;
-  99:Core/Src/balance_car/dht11.c ****         }
- 100:Core/Src/balance_car/dht11.c ****         high_start = Dht11_Micros();
- 490              		.loc 1 100 9 is_stmt 1 view .LVU104
- 491              		.loc 1 100 22 is_stmt 0 view .LVU105
- 492 0054 FFF7FEFF 		bl	Dht11_Micros
- 493              	.LVL22:
- 494 0058 0746     		mov	r7, r0
- 495              	.LVL23:
- 101:Core/Src/balance_car/dht11.c ****         if (Dht11_WaitForState(GPIO_PIN_RESET, 120U) != HAL_OK) {
- 496              		.loc 1 101 9 is_stmt 1 view .LVU106
- 497              		.loc 1 101 13 is_stmt 0 view .LVU107
- 498 005a 7821     		movs	r1, #120
- 499 005c 0020     		movs	r0, #0
- 500              	.LVL24:
- 501              		.loc 1 101 13 view .LVU108
- 502 005e FFF7FEFF 		bl	Dht11_WaitForState
- 503              	.LVL25:
- 504              		.loc 1 101 12 discriminator 1 view .LVU109
- 505 0062 0028     		cmp	r0, #0
- 506 0064 52D1     		bne	.L44
- 102:Core/Src/balance_car/dht11.c ****             return HAL_TIMEOUT;
- 103:Core/Src/balance_car/dht11.c ****         }
- 104:Core/Src/balance_car/dht11.c ****         high_width = Dht11_Micros() - high_start;
- 507              		.loc 1 104 9 is_stmt 1 view .LVU110
- 508              		.loc 1 104 22 is_stmt 0 view .LVU111
- 509 0066 FFF7FEFF 		bl	Dht11_Micros
- 510              	.LVL26:
- 511              		.loc 1 104 20 discriminator 1 view .LVU112
- 512 006a C01B     		subs	r0, r0, r7
- 513              	.LVL27:
-ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 12
-
-
- 105:Core/Src/balance_car/dht11.c ****         data[bit / 8U] <<= 1;
- 514              		.loc 1 105 9 is_stmt 1 view .LVU113
- 515              		.loc 1 105 13 is_stmt 0 view .LVU114
- 516 006c C4F3C702 		ubfx	r2, r4, #3, #8
- 517 0070 02F10803 		add	r3, r2, #8
- 518 0074 0DEB0301 		add	r1, sp, r3
- 519 0078 11F8083C 		ldrb	r3, [r1, #-8]	@ zero_extendqisi2
- 520              		.loc 1 105 24 view .LVU115
- 521 007c 5B00     		lsls	r3, r3, #1
- 522 007e DBB2     		uxtb	r3, r3
- 523 0080 01F8083C 		strb	r3, [r1, #-8]
- 106:Core/Src/balance_car/dht11.c ****         if (high_width > 45U) {
- 524              		.loc 1 106 9 is_stmt 1 view .LVU116
- 525              		.loc 1 106 12 is_stmt 0 view .LVU117
- 526 0084 2D28     		cmp	r0, #45
- 527 0086 DBD9     		bls	.L37
- 107:Core/Src/balance_car/dht11.c ****             data[bit / 8U] |= 1U;
- 528              		.loc 1 107 13 is_stmt 1 view .LVU118
- 529              		.loc 1 107 28 is_stmt 0 view .LVU119
- 530 0088 43F00103 		orr	r3, r3, #1
- 531 008c 01F8083C 		strb	r3, [r1, #-8]
- 532 0090 D6E7     		b	.L37
- 533              	.LVL28:
- 534              	.L47:
- 535              		.loc 1 107 28 view .LVU120
- 536              	.LBE4:
- 537              	.LBE3:
- 108:Core/Src/balance_car/dht11.c ****         }
- 109:Core/Src/balance_car/dht11.c ****     }
- 110:Core/Src/balance_car/dht11.c **** 
- 111:Core/Src/balance_car/dht11.c ****     if ((uint8_t)(data[0] + data[1] + data[2] + data[3]) != data[4]) {
- 538              		.loc 1 111 5 is_stmt 1 view .LVU121
- 539              		.loc 1 111 23 is_stmt 0 view .LVU122
- 540 0092 9DF80000 		ldrb	r0, [sp]	@ zero_extendqisi2
- 541              		.loc 1 111 33 view .LVU123
- 542 0096 9DF80170 		ldrb	r7, [sp, #1]	@ zero_extendqisi2
- 543              		.loc 1 111 27 view .LVU124
- 544 009a C319     		adds	r3, r0, r7
- 545 009c DBB2     		uxtb	r3, r3
- 546              		.loc 1 111 43 view .LVU125
- 547 009e 9DF80240 		ldrb	r4, [sp, #2]	@ zero_extendqisi2
- 548              	.LVL29:
- 549              		.loc 1 111 37 view .LVU126
- 550 00a2 2344     		add	r3, r3, r4
- 551 00a4 DBB2     		uxtb	r3, r3
- 552              		.loc 1 111 53 view .LVU127
- 553 00a6 9DF80380 		ldrb	r8, [sp, #3]	@ zero_extendqisi2
- 554              		.loc 1 111 9 view .LVU128
- 555 00aa 4344     		add	r3, r3, r8
- 556 00ac DBB2     		uxtb	r3, r3
- 557              		.loc 1 111 65 view .LVU129
- 558 00ae 9DF80420 		ldrb	r2, [sp, #4]	@ zero_extendqisi2
- 559              		.loc 1 111 8 view .LVU130
- 560 00b2 9342     		cmp	r3, r2
- 561 00b4 2CD1     		bne	.L45
- 112:Core/Src/balance_car/dht11.c ****         return HAL_ERROR;
- 113:Core/Src/balance_car/dht11.c ****     }
-ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 13
-
-
- 114:Core/Src/balance_car/dht11.c **** 
- 115:Core/Src/balance_car/dht11.c ****     reading->humidity_percent = (float)data[0] + (float)data[1] * 0.1f;
- 562              		.loc 1 115 5 is_stmt 1 view .LVU131
- 563              		.loc 1 115 33 is_stmt 0 view .LVU132
- 564 00b6 FFF7FEFF 		bl	__aeabi_ui2f
- 565              	.LVL30:
- 566 00ba 8146     		mov	r9, r0
- 567              		.loc 1 115 50 view .LVU133
- 568 00bc 3846     		mov	r0, r7
- 569 00be FFF7FEFF 		bl	__aeabi_ui2f
- 570              	.LVL31:
- 571              		.loc 1 115 65 view .LVU134
- 572 00c2 1449     		ldr	r1, .L48
- 573 00c4 FFF7FEFF 		bl	__aeabi_fmul
- 574              	.LVL32:
- 575 00c8 0146     		mov	r1, r0
- 576              		.loc 1 115 48 view .LVU135
- 577 00ca 4846     		mov	r0, r9
- 578 00cc FFF7FEFF 		bl	__aeabi_fadd
- 579              	.LVL33:
- 580              		.loc 1 115 31 view .LVU136
- 581 00d0 7060     		str	r0, [r6, #4]	@ float
- 116:Core/Src/balance_car/dht11.c ****     reading->temperature_c = (float)data[2] + (float)data[3] * 0.1f;
- 582              		.loc 1 116 5 is_stmt 1 view .LVU137
- 583              		.loc 1 116 30 is_stmt 0 view .LVU138
- 584 00d2 2046     		mov	r0, r4
- 585 00d4 FFF7FEFF 		bl	__aeabi_ui2f
- 586              	.LVL34:
- 587 00d8 0446     		mov	r4, r0
- 588              		.loc 1 116 47 view .LVU139
- 589 00da 4046     		mov	r0, r8
- 590 00dc FFF7FEFF 		bl	__aeabi_ui2f
- 591              	.LVL35:
- 592              		.loc 1 116 62 view .LVU140
- 593 00e0 0C49     		ldr	r1, .L48
- 594 00e2 FFF7FEFF 		bl	__aeabi_fmul
- 595              	.LVL36:
- 596 00e6 0146     		mov	r1, r0
- 597              		.loc 1 116 45 view .LVU141
- 598 00e8 2046     		mov	r0, r4
- 599 00ea FFF7FEFF 		bl	__aeabi_fadd
- 600              	.LVL37:
- 601              		.loc 1 116 28 view .LVU142
- 602 00ee 3060     		str	r0, [r6]	@ float
- 117:Core/Src/balance_car/dht11.c ****     return HAL_OK;
- 603              		.loc 1 117 5 is_stmt 1 view .LVU143
- 604              		.loc 1 117 12 is_stmt 0 view .LVU144
- 605 00f0 00E0     		b	.L35
- 606              	.LVL38:
- 607              	.L39:
-  79:Core/Src/balance_car/dht11.c ****     }
- 608              		.loc 1 79 16 view .LVU145
- 609 00f2 0125     		movs	r5, #1
- 610              	.LVL39:
- 611              	.L35:
- 118:Core/Src/balance_car/dht11.c **** }
- 612              		.loc 1 118 1 view .LVU146
-ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 14
-
-
- 613 00f4 2846     		mov	r0, r5
- 614 00f6 03B0     		add	sp, sp, #12
- 615              	.LCFI14:
- 616              		.cfi_remember_state
- 617              		.cfi_def_cfa_offset 28
- 618              		@ sp needed
- 619 00f8 BDE8F083 		pop	{r4, r5, r6, r7, r8, r9, pc}
- 620              	.LVL40:
- 621              	.L40:
- 622              	.LCFI15:
- 623              		.cfi_restore_state
-  84:Core/Src/balance_car/dht11.c ****     }
- 624              		.loc 1 84 16 view .LVU147
- 625 00fc 0325     		movs	r5, #3
- 626 00fe F9E7     		b	.L35
- 627              	.L41:
+  95:Core/Src/balance_car/dht11.c ****         return HAL_TIMEOUT;
+  96:Core/Src/balance_car/dht11.c ****     }
+  97:Core/Src/balance_car/dht11.c **** 
+  98:Core/Src/balance_car/dht11.c ****     for (uint8_t bit = 0U; bit < 40U; bit++) {
+ 467              		.loc 1 98 18 view .LVU97
+ 468 003a 0446     		mov	r4, r0
+ 469 003c 19E0     		b	.L38
+ 470              	.L47:
+ 471              	.LBE3:
+  86:Core/Src/balance_car/dht11.c ****         return HAL_TIMEOUT;
+ 472              		.loc 1 86 9 is_stmt 1 view .LVU98
+  86:Core/Src/balance_car/dht11.c ****         return HAL_TIMEOUT;
+ 473              		.loc 1 86 21 is_stmt 0 view .LVU99
+ 474 003e 3F4B     		ldr	r3, .L53
+ 475 0040 0122     		movs	r2, #1
+ 476 0042 1A70     		strb	r2, [r3]
   87:Core/Src/balance_car/dht11.c ****     }
- 628              		.loc 1 87 16 view .LVU148
- 629 0100 0325     		movs	r5, #3
- 630 0102 F7E7     		b	.L35
- 631              	.L42:
-  90:Core/Src/balance_car/dht11.c ****     }
- 632              		.loc 1 90 16 view .LVU149
- 633 0104 0325     		movs	r5, #3
- 634 0106 F5E7     		b	.L35
- 635              	.LVL41:
- 636              	.L43:
- 637              	.LBB6:
- 638              	.LBB5:
-  98:Core/Src/balance_car/dht11.c ****         }
- 639              		.loc 1 98 20 view .LVU150
- 640 0108 0325     		movs	r5, #3
- 641 010a F3E7     		b	.L35
- 642              	.LVL42:
- 643              	.L44:
- 102:Core/Src/balance_car/dht11.c ****         }
- 644              		.loc 1 102 20 view .LVU151
- 645 010c 0325     		movs	r5, #3
- 646 010e F1E7     		b	.L35
- 647              	.LVL43:
- 648              	.L45:
- 102:Core/Src/balance_car/dht11.c ****         }
- 649              		.loc 1 102 20 view .LVU152
- 650              	.LBE5:
- 651              	.LBE6:
- 112:Core/Src/balance_car/dht11.c ****     }
- 652              		.loc 1 112 16 view .LVU153
- 653 0110 0125     		movs	r5, #1
- 654 0112 EFE7     		b	.L35
- 655              	.L49:
- 656              		.align	2
- 657              	.L48:
- 658 0114 CDCCCC3D 		.word	1036831949
- 659              		.cfi_endproc
- 660              	.LFE72:
- 662              		.section	.bss.s_dwt_ready,"aw",%nobits
- 665              	s_dwt_ready:
-ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 15
+ 477              		.loc 1 87 9 is_stmt 1 view .LVU100
+  87:Core/Src/balance_car/dht11.c ****     }
+ 478              		.loc 1 87 16 is_stmt 0 view .LVU101
+ 479 0044 0325     		movs	r5, #3
+ 480 0046 74E0     		b	.L35
+ 481              	.L48:
+  90:Core/Src/balance_car/dht11.c ****         return HAL_TIMEOUT;
+ 482              		.loc 1 90 9 is_stmt 1 view .LVU102
+  90:Core/Src/balance_car/dht11.c ****         return HAL_TIMEOUT;
+ 483              		.loc 1 90 21 is_stmt 0 view .LVU103
+ 484 0048 3C4B     		ldr	r3, .L53
+ 485 004a 0222     		movs	r2, #2
+ 486 004c 1A70     		strb	r2, [r3]
+  91:Core/Src/balance_car/dht11.c ****     }
+ 487              		.loc 1 91 9 is_stmt 1 view .LVU104
+  91:Core/Src/balance_car/dht11.c ****     }
+ 488              		.loc 1 91 16 is_stmt 0 view .LVU105
+ 489 004e 0325     		movs	r5, #3
+ 490 0050 6FE0     		b	.L35
+ 491              	.L49:
+  94:Core/Src/balance_car/dht11.c ****         return HAL_TIMEOUT;
+ 492              		.loc 1 94 9 is_stmt 1 view .LVU106
+  94:Core/Src/balance_car/dht11.c ****         return HAL_TIMEOUT;
+ 493              		.loc 1 94 21 is_stmt 0 view .LVU107
+ 494 0052 0325     		movs	r5, #3
+ 495 0054 394B     		ldr	r3, .L53
+ 496 0056 1D70     		strb	r5, [r3]
+  95:Core/Src/balance_car/dht11.c ****     }
+ 497              		.loc 1 95 9 is_stmt 1 view .LVU108
+  95:Core/Src/balance_car/dht11.c ****     }
+ 498              		.loc 1 95 16 is_stmt 0 view .LVU109
+ 499 0058 6BE0     		b	.L35
+ 500              	.LVL18:
+ 501              	.L51:
+ 502              	.LBB6:
+ 503              	.LBB4:
+  99:Core/Src/balance_car/dht11.c ****         uint32_t high_start;
+ 100:Core/Src/balance_car/dht11.c ****         uint32_t high_width;
+ 101:Core/Src/balance_car/dht11.c **** 
+ 102:Core/Src/balance_car/dht11.c ****         if (Dht11_WaitForState(GPIO_PIN_SET, 80U) != HAL_OK) {
+ARM GAS  D:\TMP\ccODVYxi.s 			page 12
 
 
- 666 0000 00       		.space	1
- 667              		.text
- 668              	.Letext0:
- 669              		.file 2 "C:/msys64/mingw64/arm-none-eabi/include/machine/_default_types.h"
- 670              		.file 3 "C:/msys64/mingw64/arm-none-eabi/include/sys/_stdint.h"
- 671              		.file 4 "Drivers/CMSIS/Include/core_cm3.h"
- 672              		.file 5 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
- 673              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
- 674              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h"
- 675              		.file 8 "Core/Inc/balance_car/dht11.h"
- 676              		.file 9 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h"
-ARM GAS  C:\Users\future\AppData\Local\Temp\ccCKlaES.s 			page 16
+ 103:Core/Src/balance_car/dht11.c ****             s_fail_step = 4U;
+ 504              		.loc 1 103 13 is_stmt 1 view .LVU110
+ 505              		.loc 1 103 25 is_stmt 0 view .LVU111
+ 506 005a 384B     		ldr	r3, .L53
+ 507 005c 0422     		movs	r2, #4
+ 508 005e 1A70     		strb	r2, [r3]
+ 104:Core/Src/balance_car/dht11.c ****             return HAL_TIMEOUT;
+ 509              		.loc 1 104 13 is_stmt 1 view .LVU112
+ 510              		.loc 1 104 20 is_stmt 0 view .LVU113
+ 511 0060 0325     		movs	r5, #3
+ 512 0062 66E0     		b	.L35
+ 513              	.LVL19:
+ 514              	.L52:
+ 105:Core/Src/balance_car/dht11.c ****         }
+ 106:Core/Src/balance_car/dht11.c ****         high_start = Dht11_Micros();
+ 107:Core/Src/balance_car/dht11.c ****         if (Dht11_WaitForState(GPIO_PIN_RESET, 120U) != HAL_OK) {
+ 108:Core/Src/balance_car/dht11.c ****             s_fail_step = 5U;
+ 515              		.loc 1 108 13 is_stmt 1 view .LVU114
+ 516              		.loc 1 108 25 is_stmt 0 view .LVU115
+ 517 0064 354B     		ldr	r3, .L53
+ 518 0066 0522     		movs	r2, #5
+ 519 0068 1A70     		strb	r2, [r3]
+ 109:Core/Src/balance_car/dht11.c ****             return HAL_TIMEOUT;
+ 520              		.loc 1 109 13 is_stmt 1 view .LVU116
+ 521              		.loc 1 109 20 is_stmt 0 view .LVU117
+ 522 006a 0325     		movs	r5, #3
+ 523 006c 61E0     		b	.L35
+ 524              	.LVL20:
+ 525              	.L41:
+ 526              		.loc 1 109 20 view .LVU118
+ 527              	.LBE4:
+  98:Core/Src/balance_car/dht11.c ****         uint32_t high_start;
+ 528              		.loc 1 98 42 is_stmt 1 discriminator 2 view .LVU119
+ 529 006e 0134     		adds	r4, r4, #1
+ 530              	.LVL21:
+  98:Core/Src/balance_car/dht11.c ****         uint32_t high_start;
+ 531              		.loc 1 98 42 is_stmt 0 discriminator 2 view .LVU120
+ 532 0070 E4B2     		uxtb	r4, r4
+ 533              	.LVL22:
+ 534              	.L38:
+  98:Core/Src/balance_car/dht11.c ****         uint32_t high_start;
+ 535              		.loc 1 98 32 is_stmt 1 discriminator 1 view .LVU121
+ 536 0072 272C     		cmp	r4, #39
+ 537 0074 24D8     		bhi	.L50
+ 538              	.LBB5:
+  99:Core/Src/balance_car/dht11.c ****         uint32_t high_width;
+ 539              		.loc 1 99 9 view .LVU122
+ 100:Core/Src/balance_car/dht11.c **** 
+ 540              		.loc 1 100 9 view .LVU123
+ 102:Core/Src/balance_car/dht11.c ****             s_fail_step = 4U;
+ 541              		.loc 1 102 9 view .LVU124
+ 102:Core/Src/balance_car/dht11.c ****             s_fail_step = 4U;
+ 542              		.loc 1 102 13 is_stmt 0 view .LVU125
+ 543 0076 5021     		movs	r1, #80
+ 544 0078 0120     		movs	r0, #1
+ 545 007a FFF7FEFF 		bl	Dht11_WaitForState
+ 546              	.LVL23:
+ARM GAS  D:\TMP\ccODVYxi.s 			page 13
+
+
+ 102:Core/Src/balance_car/dht11.c ****             s_fail_step = 4U;
+ 547              		.loc 1 102 12 discriminator 1 view .LVU126
+ 548 007e 0028     		cmp	r0, #0
+ 549 0080 EBD1     		bne	.L51
+ 106:Core/Src/balance_car/dht11.c ****         if (Dht11_WaitForState(GPIO_PIN_RESET, 120U) != HAL_OK) {
+ 550              		.loc 1 106 9 is_stmt 1 view .LVU127
+ 106:Core/Src/balance_car/dht11.c ****         if (Dht11_WaitForState(GPIO_PIN_RESET, 120U) != HAL_OK) {
+ 551              		.loc 1 106 22 is_stmt 0 view .LVU128
+ 552 0082 FFF7FEFF 		bl	Dht11_Micros
+ 553              	.LVL24:
+ 554 0086 0746     		mov	r7, r0
+ 555              	.LVL25:
+ 107:Core/Src/balance_car/dht11.c ****             s_fail_step = 5U;
+ 556              		.loc 1 107 9 is_stmt 1 view .LVU129
+ 107:Core/Src/balance_car/dht11.c ****             s_fail_step = 5U;
+ 557              		.loc 1 107 13 is_stmt 0 view .LVU130
+ 558 0088 7821     		movs	r1, #120
+ 559 008a 0020     		movs	r0, #0
+ 560              	.LVL26:
+ 107:Core/Src/balance_car/dht11.c ****             s_fail_step = 5U;
+ 561              		.loc 1 107 13 view .LVU131
+ 562 008c FFF7FEFF 		bl	Dht11_WaitForState
+ 563              	.LVL27:
+ 107:Core/Src/balance_car/dht11.c ****             s_fail_step = 5U;
+ 564              		.loc 1 107 12 discriminator 1 view .LVU132
+ 565 0090 0028     		cmp	r0, #0
+ 566 0092 E7D1     		bne	.L52
+ 110:Core/Src/balance_car/dht11.c ****         }
+ 111:Core/Src/balance_car/dht11.c ****         high_width = Dht11_Micros() - high_start;
+ 567              		.loc 1 111 9 is_stmt 1 view .LVU133
+ 568              		.loc 1 111 22 is_stmt 0 view .LVU134
+ 569 0094 FFF7FEFF 		bl	Dht11_Micros
+ 570              	.LVL28:
+ 571              		.loc 1 111 20 discriminator 1 view .LVU135
+ 572 0098 C01B     		subs	r0, r0, r7
+ 573              	.LVL29:
+ 112:Core/Src/balance_car/dht11.c ****         data[bit / 8U] <<= 1;
+ 574              		.loc 1 112 9 is_stmt 1 view .LVU136
+ 575              		.loc 1 112 13 is_stmt 0 view .LVU137
+ 576 009a C4F3C702 		ubfx	r2, r4, #3, #8
+ 577 009e 02F10803 		add	r3, r2, #8
+ 578 00a2 0DEB0301 		add	r1, sp, r3
+ 579 00a6 11F8083C 		ldrb	r3, [r1, #-8]	@ zero_extendqisi2
+ 580              		.loc 1 112 24 view .LVU138
+ 581 00aa 5B00     		lsls	r3, r3, #1
+ 582 00ac DBB2     		uxtb	r3, r3
+ 583 00ae 01F8083C 		strb	r3, [r1, #-8]
+ 113:Core/Src/balance_car/dht11.c ****         if (high_width > 45U) {
+ 584              		.loc 1 113 9 is_stmt 1 view .LVU139
+ 585              		.loc 1 113 12 is_stmt 0 view .LVU140
+ 586 00b2 2D28     		cmp	r0, #45
+ 587 00b4 DBD9     		bls	.L41
+ 114:Core/Src/balance_car/dht11.c ****             data[bit / 8U] |= 1U;
+ 588              		.loc 1 114 13 is_stmt 1 view .LVU141
+ 589              		.loc 1 114 28 is_stmt 0 view .LVU142
+ 590 00b6 43F00103 		orr	r3, r3, #1
+ 591 00ba 01F8083C 		strb	r3, [r1, #-8]
+ARM GAS  D:\TMP\ccODVYxi.s 			page 14
+
+
+ 592 00be D6E7     		b	.L41
+ 593              	.LVL30:
+ 594              	.L50:
+ 595              		.loc 1 114 28 view .LVU143
+ 596              	.LBE5:
+ 597              	.LBE6:
+ 115:Core/Src/balance_car/dht11.c ****         }
+ 116:Core/Src/balance_car/dht11.c ****     }
+ 117:Core/Src/balance_car/dht11.c **** 
+ 118:Core/Src/balance_car/dht11.c ****     if ((uint8_t)(data[0] + data[1] + data[2] + data[3]) != data[4]) {
+ 598              		.loc 1 118 5 is_stmt 1 view .LVU144
+ 599              		.loc 1 118 23 is_stmt 0 view .LVU145
+ 600 00c0 9DF80000 		ldrb	r0, [sp]	@ zero_extendqisi2
+ 601              		.loc 1 118 33 view .LVU146
+ 602 00c4 9DF80170 		ldrb	r7, [sp, #1]	@ zero_extendqisi2
+ 603              		.loc 1 118 27 view .LVU147
+ 604 00c8 C319     		adds	r3, r0, r7
+ 605 00ca DBB2     		uxtb	r3, r3
+ 606              		.loc 1 118 43 view .LVU148
+ 607 00cc 9DF80240 		ldrb	r4, [sp, #2]	@ zero_extendqisi2
+ 608              	.LVL31:
+ 609              		.loc 1 118 37 view .LVU149
+ 610 00d0 2344     		add	r3, r3, r4
+ 611 00d2 DBB2     		uxtb	r3, r3
+ 612              		.loc 1 118 53 view .LVU150
+ 613 00d4 9DF80380 		ldrb	r8, [sp, #3]	@ zero_extendqisi2
+ 614              		.loc 1 118 9 view .LVU151
+ 615 00d8 4344     		add	r3, r3, r8
+ 616 00da DBB2     		uxtb	r3, r3
+ 617              		.loc 1 118 65 view .LVU152
+ 618 00dc 9DF80420 		ldrb	r2, [sp, #4]	@ zero_extendqisi2
+ 619              		.loc 1 118 8 view .LVU153
+ 620 00e0 9342     		cmp	r3, r2
+ 621 00e2 04D0     		beq	.L43
+ 119:Core/Src/balance_car/dht11.c ****         s_fail_step = 6U;
+ 622              		.loc 1 119 9 is_stmt 1 view .LVU154
+ 623              		.loc 1 119 21 is_stmt 0 view .LVU155
+ 624 00e4 154B     		ldr	r3, .L53
+ 625 00e6 0622     		movs	r2, #6
+ 626 00e8 1A70     		strb	r2, [r3]
+ 120:Core/Src/balance_car/dht11.c ****         return HAL_ERROR;
+ 627              		.loc 1 120 9 is_stmt 1 view .LVU156
+ 628              		.loc 1 120 16 is_stmt 0 view .LVU157
+ 629 00ea 0125     		movs	r5, #1
+ 630 00ec 21E0     		b	.L35
+ 631              	.L43:
+ 121:Core/Src/balance_car/dht11.c ****     }
+ 122:Core/Src/balance_car/dht11.c **** 
+ 123:Core/Src/balance_car/dht11.c ****     reading->humidity_percent = (float)data[0] + (float)data[1] * 0.1f;
+ 632              		.loc 1 123 5 is_stmt 1 view .LVU158
+ 633              		.loc 1 123 33 is_stmt 0 view .LVU159
+ 634 00ee FFF7FEFF 		bl	__aeabi_ui2f
+ 635              	.LVL32:
+ 636 00f2 8146     		mov	r9, r0
+ 637              		.loc 1 123 50 view .LVU160
+ 638 00f4 3846     		mov	r0, r7
+ 639 00f6 FFF7FEFF 		bl	__aeabi_ui2f
+ARM GAS  D:\TMP\ccODVYxi.s 			page 15
+
+
+ 640              	.LVL33:
+ 641              		.loc 1 123 65 view .LVU161
+ 642 00fa 1149     		ldr	r1, .L53+4
+ 643 00fc FFF7FEFF 		bl	__aeabi_fmul
+ 644              	.LVL34:
+ 645 0100 0146     		mov	r1, r0
+ 646              		.loc 1 123 48 view .LVU162
+ 647 0102 4846     		mov	r0, r9
+ 648 0104 FFF7FEFF 		bl	__aeabi_fadd
+ 649              	.LVL35:
+ 650              		.loc 1 123 31 view .LVU163
+ 651 0108 7060     		str	r0, [r6, #4]	@ float
+ 124:Core/Src/balance_car/dht11.c ****     reading->temperature_c = (float)data[2] + (float)data[3] * 0.1f;
+ 652              		.loc 1 124 5 is_stmt 1 view .LVU164
+ 653              		.loc 1 124 30 is_stmt 0 view .LVU165
+ 654 010a 2046     		mov	r0, r4
+ 655 010c FFF7FEFF 		bl	__aeabi_ui2f
+ 656              	.LVL36:
+ 657 0110 0446     		mov	r4, r0
+ 658              		.loc 1 124 47 view .LVU166
+ 659 0112 4046     		mov	r0, r8
+ 660 0114 FFF7FEFF 		bl	__aeabi_ui2f
+ 661              	.LVL37:
+ 662              		.loc 1 124 62 view .LVU167
+ 663 0118 0949     		ldr	r1, .L53+4
+ 664 011a FFF7FEFF 		bl	__aeabi_fmul
+ 665              	.LVL38:
+ 666 011e 0146     		mov	r1, r0
+ 667              		.loc 1 124 45 view .LVU168
+ 668 0120 2046     		mov	r0, r4
+ 669 0122 FFF7FEFF 		bl	__aeabi_fadd
+ 670              	.LVL39:
+ 671              		.loc 1 124 28 view .LVU169
+ 672 0126 3060     		str	r0, [r6]	@ float
+ 125:Core/Src/balance_car/dht11.c ****     s_fail_step = 0U;
+ 673              		.loc 1 125 5 is_stmt 1 view .LVU170
+ 674              		.loc 1 125 17 is_stmt 0 view .LVU171
+ 675 0128 044B     		ldr	r3, .L53
+ 676 012a 0022     		movs	r2, #0
+ 677 012c 1A70     		strb	r2, [r3]
+ 126:Core/Src/balance_car/dht11.c ****     return HAL_OK;
+ 678              		.loc 1 126 5 is_stmt 1 view .LVU172
+ 679              		.loc 1 126 12 is_stmt 0 view .LVU173
+ 680 012e 00E0     		b	.L35
+ 681              	.LVL40:
+ 682              	.L44:
+  81:Core/Src/balance_car/dht11.c ****     }
+ 683              		.loc 1 81 16 view .LVU174
+ 684 0130 0125     		movs	r5, #1
+ 685              	.LVL41:
+ 686              	.L35:
+ 127:Core/Src/balance_car/dht11.c **** }
+ 687              		.loc 1 127 1 view .LVU175
+ 688 0132 2846     		mov	r0, r5
+ 689 0134 03B0     		add	sp, sp, #12
+ 690              	.LCFI14:
+ 691              		.cfi_def_cfa_offset 28
+ARM GAS  D:\TMP\ccODVYxi.s 			page 16
+
+
+ 692              		@ sp needed
+ 693 0136 BDE8F083 		pop	{r4, r5, r6, r7, r8, r9, pc}
+ 694              	.L54:
+ 695 013a 00BF     		.align	2
+ 696              	.L53:
+ 697 013c 00000000 		.word	s_fail_step
+ 698 0140 CDCCCC3D 		.word	1036831949
+ 699              		.cfi_endproc
+ 700              	.LFE72:
+ 702              		.section	.text.Dht11_GetFailStep,"ax",%progbits
+ 703              		.align	1
+ 704              		.global	Dht11_GetFailStep
+ 705              		.syntax unified
+ 706              		.thumb
+ 707              		.thumb_func
+ 709              	Dht11_GetFailStep:
+ 710              	.LFB73:
+ 128:Core/Src/balance_car/dht11.c **** 
+ 129:Core/Src/balance_car/dht11.c **** uint8_t Dht11_GetFailStep(void)
+ 130:Core/Src/balance_car/dht11.c **** {
+ 711              		.loc 1 130 1 is_stmt 1 view -0
+ 712              		.cfi_startproc
+ 713              		@ args = 0, pretend = 0, frame = 0
+ 714              		@ frame_needed = 0, uses_anonymous_args = 0
+ 715              		@ link register save eliminated.
+ 131:Core/Src/balance_car/dht11.c ****     return s_fail_step;
+ 716              		.loc 1 131 5 view .LVU177
+ 132:Core/Src/balance_car/dht11.c **** }
+ 717              		.loc 1 132 1 is_stmt 0 view .LVU178
+ 718 0000 014B     		ldr	r3, .L56
+ 719 0002 1878     		ldrb	r0, [r3]	@ zero_extendqisi2
+ 720 0004 7047     		bx	lr
+ 721              	.L57:
+ 722 0006 00BF     		.align	2
+ 723              	.L56:
+ 724 0008 00000000 		.word	s_fail_step
+ 725              		.cfi_endproc
+ 726              	.LFE73:
+ 728              		.section	.bss.s_fail_step,"aw",%nobits
+ 731              	s_fail_step:
+ 732 0000 00       		.space	1
+ 733              		.section	.bss.s_dwt_ready,"aw",%nobits
+ 736              	s_dwt_ready:
+ 737 0000 00       		.space	1
+ 738              		.text
+ 739              	.Letext0:
+ 740              		.file 2 "F:/Msys2/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 741              		.file 3 "F:/Msys2/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 742              		.file 4 "Drivers/CMSIS/Include/core_cm3.h"
+ 743              		.file 5 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ 744              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 745              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h"
+ 746              		.file 8 "Core/Inc/balance_car/dht11.h"
+ 747              		.file 9 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h"
+ARM GAS  D:\TMP\ccODVYxi.s 			page 17
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 dht11.c
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:19     .text.Dht11_DwtInit:00000000 $t
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:24     .text.Dht11_DwtInit:00000000 Dht11_DwtInit
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:66     .text.Dht11_DwtInit:0000002c $d
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:665    .bss.s_dwt_ready:00000000 s_dwt_ready
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:73     .text.Dht11_SetInput:00000000 $t
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:78     .text.Dht11_SetInput:00000000 Dht11_SetInput
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:125    .text.Dht11_SetInput:0000002c $d
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:130    .text.Dht11_SetOutput:00000000 $t
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:135    .text.Dht11_SetOutput:00000000 Dht11_SetOutput
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:185    .text.Dht11_SetOutput:00000030 $d
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:190    .text.Dht11_Micros:00000000 $t
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:195    .text.Dht11_Micros:00000000 Dht11_Micros
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:223    .text.Dht11_Micros:00000018 $d
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:229    .text.Dht11_WaitForState:00000000 $t
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:234    .text.Dht11_WaitForState:00000000 Dht11_WaitForState
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:292    .text.Dht11_WaitForState:0000002c $d
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:297    .text.Dht11_Init:00000000 $t
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:303    .text.Dht11_Init:00000000 Dht11_Init
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:349    .text.Dht11_Init:00000028 $d
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:354    .text.Dht11_StartRead:00000000 $t
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:360    .text.Dht11_StartRead:00000000 Dht11_StartRead
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:387    .text.Dht11_StartRead:00000018 $d
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:395    .text.Dht11_FinishRead:00000000 $t
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:401    .text.Dht11_FinishRead:00000000 Dht11_FinishRead
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:658    .text.Dht11_FinishRead:00000114 $d
-C:\Users\future\AppData\Local\Temp\ccCKlaES.s:666    .bss.s_dwt_ready:00000000 $d
+   D:\TMP\ccODVYxi.s:19     .text.Dht11_DwtInit:00000000 $t
+   D:\TMP\ccODVYxi.s:24     .text.Dht11_DwtInit:00000000 Dht11_DwtInit
+   D:\TMP\ccODVYxi.s:66     .text.Dht11_DwtInit:0000002c $d
+   D:\TMP\ccODVYxi.s:736    .bss.s_dwt_ready:00000000 s_dwt_ready
+   D:\TMP\ccODVYxi.s:73     .text.Dht11_SetInput:00000000 $t
+   D:\TMP\ccODVYxi.s:78     .text.Dht11_SetInput:00000000 Dht11_SetInput
+   D:\TMP\ccODVYxi.s:125    .text.Dht11_SetInput:0000002c $d
+   D:\TMP\ccODVYxi.s:130    .text.Dht11_SetOutput:00000000 $t
+   D:\TMP\ccODVYxi.s:135    .text.Dht11_SetOutput:00000000 Dht11_SetOutput
+   D:\TMP\ccODVYxi.s:185    .text.Dht11_SetOutput:00000030 $d
+   D:\TMP\ccODVYxi.s:190    .text.Dht11_Micros:00000000 $t
+   D:\TMP\ccODVYxi.s:195    .text.Dht11_Micros:00000000 Dht11_Micros
+   D:\TMP\ccODVYxi.s:223    .text.Dht11_Micros:00000018 $d
+   D:\TMP\ccODVYxi.s:229    .text.Dht11_WaitForState:00000000 $t
+   D:\TMP\ccODVYxi.s:234    .text.Dht11_WaitForState:00000000 Dht11_WaitForState
+   D:\TMP\ccODVYxi.s:292    .text.Dht11_WaitForState:0000002c $d
+   D:\TMP\ccODVYxi.s:297    .text.Dht11_Init:00000000 $t
+   D:\TMP\ccODVYxi.s:303    .text.Dht11_Init:00000000 Dht11_Init
+   D:\TMP\ccODVYxi.s:349    .text.Dht11_Init:00000028 $d
+   D:\TMP\ccODVYxi.s:354    .text.Dht11_StartRead:00000000 $t
+   D:\TMP\ccODVYxi.s:360    .text.Dht11_StartRead:00000000 Dht11_StartRead
+   D:\TMP\ccODVYxi.s:392    .text.Dht11_StartRead:0000001c $d
+   D:\TMP\ccODVYxi.s:731    .bss.s_fail_step:00000000 s_fail_step
+   D:\TMP\ccODVYxi.s:401    .text.Dht11_FinishRead:00000000 $t
+   D:\TMP\ccODVYxi.s:407    .text.Dht11_FinishRead:00000000 Dht11_FinishRead
+   D:\TMP\ccODVYxi.s:697    .text.Dht11_FinishRead:0000013c $d
+   D:\TMP\ccODVYxi.s:703    .text.Dht11_GetFailStep:00000000 $t
+   D:\TMP\ccODVYxi.s:709    .text.Dht11_GetFailStep:00000000 Dht11_GetFailStep
+   D:\TMP\ccODVYxi.s:724    .text.Dht11_GetFailStep:00000008 $d
+   D:\TMP\ccODVYxi.s:732    .bss.s_fail_step:00000000 $d
+   D:\TMP\ccODVYxi.s:737    .bss.s_dwt_ready:00000000 $d
 
 UNDEFINED SYMBOLS
 HAL_GPIO_Init

@@ -1,0 +1,689 @@
+ARM GAS  D:\TMP\ccKlqPJH.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"hx711.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "Core/Src/balance_car/hx711.c"
+  18              		.section	.text.Hx711_DwtInit,"ax",%progbits
+  19              		.align	1
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	Hx711_DwtInit:
+  25              	.LFB65:
+   1:Core/Src/balance_car/hx711.c **** #include "balance_car/hx711.h"
+   2:Core/Src/balance_car/hx711.c **** 
+   3:Core/Src/balance_car/hx711.c **** #define HX711_DT_PORT          GPIOB
+   4:Core/Src/balance_car/hx711.c **** #define HX711_DT_PIN           GPIO_PIN_12
+   5:Core/Src/balance_car/hx711.c **** #define HX711_SCK_PORT         GPIOB
+   6:Core/Src/balance_car/hx711.c **** #define HX711_SCK_PIN          GPIO_PIN_13
+   7:Core/Src/balance_car/hx711.c **** 
+   8:Core/Src/balance_car/hx711.c **** static uint8_t s_dwt_ready;
+   9:Core/Src/balance_car/hx711.c **** 
+  10:Core/Src/balance_car/hx711.c **** static void Hx711_DwtInit(void)
+  11:Core/Src/balance_car/hx711.c **** {
+  26              		.loc 1 11 1 view -0
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 0
+  29              		@ frame_needed = 0, uses_anonymous_args = 0
+  30              		@ link register save eliminated.
+  12:Core/Src/balance_car/hx711.c ****     if (s_dwt_ready != 0U) {
+  31              		.loc 1 12 5 view .LVU1
+  32              		.loc 1 12 21 is_stmt 0 view .LVU2
+  33 0000 0A4B     		ldr	r3, .L3
+  34 0002 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  35              		.loc 1 12 8 view .LVU3
+  36 0004 83B9     		cbnz	r3, .L1
+  13:Core/Src/balance_car/hx711.c ****         return;
+  14:Core/Src/balance_car/hx711.c ****     }
+  15:Core/Src/balance_car/hx711.c **** 
+  16:Core/Src/balance_car/hx711.c ****     CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
+  37              		.loc 1 16 5 is_stmt 1 view .LVU4
+  38              		.loc 1 16 14 is_stmt 0 view .LVU5
+  39 0006 0A4A     		ldr	r2, .L3+4
+  40 0008 D2F8FC30 		ldr	r3, [r2, #252]
+  41              		.loc 1 16 22 view .LVU6
+  42 000c 43F08073 		orr	r3, r3, #16777216
+ARM GAS  D:\TMP\ccKlqPJH.s 			page 2
+
+
+  43 0010 C2F8FC30 		str	r3, [r2, #252]
+  17:Core/Src/balance_car/hx711.c ****     DWT->CYCCNT = 0U;
+  44              		.loc 1 17 5 is_stmt 1 view .LVU7
+  45              		.loc 1 17 17 is_stmt 0 view .LVU8
+  46 0014 074B     		ldr	r3, .L3+8
+  47 0016 0022     		movs	r2, #0
+  48 0018 5A60     		str	r2, [r3, #4]
+  18:Core/Src/balance_car/hx711.c ****     DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
+  49              		.loc 1 18 5 is_stmt 1 view .LVU9
+  50              		.loc 1 18 8 is_stmt 0 view .LVU10
+  51 001a 1A68     		ldr	r2, [r3]
+  52              		.loc 1 18 15 view .LVU11
+  53 001c 42F00102 		orr	r2, r2, #1
+  54 0020 1A60     		str	r2, [r3]
+  19:Core/Src/balance_car/hx711.c ****     s_dwt_ready = 1U;
+  55              		.loc 1 19 5 is_stmt 1 view .LVU12
+  56              		.loc 1 19 17 is_stmt 0 view .LVU13
+  57 0022 024B     		ldr	r3, .L3
+  58 0024 0122     		movs	r2, #1
+  59 0026 1A70     		strb	r2, [r3]
+  60              	.L1:
+  20:Core/Src/balance_car/hx711.c **** }
+  61              		.loc 1 20 1 view .LVU14
+  62 0028 7047     		bx	lr
+  63              	.L4:
+  64 002a 00BF     		.align	2
+  65              	.L3:
+  66 002c 00000000 		.word	s_dwt_ready
+  67 0030 00ED00E0 		.word	-536810240
+  68 0034 001000E0 		.word	-536866816
+  69              		.cfi_endproc
+  70              	.LFE65:
+  72              		.section	.text.Hx711_DelayUs,"ax",%progbits
+  73              		.align	1
+  74              		.syntax unified
+  75              		.thumb
+  76              		.thumb_func
+  78              	Hx711_DelayUs:
+  79              	.LVL0:
+  80              	.LFB66:
+  21:Core/Src/balance_car/hx711.c **** 
+  22:Core/Src/balance_car/hx711.c **** static void Hx711_DelayUs(uint32_t us)
+  23:Core/Src/balance_car/hx711.c **** {
+  81              		.loc 1 23 1 is_stmt 1 view -0
+  82              		.cfi_startproc
+  83              		@ args = 0, pretend = 0, frame = 0
+  84              		@ frame_needed = 0, uses_anonymous_args = 0
+  24:Core/Src/balance_car/hx711.c ****     uint32_t cycles;
+  85              		.loc 1 24 5 view .LVU16
+  25:Core/Src/balance_car/hx711.c ****     uint32_t start;
+  86              		.loc 1 25 5 view .LVU17
+  26:Core/Src/balance_car/hx711.c **** 
+  27:Core/Src/balance_car/hx711.c ****     if (us == 0U) {
+  87              		.loc 1 27 5 view .LVU18
+  88              		.loc 1 27 8 is_stmt 0 view .LVU19
+  89 0000 00B9     		cbnz	r0, .L12
+  90 0002 7047     		bx	lr
+ARM GAS  D:\TMP\ccKlqPJH.s 			page 3
+
+
+  91              	.L12:
+  23:Core/Src/balance_car/hx711.c ****     uint32_t cycles;
+  92              		.loc 1 23 1 view .LVU20
+  93 0004 10B5     		push	{r4, lr}
+  94              	.LCFI0:
+  95              		.cfi_def_cfa_offset 8
+  96              		.cfi_offset 4, -8
+  97              		.cfi_offset 14, -4
+  98 0006 0446     		mov	r4, r0
+  28:Core/Src/balance_car/hx711.c ****         return;
+  29:Core/Src/balance_car/hx711.c ****     }
+  30:Core/Src/balance_car/hx711.c **** 
+  31:Core/Src/balance_car/hx711.c ****     cycles = (HAL_RCC_GetHCLKFreq() / 1000000U) * us;
+  99              		.loc 1 31 5 is_stmt 1 view .LVU21
+ 100              		.loc 1 31 15 is_stmt 0 view .LVU22
+ 101 0008 FFF7FEFF 		bl	HAL_RCC_GetHCLKFreq
+ 102              	.LVL1:
+ 103              		.loc 1 31 37 discriminator 1 view .LVU23
+ 104 000c 064B     		ldr	r3, .L13
+ 105 000e A3FB0032 		umull	r3, r2, r3, r0
+ 106 0012 920C     		lsrs	r2, r2, #18
+ 107              		.loc 1 31 12 discriminator 1 view .LVU24
+ 108 0014 04FB02F2 		mul	r2, r4, r2
+ 109              	.LVL2:
+  32:Core/Src/balance_car/hx711.c ****     start = DWT->CYCCNT;
+ 110              		.loc 1 32 5 is_stmt 1 view .LVU25
+ 111              		.loc 1 32 11 is_stmt 0 view .LVU26
+ 112 0018 044B     		ldr	r3, .L13+4
+ 113 001a 5968     		ldr	r1, [r3, #4]
+ 114              	.LVL3:
+  33:Core/Src/balance_car/hx711.c ****     while ((uint32_t)(DWT->CYCCNT - start) < cycles) {
+ 115              		.loc 1 33 5 is_stmt 1 view .LVU27
+ 116              	.L7:
+  34:Core/Src/balance_car/hx711.c ****     }
+ 117              		.loc 1 34 5 view .LVU28
+  33:Core/Src/balance_car/hx711.c ****     while ((uint32_t)(DWT->CYCCNT - start) < cycles) {
+ 118              		.loc 1 33 44 discriminator 1 view .LVU29
+  33:Core/Src/balance_car/hx711.c ****     while ((uint32_t)(DWT->CYCCNT - start) < cycles) {
+ 119              		.loc 1 33 26 is_stmt 0 discriminator 1 view .LVU30
+ 120 001c 034B     		ldr	r3, .L13+4
+ 121 001e 5B68     		ldr	r3, [r3, #4]
+  33:Core/Src/balance_car/hx711.c ****     while ((uint32_t)(DWT->CYCCNT - start) < cycles) {
+ 122              		.loc 1 33 35 discriminator 1 view .LVU31
+ 123 0020 5B1A     		subs	r3, r3, r1
+  33:Core/Src/balance_car/hx711.c ****     while ((uint32_t)(DWT->CYCCNT - start) < cycles) {
+ 124              		.loc 1 33 44 discriminator 1 view .LVU32
+ 125 0022 9342     		cmp	r3, r2
+ 126 0024 FAD3     		bcc	.L7
+  35:Core/Src/balance_car/hx711.c **** }
+ 127              		.loc 1 35 1 view .LVU33
+ 128 0026 10BD     		pop	{r4, pc}
+ 129              	.LVL4:
+ 130              	.L14:
+ 131              		.loc 1 35 1 view .LVU34
+ 132              		.align	2
+ 133              	.L13:
+ 134 0028 83DE1B43 		.word	1125899907
+ARM GAS  D:\TMP\ccKlqPJH.s 			page 4
+
+
+ 135 002c 001000E0 		.word	-536866816
+ 136              		.cfi_endproc
+ 137              	.LFE66:
+ 139              		.section	.text.Hx711_Init,"ax",%progbits
+ 140              		.align	1
+ 141              		.global	Hx711_Init
+ 142              		.syntax unified
+ 143              		.thumb
+ 144              		.thumb_func
+ 146              	Hx711_Init:
+ 147              	.LFB67:
+  36:Core/Src/balance_car/hx711.c **** 
+  37:Core/Src/balance_car/hx711.c **** HAL_StatusTypeDef Hx711_Init(void)
+  38:Core/Src/balance_car/hx711.c **** {
+ 148              		.loc 1 38 1 is_stmt 1 view -0
+ 149              		.cfi_startproc
+ 150              		@ args = 0, pretend = 0, frame = 24
+ 151              		@ frame_needed = 0, uses_anonymous_args = 0
+ 152 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 153              	.LCFI1:
+ 154              		.cfi_def_cfa_offset 24
+ 155              		.cfi_offset 4, -24
+ 156              		.cfi_offset 5, -20
+ 157              		.cfi_offset 6, -16
+ 158              		.cfi_offset 7, -12
+ 159              		.cfi_offset 8, -8
+ 160              		.cfi_offset 14, -4
+ 161 0004 86B0     		sub	sp, sp, #24
+ 162              	.LCFI2:
+ 163              		.cfi_def_cfa_offset 48
+  39:Core/Src/balance_car/hx711.c ****     GPIO_InitTypeDef gpio = {0};
+ 164              		.loc 1 39 5 view .LVU36
+ 165              		.loc 1 39 22 is_stmt 0 view .LVU37
+ 166 0006 0024     		movs	r4, #0
+ 167 0008 0294     		str	r4, [sp, #8]
+ 168 000a 0394     		str	r4, [sp, #12]
+ 169 000c 0494     		str	r4, [sp, #16]
+ 170 000e 0594     		str	r4, [sp, #20]
+  40:Core/Src/balance_car/hx711.c **** 
+  41:Core/Src/balance_car/hx711.c ****     __HAL_RCC_GPIOB_CLK_ENABLE();
+ 171              		.loc 1 41 5 is_stmt 1 view .LVU38
+ 172              	.LBB2:
+ 173              		.loc 1 41 5 view .LVU39
+ 174              		.loc 1 41 5 view .LVU40
+ 175 0010 174B     		ldr	r3, .L17
+ 176 0012 9A69     		ldr	r2, [r3, #24]
+ 177 0014 42F00802 		orr	r2, r2, #8
+ 178 0018 9A61     		str	r2, [r3, #24]
+ 179              		.loc 1 41 5 view .LVU41
+ 180 001a 9B69     		ldr	r3, [r3, #24]
+ 181 001c 03F00803 		and	r3, r3, #8
+ 182 0020 0193     		str	r3, [sp, #4]
+ 183              		.loc 1 41 5 view .LVU42
+ 184 0022 019B     		ldr	r3, [sp, #4]
+ 185              	.LBE2:
+ 186              		.loc 1 41 5 view .LVU43
+  42:Core/Src/balance_car/hx711.c ****     Hx711_DwtInit();
+ARM GAS  D:\TMP\ccKlqPJH.s 			page 5
+
+
+ 187              		.loc 1 42 5 view .LVU44
+ 188 0024 FFF7FEFF 		bl	Hx711_DwtInit
+ 189              	.LVL5:
+  43:Core/Src/balance_car/hx711.c **** 
+  44:Core/Src/balance_car/hx711.c ****     gpio.Pin = HX711_DT_PIN;
+ 190              		.loc 1 44 5 view .LVU45
+ 191              		.loc 1 44 14 is_stmt 0 view .LVU46
+ 192 0028 4FF48053 		mov	r3, #4096
+ 193 002c 0293     		str	r3, [sp, #8]
+  45:Core/Src/balance_car/hx711.c ****     gpio.Mode = GPIO_MODE_INPUT;
+ 194              		.loc 1 45 5 is_stmt 1 view .LVU47
+ 195              		.loc 1 45 15 is_stmt 0 view .LVU48
+ 196 002e 0394     		str	r4, [sp, #12]
+  46:Core/Src/balance_car/hx711.c ****     gpio.Pull = GPIO_PULLUP;
+ 197              		.loc 1 46 5 is_stmt 1 view .LVU49
+ 198              		.loc 1 46 15 is_stmt 0 view .LVU50
+ 199 0030 4FF00108 		mov	r8, #1
+ 200 0034 CDF81080 		str	r8, [sp, #16]
+  47:Core/Src/balance_car/hx711.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+ 201              		.loc 1 47 5 is_stmt 1 view .LVU51
+ 202              		.loc 1 47 16 is_stmt 0 view .LVU52
+ 203 0038 0327     		movs	r7, #3
+ 204 003a 0597     		str	r7, [sp, #20]
+  48:Core/Src/balance_car/hx711.c ****     HAL_GPIO_Init(HX711_DT_PORT, &gpio);
+ 205              		.loc 1 48 5 is_stmt 1 view .LVU53
+ 206 003c 0D4D     		ldr	r5, .L17+4
+ 207 003e 02A9     		add	r1, sp, #8
+ 208 0040 2846     		mov	r0, r5
+ 209 0042 FFF7FEFF 		bl	HAL_GPIO_Init
+ 210              	.LVL6:
+  49:Core/Src/balance_car/hx711.c **** 
+  50:Core/Src/balance_car/hx711.c ****     gpio.Pin = HX711_SCK_PIN;
+ 211              		.loc 1 50 5 view .LVU54
+ 212              		.loc 1 50 14 is_stmt 0 view .LVU55
+ 213 0046 4FF40056 		mov	r6, #8192
+ 214 004a 0296     		str	r6, [sp, #8]
+  51:Core/Src/balance_car/hx711.c ****     gpio.Mode = GPIO_MODE_OUTPUT_PP;
+ 215              		.loc 1 51 5 is_stmt 1 view .LVU56
+ 216              		.loc 1 51 15 is_stmt 0 view .LVU57
+ 217 004c CDF80C80 		str	r8, [sp, #12]
+  52:Core/Src/balance_car/hx711.c ****     gpio.Pull = GPIO_NOPULL;
+ 218              		.loc 1 52 5 is_stmt 1 view .LVU58
+ 219              		.loc 1 52 15 is_stmt 0 view .LVU59
+ 220 0050 0494     		str	r4, [sp, #16]
+  53:Core/Src/balance_car/hx711.c ****     gpio.Speed = GPIO_SPEED_FREQ_HIGH;
+ 221              		.loc 1 53 5 is_stmt 1 view .LVU60
+ 222              		.loc 1 53 16 is_stmt 0 view .LVU61
+ 223 0052 0597     		str	r7, [sp, #20]
+  54:Core/Src/balance_car/hx711.c ****     HAL_GPIO_Init(HX711_SCK_PORT, &gpio);
+ 224              		.loc 1 54 5 is_stmt 1 view .LVU62
+ 225 0054 02A9     		add	r1, sp, #8
+ 226 0056 2846     		mov	r0, r5
+ 227 0058 FFF7FEFF 		bl	HAL_GPIO_Init
+ 228              	.LVL7:
+  55:Core/Src/balance_car/hx711.c **** 
+  56:Core/Src/balance_car/hx711.c ****     HAL_GPIO_WritePin(HX711_SCK_PORT, HX711_SCK_PIN, GPIO_PIN_RESET);
+ 229              		.loc 1 56 5 view .LVU63
+ARM GAS  D:\TMP\ccKlqPJH.s 			page 6
+
+
+ 230 005c 2246     		mov	r2, r4
+ 231 005e 3146     		mov	r1, r6
+ 232 0060 2846     		mov	r0, r5
+ 233 0062 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 234              	.LVL8:
+  57:Core/Src/balance_car/hx711.c ****     return HAL_OK;
+ 235              		.loc 1 57 5 view .LVU64
+  58:Core/Src/balance_car/hx711.c **** }
+ 236              		.loc 1 58 1 is_stmt 0 view .LVU65
+ 237 0066 2046     		mov	r0, r4
+ 238 0068 06B0     		add	sp, sp, #24
+ 239              	.LCFI3:
+ 240              		.cfi_def_cfa_offset 24
+ 241              		@ sp needed
+ 242 006a BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 243              	.L18:
+ 244 006e 00BF     		.align	2
+ 245              	.L17:
+ 246 0070 00100240 		.word	1073876992
+ 247 0074 000C0140 		.word	1073810432
+ 248              		.cfi_endproc
+ 249              	.LFE67:
+ 251              		.section	.text.Hx711_ReadRaw,"ax",%progbits
+ 252              		.align	1
+ 253              		.global	Hx711_ReadRaw
+ 254              		.syntax unified
+ 255              		.thumb
+ 256              		.thumb_func
+ 258              	Hx711_ReadRaw:
+ 259              	.LVL9:
+ 260              	.LFB68:
+  59:Core/Src/balance_car/hx711.c **** 
+  60:Core/Src/balance_car/hx711.c **** HAL_StatusTypeDef Hx711_ReadRaw(int32_t *raw)
+  61:Core/Src/balance_car/hx711.c **** {
+ 261              		.loc 1 61 1 is_stmt 1 view -0
+ 262              		.cfi_startproc
+ 263              		@ args = 0, pretend = 0, frame = 0
+ 264              		@ frame_needed = 0, uses_anonymous_args = 0
+  62:Core/Src/balance_car/hx711.c ****     uint32_t data = 0U;
+ 265              		.loc 1 62 5 view .LVU67
+  63:Core/Src/balance_car/hx711.c **** 
+  64:Core/Src/balance_car/hx711.c ****     if (raw == 0) {
+ 266              		.loc 1 64 5 view .LVU68
+ 267              		.loc 1 64 8 is_stmt 0 view .LVU69
+ 268 0000 0028     		cmp	r0, #0
+ 269 0002 49D0     		beq	.L25
+  61:Core/Src/balance_car/hx711.c ****     uint32_t data = 0U;
+ 270              		.loc 1 61 1 view .LVU70
+ 271 0004 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 272              	.LCFI4:
+ 273              		.cfi_def_cfa_offset 24
+ 274              		.cfi_offset 3, -24
+ 275              		.cfi_offset 4, -20
+ 276              		.cfi_offset 5, -16
+ 277              		.cfi_offset 6, -12
+ 278              		.cfi_offset 7, -8
+ 279              		.cfi_offset 14, -4
+ARM GAS  D:\TMP\ccKlqPJH.s 			page 7
+
+
+ 280 0006 0746     		mov	r7, r0
+  65:Core/Src/balance_car/hx711.c ****         return HAL_ERROR;
+  66:Core/Src/balance_car/hx711.c ****     }
+  67:Core/Src/balance_car/hx711.c **** 
+  68:Core/Src/balance_car/hx711.c ****     if (HAL_GPIO_ReadPin(HX711_DT_PORT, HX711_DT_PIN) == GPIO_PIN_SET) {
+ 281              		.loc 1 68 5 is_stmt 1 view .LVU71
+ 282              		.loc 1 68 9 is_stmt 0 view .LVU72
+ 283 0008 4FF48051 		mov	r1, #4096
+ 284 000c 2448     		ldr	r0, .L34
+ 285              	.LVL10:
+ 286              		.loc 1 68 9 view .LVU73
+ 287 000e FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 288              	.LVL11:
+ 289              		.loc 1 68 8 discriminator 1 view .LVU74
+ 290 0012 0128     		cmp	r0, #1
+ 291 0014 42D0     		beq	.L26
+ 292              	.LBB3:
+  69:Core/Src/balance_car/hx711.c ****         return HAL_BUSY;
+  70:Core/Src/balance_car/hx711.c ****     }
+  71:Core/Src/balance_car/hx711.c **** 
+  72:Core/Src/balance_car/hx711.c ****     for (uint8_t bit = 0U; bit < 24U; bit++) {
+ 293              		.loc 1 72 18 view .LVU75
+ 294 0016 0024     		movs	r4, #0
+ 295              	.LBE3:
+  62:Core/Src/balance_car/hx711.c **** 
+ 296              		.loc 1 62 14 view .LVU76
+ 297 0018 2546     		mov	r5, r4
+ 298 001a 0CE0     		b	.L21
+ 299              	.LVL12:
+ 300              	.L33:
+ 301              	.LBB4:
+  73:Core/Src/balance_car/hx711.c ****         HAL_GPIO_WritePin(HX711_SCK_PORT, HX711_SCK_PIN, GPIO_PIN_SET);
+  74:Core/Src/balance_car/hx711.c ****         Hx711_DelayUs(1U);
+  75:Core/Src/balance_car/hx711.c ****         data = (data << 1) | ((HAL_GPIO_ReadPin(HX711_DT_PORT, HX711_DT_PIN) == GPIO_PIN_SET) ? 1U 
+ 302              		.loc 1 75 100 discriminator 1 view .LVU77
+ 303 001c 0123     		movs	r3, #1
+ 304              	.L22:
+ 305              		.loc 1 75 14 discriminator 4 view .LVU78
+ 306 001e 1D43     		orrs	r5, r5, r3
+ 307              	.LVL13:
+  76:Core/Src/balance_car/hx711.c ****         HAL_GPIO_WritePin(HX711_SCK_PORT, HX711_SCK_PIN, GPIO_PIN_RESET);
+ 308              		.loc 1 76 9 is_stmt 1 view .LVU79
+ 309 0020 0022     		movs	r2, #0
+ 310 0022 4FF40051 		mov	r1, #8192
+ 311 0026 1E48     		ldr	r0, .L34
+ 312 0028 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 313              	.LVL14:
+  77:Core/Src/balance_car/hx711.c ****         Hx711_DelayUs(1U);
+ 314              		.loc 1 77 9 view .LVU80
+ 315 002c 0120     		movs	r0, #1
+ 316 002e FFF7FEFF 		bl	Hx711_DelayUs
+ 317              	.LVL15:
+  72:Core/Src/balance_car/hx711.c ****         HAL_GPIO_WritePin(HX711_SCK_PORT, HX711_SCK_PIN, GPIO_PIN_SET);
+ 318              		.loc 1 72 42 discriminator 2 view .LVU81
+ 319 0032 0134     		adds	r4, r4, #1
+ 320              	.LVL16:
+  72:Core/Src/balance_car/hx711.c ****         HAL_GPIO_WritePin(HX711_SCK_PORT, HX711_SCK_PIN, GPIO_PIN_SET);
+ARM GAS  D:\TMP\ccKlqPJH.s 			page 8
+
+
+ 321              		.loc 1 72 42 is_stmt 0 discriminator 2 view .LVU82
+ 322 0034 E4B2     		uxtb	r4, r4
+ 323              	.LVL17:
+ 324              	.L21:
+  72:Core/Src/balance_car/hx711.c ****         HAL_GPIO_WritePin(HX711_SCK_PORT, HX711_SCK_PIN, GPIO_PIN_SET);
+ 325              		.loc 1 72 32 is_stmt 1 discriminator 1 view .LVU83
+ 326 0036 172C     		cmp	r4, #23
+ 327 0038 13D8     		bhi	.L32
+  73:Core/Src/balance_car/hx711.c ****         Hx711_DelayUs(1U);
+ 328              		.loc 1 73 9 view .LVU84
+ 329 003a 194E     		ldr	r6, .L34
+ 330 003c 0122     		movs	r2, #1
+ 331 003e 4FF40051 		mov	r1, #8192
+ 332 0042 3046     		mov	r0, r6
+ 333 0044 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 334              	.LVL18:
+  74:Core/Src/balance_car/hx711.c ****         data = (data << 1) | ((HAL_GPIO_ReadPin(HX711_DT_PORT, HX711_DT_PIN) == GPIO_PIN_SET) ? 1U 
+ 335              		.loc 1 74 9 view .LVU85
+ 336 0048 0120     		movs	r0, #1
+ 337 004a FFF7FEFF 		bl	Hx711_DelayUs
+ 338              	.LVL19:
+  75:Core/Src/balance_car/hx711.c ****         HAL_GPIO_WritePin(HX711_SCK_PORT, HX711_SCK_PIN, GPIO_PIN_RESET);
+ 339              		.loc 1 75 9 view .LVU86
+  75:Core/Src/balance_car/hx711.c ****         HAL_GPIO_WritePin(HX711_SCK_PORT, HX711_SCK_PIN, GPIO_PIN_RESET);
+ 340              		.loc 1 75 22 is_stmt 0 view .LVU87
+ 341 004e 6D00     		lsls	r5, r5, #1
+ 342              	.LVL20:
+  75:Core/Src/balance_car/hx711.c ****         HAL_GPIO_WritePin(HX711_SCK_PORT, HX711_SCK_PIN, GPIO_PIN_RESET);
+ 343              		.loc 1 75 32 view .LVU88
+ 344 0050 4FF48051 		mov	r1, #4096
+ 345 0054 3046     		mov	r0, r6
+ 346 0056 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 347              	.LVL21:
+  75:Core/Src/balance_car/hx711.c ****         HAL_GPIO_WritePin(HX711_SCK_PORT, HX711_SCK_PIN, GPIO_PIN_RESET);
+ 348              		.loc 1 75 100 discriminator 1 view .LVU89
+ 349 005a 0128     		cmp	r0, #1
+ 350 005c DED0     		beq	.L33
+  75:Core/Src/balance_car/hx711.c ****         HAL_GPIO_WritePin(HX711_SCK_PORT, HX711_SCK_PIN, GPIO_PIN_RESET);
+ 351              		.loc 1 75 100 discriminator 2 view .LVU90
+ 352 005e 0023     		movs	r3, #0
+ 353 0060 DDE7     		b	.L22
+ 354              	.LVL22:
+ 355              	.L32:
+  75:Core/Src/balance_car/hx711.c ****         HAL_GPIO_WritePin(HX711_SCK_PORT, HX711_SCK_PIN, GPIO_PIN_RESET);
+ 356              		.loc 1 75 100 discriminator 2 view .LVU91
+ 357              	.LBE4:
+  78:Core/Src/balance_car/hx711.c ****     }
+  79:Core/Src/balance_car/hx711.c **** 
+  80:Core/Src/balance_car/hx711.c ****     HAL_GPIO_WritePin(HX711_SCK_PORT, HX711_SCK_PIN, GPIO_PIN_SET);
+ 358              		.loc 1 80 5 is_stmt 1 view .LVU92
+ 359 0062 0F4C     		ldr	r4, .L34
+ 360              	.LVL23:
+ 361              		.loc 1 80 5 is_stmt 0 view .LVU93
+ 362 0064 0122     		movs	r2, #1
+ 363 0066 4FF40051 		mov	r1, #8192
+ 364 006a 2046     		mov	r0, r4
+ 365 006c FFF7FEFF 		bl	HAL_GPIO_WritePin
+ARM GAS  D:\TMP\ccKlqPJH.s 			page 9
+
+
+ 366              	.LVL24:
+  81:Core/Src/balance_car/hx711.c ****     Hx711_DelayUs(1U);
+ 367              		.loc 1 81 5 is_stmt 1 view .LVU94
+ 368 0070 0120     		movs	r0, #1
+ 369 0072 FFF7FEFF 		bl	Hx711_DelayUs
+ 370              	.LVL25:
+  82:Core/Src/balance_car/hx711.c ****     HAL_GPIO_WritePin(HX711_SCK_PORT, HX711_SCK_PIN, GPIO_PIN_RESET);
+ 371              		.loc 1 82 5 view .LVU95
+ 372 0076 0022     		movs	r2, #0
+ 373 0078 4FF40051 		mov	r1, #8192
+ 374 007c 2046     		mov	r0, r4
+ 375 007e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 376              	.LVL26:
+  83:Core/Src/balance_car/hx711.c ****     Hx711_DelayUs(1U);
+ 377              		.loc 1 83 5 view .LVU96
+ 378 0082 0120     		movs	r0, #1
+ 379 0084 FFF7FEFF 		bl	Hx711_DelayUs
+ 380              	.LVL27:
+  84:Core/Src/balance_car/hx711.c **** 
+  85:Core/Src/balance_car/hx711.c ****     if ((data & 0x800000UL) != 0U) {
+ 381              		.loc 1 85 5 view .LVU97
+ 382              		.loc 1 85 8 is_stmt 0 view .LVU98
+ 383 0088 15F4000F 		tst	r5, #8388608
+ 384 008c 01D0     		beq	.L24
+  86:Core/Src/balance_car/hx711.c ****         data |= 0xFF000000UL;
+ 385              		.loc 1 86 9 is_stmt 1 view .LVU99
+ 386              		.loc 1 86 14 is_stmt 0 view .LVU100
+ 387 008e 45F07F45 		orr	r5, r5, #-16777216
+ 388              	.LVL28:
+ 389              	.L24:
+  87:Core/Src/balance_car/hx711.c ****     }
+  88:Core/Src/balance_car/hx711.c ****     *raw = (int32_t)data;
+ 390              		.loc 1 88 5 is_stmt 1 view .LVU101
+ 391              		.loc 1 88 10 is_stmt 0 view .LVU102
+ 392 0092 3D60     		str	r5, [r7]
+  89:Core/Src/balance_car/hx711.c ****     return HAL_OK;
+ 393              		.loc 1 89 5 is_stmt 1 view .LVU103
+ 394              		.loc 1 89 12 is_stmt 0 view .LVU104
+ 395 0094 0020     		movs	r0, #0
+ 396              	.LVL29:
+ 397              	.L20:
+  90:Core/Src/balance_car/hx711.c **** }
+ 398              		.loc 1 90 1 view .LVU105
+ 399 0096 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 400              	.LVL30:
+ 401              	.L25:
+ 402              	.LCFI5:
+ 403              		.cfi_def_cfa_offset 0
+ 404              		.cfi_restore 3
+ 405              		.cfi_restore 4
+ 406              		.cfi_restore 5
+ 407              		.cfi_restore 6
+ 408              		.cfi_restore 7
+ 409              		.cfi_restore 14
+  65:Core/Src/balance_car/hx711.c ****     }
+ 410              		.loc 1 65 16 view .LVU106
+ 411 0098 0120     		movs	r0, #1
+ARM GAS  D:\TMP\ccKlqPJH.s 			page 10
+
+
+ 412              	.LVL31:
+ 413              		.loc 1 90 1 view .LVU107
+ 414 009a 7047     		bx	lr
+ 415              	.LVL32:
+ 416              	.L26:
+ 417              	.LCFI6:
+ 418              		.cfi_def_cfa_offset 24
+ 419              		.cfi_offset 3, -24
+ 420              		.cfi_offset 4, -20
+ 421              		.cfi_offset 5, -16
+ 422              		.cfi_offset 6, -12
+ 423              		.cfi_offset 7, -8
+ 424              		.cfi_offset 14, -4
+  69:Core/Src/balance_car/hx711.c ****     }
+ 425              		.loc 1 69 16 view .LVU108
+ 426 009c 0220     		movs	r0, #2
+ 427 009e FAE7     		b	.L20
+ 428              	.L35:
+ 429              		.align	2
+ 430              	.L34:
+ 431 00a0 000C0140 		.word	1073810432
+ 432              		.cfi_endproc
+ 433              	.LFE68:
+ 435              		.section	.text.Hx711_PowerDown,"ax",%progbits
+ 436              		.align	1
+ 437              		.global	Hx711_PowerDown
+ 438              		.syntax unified
+ 439              		.thumb
+ 440              		.thumb_func
+ 442              	Hx711_PowerDown:
+ 443              	.LFB69:
+  91:Core/Src/balance_car/hx711.c **** 
+  92:Core/Src/balance_car/hx711.c **** void Hx711_PowerDown(void)
+  93:Core/Src/balance_car/hx711.c **** {
+ 444              		.loc 1 93 1 is_stmt 1 view -0
+ 445              		.cfi_startproc
+ 446              		@ args = 0, pretend = 0, frame = 0
+ 447              		@ frame_needed = 0, uses_anonymous_args = 0
+ 448 0000 08B5     		push	{r3, lr}
+ 449              	.LCFI7:
+ 450              		.cfi_def_cfa_offset 8
+ 451              		.cfi_offset 3, -8
+ 452              		.cfi_offset 14, -4
+  94:Core/Src/balance_car/hx711.c ****     HAL_GPIO_WritePin(HX711_SCK_PORT, HX711_SCK_PIN, GPIO_PIN_SET);
+ 453              		.loc 1 94 5 view .LVU110
+ 454 0002 0122     		movs	r2, #1
+ 455 0004 4FF40051 		mov	r1, #8192
+ 456 0008 0348     		ldr	r0, .L38
+ 457 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 458              	.LVL33:
+  95:Core/Src/balance_car/hx711.c ****     Hx711_DelayUs(80U);
+ 459              		.loc 1 95 5 view .LVU111
+ 460 000e 5020     		movs	r0, #80
+ 461 0010 FFF7FEFF 		bl	Hx711_DelayUs
+ 462              	.LVL34:
+  96:Core/Src/balance_car/hx711.c **** }
+ 463              		.loc 1 96 1 is_stmt 0 view .LVU112
+ARM GAS  D:\TMP\ccKlqPJH.s 			page 11
+
+
+ 464 0014 08BD     		pop	{r3, pc}
+ 465              	.L39:
+ 466 0016 00BF     		.align	2
+ 467              	.L38:
+ 468 0018 000C0140 		.word	1073810432
+ 469              		.cfi_endproc
+ 470              	.LFE69:
+ 472              		.section	.text.Hx711_PowerUp,"ax",%progbits
+ 473              		.align	1
+ 474              		.global	Hx711_PowerUp
+ 475              		.syntax unified
+ 476              		.thumb
+ 477              		.thumb_func
+ 479              	Hx711_PowerUp:
+ 480              	.LFB70:
+  97:Core/Src/balance_car/hx711.c **** 
+  98:Core/Src/balance_car/hx711.c **** void Hx711_PowerUp(void)
+  99:Core/Src/balance_car/hx711.c **** {
+ 481              		.loc 1 99 1 is_stmt 1 view -0
+ 482              		.cfi_startproc
+ 483              		@ args = 0, pretend = 0, frame = 0
+ 484              		@ frame_needed = 0, uses_anonymous_args = 0
+ 485 0000 08B5     		push	{r3, lr}
+ 486              	.LCFI8:
+ 487              		.cfi_def_cfa_offset 8
+ 488              		.cfi_offset 3, -8
+ 489              		.cfi_offset 14, -4
+ 100:Core/Src/balance_car/hx711.c ****     HAL_GPIO_WritePin(HX711_SCK_PORT, HX711_SCK_PIN, GPIO_PIN_RESET);
+ 490              		.loc 1 100 5 view .LVU114
+ 491 0002 0022     		movs	r2, #0
+ 492 0004 4FF40051 		mov	r1, #8192
+ 493 0008 0148     		ldr	r0, .L42
+ 494 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 495              	.LVL35:
+ 101:Core/Src/balance_car/hx711.c **** }
+ 496              		.loc 1 101 1 is_stmt 0 view .LVU115
+ 497 000e 08BD     		pop	{r3, pc}
+ 498              	.L43:
+ 499              		.align	2
+ 500              	.L42:
+ 501 0010 000C0140 		.word	1073810432
+ 502              		.cfi_endproc
+ 503              	.LFE70:
+ 505              		.section	.bss.s_dwt_ready,"aw",%nobits
+ 508              	s_dwt_ready:
+ 509 0000 00       		.space	1
+ 510              		.text
+ 511              	.Letext0:
+ 512              		.file 2 "F:/Msys2/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 513              		.file 3 "F:/Msys2/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 514              		.file 4 "Drivers/CMSIS/Include/core_cm3.h"
+ 515              		.file 5 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ 516              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 517              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h"
+ 518              		.file 8 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h"
+ARM GAS  D:\TMP\ccKlqPJH.s 			page 12
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 hx711.c
+   D:\TMP\ccKlqPJH.s:19     .text.Hx711_DwtInit:00000000 $t
+   D:\TMP\ccKlqPJH.s:24     .text.Hx711_DwtInit:00000000 Hx711_DwtInit
+   D:\TMP\ccKlqPJH.s:66     .text.Hx711_DwtInit:0000002c $d
+   D:\TMP\ccKlqPJH.s:508    .bss.s_dwt_ready:00000000 s_dwt_ready
+   D:\TMP\ccKlqPJH.s:73     .text.Hx711_DelayUs:00000000 $t
+   D:\TMP\ccKlqPJH.s:78     .text.Hx711_DelayUs:00000000 Hx711_DelayUs
+   D:\TMP\ccKlqPJH.s:134    .text.Hx711_DelayUs:00000028 $d
+   D:\TMP\ccKlqPJH.s:140    .text.Hx711_Init:00000000 $t
+   D:\TMP\ccKlqPJH.s:146    .text.Hx711_Init:00000000 Hx711_Init
+   D:\TMP\ccKlqPJH.s:246    .text.Hx711_Init:00000070 $d
+   D:\TMP\ccKlqPJH.s:252    .text.Hx711_ReadRaw:00000000 $t
+   D:\TMP\ccKlqPJH.s:258    .text.Hx711_ReadRaw:00000000 Hx711_ReadRaw
+   D:\TMP\ccKlqPJH.s:431    .text.Hx711_ReadRaw:000000a0 $d
+   D:\TMP\ccKlqPJH.s:436    .text.Hx711_PowerDown:00000000 $t
+   D:\TMP\ccKlqPJH.s:442    .text.Hx711_PowerDown:00000000 Hx711_PowerDown
+   D:\TMP\ccKlqPJH.s:468    .text.Hx711_PowerDown:00000018 $d
+   D:\TMP\ccKlqPJH.s:473    .text.Hx711_PowerUp:00000000 $t
+   D:\TMP\ccKlqPJH.s:479    .text.Hx711_PowerUp:00000000 Hx711_PowerUp
+   D:\TMP\ccKlqPJH.s:501    .text.Hx711_PowerUp:00000010 $d
+   D:\TMP\ccKlqPJH.s:509    .bss.s_dwt_ready:00000000 $d
+
+UNDEFINED SYMBOLS
+HAL_RCC_GetHCLKFreq
+HAL_GPIO_Init
+HAL_GPIO_WritePin
+HAL_GPIO_ReadPin

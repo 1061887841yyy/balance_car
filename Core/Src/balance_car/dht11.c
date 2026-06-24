@@ -4,6 +4,7 @@
 #define DHT11_PIN  GPIO_PIN_14
 
 static uint8_t s_dwt_ready;
+static uint8_t s_fail_step;
 
 static void Dht11_SetOutput(void)
 {
@@ -66,6 +67,7 @@ HAL_StatusTypeDef Dht11_Init(void)
 
 HAL_StatusTypeDef Dht11_StartRead(void)
 {
+    s_fail_step = 0U;
     Dht11_SetOutput();
     HAL_GPIO_WritePin(DHT11_PORT, DHT11_PIN, GPIO_PIN_RESET);
     return HAL_OK;
@@ -81,12 +83,15 @@ HAL_StatusTypeDef Dht11_FinishRead(Dht11Reading_t *reading)
 
     Dht11_SetInput();
     if (Dht11_WaitForState(GPIO_PIN_RESET, 100U) != HAL_OK) {
+        s_fail_step = 1U;
         return HAL_TIMEOUT;
     }
     if (Dht11_WaitForState(GPIO_PIN_SET, 100U) != HAL_OK) {
+        s_fail_step = 2U;
         return HAL_TIMEOUT;
     }
     if (Dht11_WaitForState(GPIO_PIN_RESET, 100U) != HAL_OK) {
+        s_fail_step = 3U;
         return HAL_TIMEOUT;
     }
 
@@ -95,10 +100,12 @@ HAL_StatusTypeDef Dht11_FinishRead(Dht11Reading_t *reading)
         uint32_t high_width;
 
         if (Dht11_WaitForState(GPIO_PIN_SET, 80U) != HAL_OK) {
+            s_fail_step = 4U;
             return HAL_TIMEOUT;
         }
         high_start = Dht11_Micros();
         if (Dht11_WaitForState(GPIO_PIN_RESET, 120U) != HAL_OK) {
+            s_fail_step = 5U;
             return HAL_TIMEOUT;
         }
         high_width = Dht11_Micros() - high_start;
@@ -109,10 +116,17 @@ HAL_StatusTypeDef Dht11_FinishRead(Dht11Reading_t *reading)
     }
 
     if ((uint8_t)(data[0] + data[1] + data[2] + data[3]) != data[4]) {
+        s_fail_step = 6U;
         return HAL_ERROR;
     }
 
     reading->humidity_percent = (float)data[0] + (float)data[1] * 0.1f;
     reading->temperature_c = (float)data[2] + (float)data[3] * 0.1f;
+    s_fail_step = 0U;
     return HAL_OK;
+}
+
+uint8_t Dht11_GetFailStep(void)
+{
+    return s_fail_step;
 }

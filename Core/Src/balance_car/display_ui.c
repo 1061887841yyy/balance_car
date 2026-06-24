@@ -41,17 +41,25 @@ static void DisplayUi_UpdateText(void)
 
     Oled_Clear();
 
-    (void)snprintf(line, sizeof(line), "Temp: %d.%d C", temp10 / 10, temp10 < 0 ? -(temp10 % 10) : temp10 % 10);
+    if (g_sensor_state.dht_valid != 0U) {
+        (void)snprintf(line, sizeof(line), "Temp: %d.%d C", temp10 / 10, temp10 < 0 ? -(temp10 % 10) : temp10 % 10);
+    } else {
+        (void)snprintf(line, sizeof(line), "DHT Err:%u", (unsigned)g_sensor_state.dht_fail_step);
+    }
     Oled_WriteString(0U, 0U, line);
 
-    (void)snprintf(line, sizeof(line), "Humi: %d %%", (int)(g_sensor_state.humidity_percent + 0.5f));
-    Oled_WriteString(0U, 2U, line);
+    if (g_sensor_state.dht_valid != 0U) {
+        (void)snprintf(line, sizeof(line), "Humi: %d %%", (int)(g_sensor_state.humidity_percent + 0.5f));
+    } else {
+        (void)snprintf(line, sizeof(line), "Humi: -- %%");
+    }
+    Oled_WriteString(0U, 1U, line);
 
     (void)snprintf(line, sizeof(line), "Weight: %d g", weight);
-    Oled_WriteString(0U, 4U, line);
+    Oled_WriteString(0U, 2U, line);
 
-    (void)snprintf(line, sizeof(line), "ADC: %u", (unsigned)g_sensor_state.fsr_adc_raw);
-    Oled_WriteString(0U, 6U, line);
+    (void)snprintf(line, sizeof(line), "Raw: %ld", (long)g_sensor_state.hx711_raw);
+    Oled_WriteString(0U, 3U, line);
 }
 
 void DisplayUi_Background(void)

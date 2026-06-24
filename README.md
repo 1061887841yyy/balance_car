@@ -8,9 +8,15 @@
 - 互补滤波计算俯仰角
 - 角度环 PID
 - 速度环 PID
-- 转向环 PID
+- 基于 MPU6050 Z 轴角速度反馈的转向环 PID
 - TB6612 电机驱动
 - 双编码器测速
+- HC-05/HC-06 蓝牙串口遥控
+- Android 蓝牙遥控 APP
+- PC13 运行指示灯
+- SSD1306 OLED 状态显示
+- DHT11 温湿度采集
+- XFW-XH711/HX711 称重模块
 - Ozone + J-Link 调试变量入口
 
 调试阶段可以通过 Ozone 直接观察和修改全局变量，完成姿态校准、电机方向确认、编码器方向确认和 PID 参数调节。
@@ -29,6 +35,8 @@
 | GND | GND | GND |
 
 代码默认 MPU6050 地址为 `0x68`，即 AD0 接 GND 或悬空。
+
+MPU6050 单独使用 I2C1 的 PB8/PB9。
 
 ### TB6612 电机驱动
 
@@ -61,6 +69,14 @@
 
 如果编码器方向反了，可以交换 A/B 相，也可以在代码中给对应 delta 加负号。
 
+### 运行指示灯
+
+| 功能 | STM32 引脚 | 说明 |
+| --- | --- | --- |
+| 运行指示灯 | PC13 | 最小系统板常见板载 LED，运行允许时点亮 |
+
+PB6/PB7 已用于蓝牙串口，不再作为实体按键。启停通过 Android APP 的 `START` / `EMERGENCY STOP`，或 Ozone 修改 `g_balance_debug.run_enable` 完成。PC13 指示灯跟随 `run_enable` 亮灭。
+
 ### OLED 显示屏
 
 默认使用 0.96 寸 I2C SSD1306 128x64 OLED，地址 `0x3C`。
@@ -72,7 +88,25 @@
 | 3.3V | 3.3V | VCC |
 | GND | GND | GND |
 
-OLED 使用 I2C2，不占用 MPU6050 的 PB8/PB9。
+OLED 使用 I2C2 的 PB10/PB11，不与 MPU6050 共用 I2C1。
+
+### HC-05/HC-06 蓝牙模块
+
+蓝牙模块使用重映射后的 USART1 与 STM32 通信。手机 APP 只发送遥控命令，平衡控制仍由 STM32 完成。
+
+| STM32F103C8T6 | HC-05/HC-06 | 说明 |
+| --- | --- | --- |
+| PB6 / USART1_TX | RXD | STM32 发给蓝牙模块 |
+| PB7 / USART1_RX | TXD | 蓝牙模块发给 STM32 |
+| GND | GND | 必须与 STM32、电机电源共地 |
+| 3.3V 或 5V | VCC | 按模块板标注供电 |
+
+注意：
+
+- HC-05/HC-06 常见默认串口参数是 `9600 8N1`，当前代码也按 `9600` 配置。
+- 如果你的蓝牙模块已经改成 `115200`，需要把 `remote_control.c` 里的 `REMOTE_UART_BAUDRATE` 改成 `115200U`。
+- 很多 HC-05/HC-06 模块板的 `VCC` 可以接 5V，但串口电平仍建议按 3.3V 逻辑使用；如果模块 RXD 不耐 5V，需要确认电平安全。
+- 手机需要先在系统蓝牙设置里配对模块，常见配对码是 `1234` 或 `0000`。
 
 ### DHT11 温湿度模块
 
@@ -84,18 +118,27 @@ OLED 使用 I2C2，不占用 MPU6050 的 PB8/PB9。
 
 DHT11 数据脚需要上拉电阻；多数模块板已自带上拉。
 
-### FSR402 + RFP602 压力/重量估算
+### XFW-XH711 称重模块
 
-| 功能 | STM32 引脚 | RFP602 |
+XFW-XH711 按 HX711 两线数字接口读取，默认使用 A 通道、128 倍增益。
+
+| 功能 | STM32 引脚 | XFW-XH711 |
 | --- | --- | --- |
-| 模拟输出 | PA2 / ADC1_IN2 | AO |
+| 数据输出 | PB12 | DT / DOUT |
+| 时钟输入 | PB13 | SCK / PD_SCK |
 | 3.3V | 3.3V | VCC |
 | GND | GND | GND |
 
-注意：
+称重传感器接 XFW-XH711：
 
-- RFP602 输出必须限制在 `0~3.3V`，不能超过 STM32 ADC 输入范围。
-- FSR402 不是精密称重传感器，OLED 上显示的重量是通过校准系数估算出来的克重。
+| XFW-XH711 | 称重传感器 |
+| --- | --- |
+| E+ | E+ |
+| E- | E- |
+| A+ | S+ / A+ |
+| A- | S- / A- |
+
+PA2 / ADC1_IN2 不再作为重量来源，可以不接原压力传感器。
 
 ## 2. 工程结构
 
@@ -115,12 +158,19 @@ Core/Src/balance_car/
 | `mpu6050_hal.c/.h` | HAL I2C 版 MPU6050 初始化和原始数据读取 |
 | `motor_tb6612.c/.h` | TB6612 电机方向和 PWM 输出 |
 | `encoder_hal.c/.h` | TIM1/TIM2 编码器模式读取左右轮速度 |
-| `i2c_bus.c/.h` | I2C1/I2C2 总线初始化，MPU6050 用 I2C1，OLED 用 I2C2 |
+| `i2c_bus.c/.h` | I2C1/I2C2 总线初始化，MPU6050 使用 I2C1，OLED 使用 I2C2 |
 | `oled_ssd1306.c/.h` | SSD1306 128x64 I2C OLED 分页刷新 |
+| `remote_control.c/.h` | USART1 重映射 PB6/PB7 蓝牙遥控命令接收、解析、限幅和超时保护 |
 | `dht11.c/.h` | PC14 单总线读取 DHT11 温湿度 |
-| `fsr_adc.c/.h` | PA2 / ADC1_IN2 读取 RFP602 模拟电平 |
-| `app_sensors.c/.h` | 温湿度、ADC、电压、重量估算和 Ozone 状态变量 |
+| `hx711.c/.h` | PB12/PB13 读取 XFW-XH711/HX711 称重模块 |
+| `app_sensors.c/.h` | 温湿度、XH711 重量计算和 Ozone 状态变量 |
 | `display_ui.c/.h` | OLED 四行数据显示和后台刷新 |
+
+Android APP 工程在：
+
+```text
+bluetooth_app/
+```
 
 CubeMX 生成的主入口在：
 
@@ -174,8 +224,11 @@ MPU6050
 
 编码器
   -> left_speed / right_speed
-  -> ave_speed / dif_speed
+  -> ave_speed
   -> 速度环 PID 输出角度目标
+
+MPU6050 Z轴陀螺仪
+  -> gyro_z_rate
   -> 转向环 PID 输出差分 PWM
 ```
 
@@ -204,8 +257,8 @@ float ave_pwm = g_angle_pid.Out;
 后台每 50ms 读取编码器：
 
 ```c
-left_speed = left_delta / 44.0 / 0.05 / 9.27666;
-right_speed = right_delta / 44.0 / 0.05 / 9.27666;
+left_speed = left_delta / 13.0 / 0.05 / 30.0;
+right_speed = right_delta / 13.0 / 0.05 / 30.0;
 ave_speed = (left_speed + right_speed) / 2.0;
 dif_speed = left_speed - right_speed;
 ```
@@ -218,13 +271,17 @@ PID_Update(&g_speed_pid);
 g_angle_pid.Target = g_speed_pid.Out;
 ```
 
-转向环输出给差分 PWM：
+转向环使用 MPU6050 的 Z 轴角速度做闭环。`turn_target` 先通过 `turn_gyro_scale` 换算成目标旋转角速度：
 
 ```c
-g_turn_pid.Actual = dif_speed;
+turn_rate_target = -g_balance_debug.turn_target * g_balance_debug.turn_gyro_scale;
+g_turn_pid.Target = turn_rate_target;
+g_turn_pid.Actual = g_balance_state.gyro_z_rate;
 PID_Update(&g_turn_pid);
-s_dif_pwm = g_turn_pid.Out;
+s_dif_pwm = g_turn_pid.Out * 50.0f;
 ```
+
+`dif_speed` 仍然会计算并保存，用来观察左右轮速度差，但当前转向环的反馈量不是 `dif_speed`，而是 `gyro_z_rate`。
 
 最终左右轮 PWM：
 
@@ -241,6 +298,8 @@ right_pwm = ave_pwm - dif_pwm / 2;
 g_balance_debug
 g_balance_state
 g_sensor_state
+g_remote_state
+g_remote_debug
 g_angle_pid
 g_speed_pid
 g_turn_pid
@@ -256,8 +315,10 @@ g_turn_pid
 | `reset_pid_request` | 写 1 后清空 PID 历史量 | 每次重新调参前可以写 1 |
 | `clear_fault_request` | 写 1 后清除故障位 | 硬件故障未解决会再次置位 |
 | `speed_target` | 目标前后速度 | 初期保持 0 |
-| `turn_target` | 目标转向速度差 | 初期保持 0 |
+| `turn_target` | 目标转向输入，内部乘 `turn_gyro_scale` 变成目标 Z 轴角速度 | 初期保持 0 |
 | `gyro_y_offset` | 陀螺仪 Y 轴零漂 | 静止时观察 `g_balance_state.gy`，把静止平均值填进去 |
+| `gyro_z_offset` | 陀螺仪 Z 轴零漂 | 静止时观察 `g_balance_state.gz`，把静止平均值填进去 |
+| `turn_gyro_scale` | `turn_target` 到 Z 轴目标角速度的比例 | 默认 60，手感太猛就减小，转向太弱就增大 |
 | `angle_offset` | 机械竖直角度偏移 | 扶正车后观察 `angle_acc`，按公式修正到接近 0 |
 | `fall_angle_limit` | 倒车保护角度 | 默认 50 度 |
 
@@ -279,29 +340,32 @@ g_turn_pid
 | `angle_acc` | 只由加速度计算出的俯仰角 |
 | `angle_gyro` | 由陀螺仪积分得到的角度 |
 | `angle` | 互补滤波后的最终俯仰角，调平衡主要看它 |
+| `gyro_z_rate` | Z 轴角速度，单位约 deg/s，转向环实际值 |
+| `turn_rate_target` | 转向环目标 Z 轴角速度，由 `turn_target * turn_gyro_scale` 换算得到 |
 | `left_speed/right_speed` | 左右轮速度 |
 | `ave_speed` | 左右轮平均速度，速度环实际值 |
-| `dif_speed` | 左右轮速度差，转向环实际值 |
+| `dif_speed` | 左右轮速度差，用来辅助观察左右轮差速 |
 | `left_pwm/right_pwm` | 左右电机最终 PWM，范围 -100 到 100 |
 | `ave_pwm` | 平均 PWM，主要来自角度环 |
 | `dif_pwm` | 差分 PWM，主要来自转向环 |
 
 ### 5.3 g_sensor_state
 
-这是 OLED、DHT11 和 FSR402/RFP602 的观察与校准入口。
+这是 OLED、DHT11 和 XFW-XH711 的观察与校准入口。
 
 | 变量 | 含义 |
 | --- | --- |
 | `temperature_c` | DHT11 温度，单位摄氏度 |
 | `humidity_percent` | DHT11 湿度，单位百分比 |
-| `fsr_adc_raw` | PA2 / ADC1_IN2 原始 ADC 值，范围约 0~4095 |
-| `fsr_voltage_mv` | RFP602 模拟输出电压，单位 mV |
-| `weight_g` | 按校准系数估算出的重量，单位 g |
-| `fsr_zero_adc` | 空载零点 ADC 值，可在 Ozone 中手动修正 |
-| `fsr_g_per_count` | 每个 ADC count 对应多少克，可在 Ozone 中手动校准 |
+| `weight_g` | 最终显示重量，等于 `hx711_weight_g` |
+| `hx711_raw` | XH711 原始 24 位有符号读数 |
+| `hx711_zero_raw` | 空载零点原始值，可在 Ozone 中手动修正 |
+| `hx711_g_per_count` | 每个 XH711 count 对应多少克，可在 Ozone 中手动校准 |
+| `hx711_weight_g` | XH711 计算出的重量，单位 g |
 | `sensor_fault_flags` | 传感器和 OLED 故障位 |
 | `dht_valid` | 1=DHT11 最近一次读取成功 |
-| `fsr_valid` | 1=FSR ADC 最近一次读取成功 |
+| `dht_fail_step` | DHT11 最近失败阶段，0=正常，1~3=响应阶段失败，4~5=数据位超时，6=校验失败 |
+| `hx711_valid` | 1=XH711 最近一次读取成功 |
 | `oled_ready` | 1=OLED 初始化成功且正在刷新 |
 | `oled_addr_7bit` | OLED 实际使用的 7 位 I2C 地址，正常通常是 `0x3C` 或 `0x3D` |
 | `oled_probe_mask` | OLED 地址探测结果，bit0=`0x3C` 有应答，bit1=`0x3D` 有应答 |
@@ -310,7 +374,7 @@ g_turn_pid
 重量换算公式：
 
 ```text
-weight_g = max(0, (fsr_adc_raw - fsr_zero_adc) * fsr_g_per_count)
+weight_g = max(0, (hx711_raw - hx711_zero_raw) * hx711_g_per_count)
 ```
 
 容易混淆的一点：
@@ -327,13 +391,61 @@ g_balance_state.az
 g_balance_state.angle
 ```
 
-### 5.4 三个 PID
+### 5.4 g_remote_state
+
+这是蓝牙遥控的接收状态。调 HC-05/HC-06、串口和 Android APP 时主要看它。
+
+| 变量 | 含义 |
+| --- | --- |
+| `link_active` | 1=最近 `timeout_ms` 内收到过有效遥控命令 |
+| `command_ready` | 1=收到完整命令行并等待后台解析，通常只会短暂出现 |
+| `parser_error` | 1=最近一次命令格式错误 |
+| `rx_count` | USART1 重映射 PB7 收到的字节数 |
+| `valid_cmd_count` | 有效命令计数 |
+| `invalid_cmd_count` | 无效命令计数 |
+| `timeout_count` | 遥控超时次数 |
+| `last_rx_ms` | 最近一次有效命令的系统毫秒时间 |
+| `fault_flags` | 遥控模块故障位 |
+| `speed_cmd` | 最近一次遥控速度目标，已经过限幅 |
+| `turn_cmd` | 最近一次遥控转向目标，已经过限幅 |
+| `last_command` | 最近一次完整命令字符串 |
+
+正常现象：
+
+- APP 点按钮或串口助手发命令时，`rx_count` 应该增加。
+- 命令格式正确时，`valid_cmd_count` 应该增加。
+- 发送 `SPD 0.5` 后，`speed_cmd` 和 `g_balance_debug.speed_target` 应变为 `0.5`。
+- 发送 `TURN 0.4` 后，`turn_cmd` 和 `g_balance_debug.turn_target` 应变为 `0.4`。
+- APP 摇杆连续遥控时发送 `CTL speed turn`，`speed_cmd/turn_cmd` 会同时更新。
+- 超过 500ms 没收到有效命令时，`link_active` 变 0，`speed_target/turn_target` 自动清零。
+
+### 5.5 g_remote_debug
+
+这是蓝牙遥控功能的调试配置，可以在 Ozone 中临时修改。
+
+| 变量 | 含义 | 默认值 |
+| --- | --- | --- |
+| `enable` | 1=允许遥控命令改变目标，0=忽略遥控命令 | 1 |
+| `allow_run_command` | 1=允许 APP 的 `RUN 1/RUN 0` 控制启停 | 1 |
+| `timeout_stop_enable` | 1=遥控超时后自动清零速度和转向目标 | 1 |
+| `speed_limit` | 遥控速度目标绝对值限幅 | 5.0 |
+| `turn_limit` | 遥控转向目标绝对值限幅 | 0.8 |
+| `timeout_ms` | 遥控超时时间，单位 ms | 500 |
+
+调试建议：
+
+- 第一次联调时可以先保持 `run_enable = 0`，只看 `speed_target/turn_target` 是否会跟随 APP 变化。
+- APP 右摇杆界面最大可输出到 `2.0`，STM32 默认 `turn_limit` 为 `0.8`，所以实际进入 `g_balance_debug.turn_target` 的值会先被限制在 `-0.8~+0.8`。需要更大的转向输入时，可以在 Ozone 中调大 `g_remote_debug.turn_limit`，确认稳定后再写回 `remote_control.c`。
+- 如果你只想用 Ozone 启动，不想让 APP 启动小车，可以把 `allow_run_command = 0`。
+- 如果松开 APP 方向键后车还继续走，优先看 `timeout_stop_enable` 是否为 1，以及 `timeout_count` 是否会增加。
+
+### 5.6 三个 PID
 
 | PID | 作用 | 调试顺序 |
 | --- | --- | --- |
 | `g_angle_pid` | 角度环，让车直立 | 第一个调 |
 | `g_speed_pid` | 速度环，让车不乱跑 | 第二个调 |
-| `g_turn_pid` | 转向环，控制左右差速 | 最后调 |
+| `g_turn_pid` | 转向环，控制 Z 轴旋转角速度 | 最后调 |
 
 PID 字段含义：
 
@@ -445,7 +557,62 @@ g_balance_debug.gyro_y_offset = -12.0f
 
 位置在 `Core/Src/balance_car/balance_control.c` 的 `g_balance_debug` 初始化处。改完后重新编译并烧录，否则单独上电还是旧参数。
 
-#### 6.1.2 校准机械零点 `angle_offset`
+#### 6.1.2 校准 Z 轴陀螺仪零漂 `gyro_z_offset`
+
+`gyro_z_offset` 调的是 MPU6050 陀螺仪 Z 轴的静态零漂。当前转向环使用 Z 轴角速度闭环，代码里使用的是：
+
+```c
+gz_calibrated = raw.gz - g_balance_debug.gyro_z_offset;
+gyro_z_rate = gz_calibrated / 32768.0f * 2000.0f;
+```
+
+校准目标是：车完全静止时，让 `gyro_z_rate` 尽量接近 0。
+
+调试步骤：
+
+1. 保持停机，不让电机输出。
+
+```c
+g_balance_debug.run_enable = 0
+```
+
+2. 把小车或 MPU6050 固定住，保持完全静止，不要用手晃动车体。
+
+3. 在 Ozone 里观察：
+
+```c
+g_balance_state.gz
+```
+
+4. 看 `gz` 静止时大概稳定在多少，把这个平均值填到：
+
+```c
+g_balance_debug.gyro_z_offset
+```
+
+例子：
+
+```text
+静止时 gz 大约是 95，gyro_z_offset 就设为 95
+静止时 gz 大约是 -140，gyro_z_offset 就设为 -140
+```
+
+验证标准：
+
+- `g_balance_state.gz` 是原始值，调 `gyro_z_offset` 后它不会变，这是正常的。
+- 真正应该变化的是 `g_balance_state.gyro_z_rate`。
+- 静止时 `g_balance_state.gyro_z_rate` 应该接近 0。
+- 原地转动车体时，`gyro_z_rate` 应明显正负变化，方向要和 `turn_rate_target` 的调试方向一致。
+
+调好后，把最终值写回：
+
+```c
+.gyro_z_offset = 你的实测平均值,
+```
+
+位置在 `Core/Src/balance_car/balance_control.c` 的 `g_balance_debug` 初始化处。改完后重新编译并烧录。
+
+#### 6.1.3 校准机械零点 `angle_offset`
 
 `angle_offset` 调的是小车的机械直立零点。目标是：小车真正直立时，程序算出来的俯仰角应该接近 0 度。
 
@@ -737,7 +904,33 @@ g_balance_debug.speed_target = -0.3f;
 
 ### 6.6 调转向环
 
-最后调转向环。
+最后调转向环。当前转向环用 MPU6050 的 Z 轴陀螺仪角速度做闭环，目标是让车的实际旋转角速度 `gyro_z_rate` 跟随目标旋转角速度 `turn_rate_target`。
+
+先校准 Z 轴陀螺仪零漂。车完全静止时观察：
+
+```c
+g_balance_state.gz
+```
+
+把静止平均值填入：
+
+```c
+g_balance_debug.gyro_z_offset
+```
+
+注意：
+
+```c
+g_balance_state.gz
+```
+
+是 MPU6050 的 Z 轴原始值，填了 `gyro_z_offset` 后它不会变。真正受零漂修正影响的是：
+
+```c
+g_balance_state.gyro_z_rate
+```
+
+静止时 `gyro_z_rate` 越接近 0 越好。
 
 先保持：
 
@@ -756,6 +949,10 @@ g_turn_pid.Kd = 0.0
 观察：
 
 ```c
+g_balance_state.gyro_z_rate
+g_balance_state.turn_rate_target
+g_turn_pid.Target
+g_turn_pid.Actual
 g_balance_state.dif_speed
 g_turn_pid.Out
 g_balance_state.dif_pwm
@@ -763,17 +960,21 @@ g_balance_state.dif_pwm
 
 调好标准：
 
-- `turn_target = 0` 时，左右轮不应长期有很大的差分输出
-- 小幅给 `turn_target` 后，左右轮能产生可控差速
+- `turn_target = 0` 时，`gyro_z_rate` 应围绕 0 附近小幅波动
+- 小幅给 `turn_target` 后，`gyro_z_rate` 应朝 `turn_rate_target` 的方向变化
+- 左右轮能产生可控差速，`dif_pwm` 不长期打满
 - 车不会因为转向环介入而破坏直立
 
 Data Graph 建议观察：
 
 ```c
 g_turn_pid.Target
-g_balance_state.dif_speed
+g_turn_pid.Actual
+g_balance_state.gyro_z_rate
+g_balance_state.turn_rate_target
 g_turn_pid.Out
 g_balance_state.dif_pwm
+g_balance_state.dif_speed
 g_balance_state.left_speed
 g_balance_state.right_speed
 g_balance_state.angle
@@ -782,17 +983,20 @@ g_balance_state.angle
 转向环的数据关系是：
 
 ```text
-g_turn_pid.Target         -> 目标左右速度差
-g_balance_state.dif_speed -> 实际左右速度差
-g_turn_pid.Out            -> 转向环输出
-g_balance_state.dif_pwm   -> 最终差分PWM
+g_balance_debug.turn_target      -> APP/Ozone给的转向输入
+g_balance_debug.turn_gyro_scale  -> 转向输入到Z轴目标角速度的比例
+g_balance_state.turn_rate_target -> 目标Z轴角速度
+g_balance_state.gyro_z_rate      -> 实际Z轴角速度
+g_turn_pid.Out                   -> 转向环输出
+g_balance_state.dif_pwm          -> 最终差分PWM
 ```
 
 `turn_target = 0` 时，调好的曲线现象：
 
-- `dif_speed` 围绕 0 附近波动。
+- `turn_rate_target` 为 0。
+- `gyro_z_rate` 围绕 0 附近小幅波动。
+- `g_turn_pid.Out` 不会长期顶到 `OutMax/OutMin`。
 - `left_speed/right_speed` 不会明显一正一负互相打架。
-- `g_turn_pid.Out` 不会长期顶到 `+50` 或 `-50`。
 
 给一个小转向目标，例如：
 
@@ -802,16 +1006,25 @@ g_balance_debug.turn_target = 0.3f;
 
 调好的曲线现象：
 
-- `dif_speed` 会朝 `g_turn_pid.Target` 的方向变化。
+- `turn_rate_target` 会变成 `turn_target * turn_gyro_scale` 对应的目标角速度。
+- `gyro_z_rate` 会朝 `turn_rate_target` 的方向变化。
 - `left_speed` 和 `right_speed` 会拉开差值。
 - 车会产生可控转向。
 - 转向时 `angle` 不会明显失控。
 
 异常曲线：
 
-- `turn_target` 为正，但 `dif_speed` 长期往负方向走：转向方向可能反了。
-- `g_turn_pid.Out` 长期打满 `+50` 或 `-50`：转向环参数太大或方向错误。
+- `turn_target` 为正，但 `gyro_z_rate` 长期往反方向走：转向方向可能反了。
+- `g_turn_pid.Out` 长期打满 `OutMax/OutMin`：转向环参数太大、方向错误，或 `turn_gyro_scale` 太大。
 - 转向一介入，`angle` 大幅震荡：转向环太猛，先减小 `Kp/Ki`。
+
+转向方向反时，优先检查 `balance_control.c` 里的这一行：
+
+```c
+float turn_rate_target = -g_balance_debug.turn_target * g_balance_debug.turn_gyro_scale;
+```
+
+如果正负号和实车相反，只改这里的负号，不要同时改电机方向、编码器方向和 APP 方向。
 
 ### 6.7 后续循迹调试
 
@@ -838,7 +1051,7 @@ g_balance_state.ave_speed
 
 ### 6.8 OLED、温湿度和重量显示调试
 
-先不要接电机电源，只接 STM32、MPU6050、OLED、DHT11 和 RFP602。
+先不要接电机电源，只接 STM32、MPU6050、OLED、DHT11 和 XFW-XH711。
 
 在 Ozone 中观察：
 
@@ -846,8 +1059,13 @@ g_balance_state.ave_speed
 g_sensor_state.oled_ready
 g_sensor_state.temperature_c
 g_sensor_state.humidity_percent
-g_sensor_state.fsr_adc_raw
-g_sensor_state.fsr_voltage_mv
+g_sensor_state.dht_valid
+g_sensor_state.dht_fail_step
+g_sensor_state.hx711_valid
+g_sensor_state.hx711_raw
+g_sensor_state.hx711_zero_raw
+g_sensor_state.hx711_g_per_count
+g_sensor_state.hx711_weight_g
 g_sensor_state.weight_g
 g_sensor_state.sensor_fault_flags
 g_sensor_state.oled_addr_7bit
@@ -859,32 +1077,231 @@ g_sensor_state.oled_fail_step
 
 - OLED 每隔约 500ms 更新一次显示。
 - DHT11 温湿度每隔约 2s 更新一次。
-- 按压 FSR402 时，`fsr_adc_raw` 和 `fsr_voltage_mv` 连续变化。
+- 按压称重传感器时，`hx711_raw` 连续变化。
+- 模块接好并正常出数时，`hx711_valid == 1`。
 - 空载时 `weight_g` 接近 0。
 
-FSR402 重量校准步骤：
+XH711 重量校准步骤：
 
-1. 空载时观察 `g_sensor_state.fsr_adc_raw`，把稳定值写入：
+1. 空载时观察 `g_sensor_state.hx711_raw`，把稳定值写入：
 
 ```c
-g_sensor_state.fsr_zero_adc
+g_sensor_state.hx711_zero_raw
 ```
 
-2. 放一个已知重量的物体，观察新的 ADC 值。
+2. 放一个已知重量的物体，观察新的 `hx711_raw`。
 
 3. 按下面公式计算：
 
 ```text
-fsr_g_per_count = 已知重量g / (当前fsr_adc_raw - fsr_zero_adc)
+hx711_g_per_count = 已知重量g / (当前hx711_raw - hx711_zero_raw)
 ```
 
 4. 把结果写入：
 
 ```c
-g_sensor_state.fsr_g_per_count
+g_sensor_state.hx711_g_per_count
 ```
 
-FSR402 受受力面积、安装结构和材料回弹影响很大，建议只把它当作估算重量或压力趋势显示。
+5. 校准稳定后，把 `hx711_zero_raw` 和 `hx711_g_per_count` 写回 `Core/Src/balance_car/app_sensors.c` 的 `g_sensor_state` 默认值。
+
+如果放上重量后 `hx711_raw` 变小，说明传感器方向或接线极性相反，可以交换 A+/A-，也可以使用负的 `hx711_g_per_count`。
+
+### 6.9 蓝牙遥控调试
+
+蓝牙遥控建议分三步调：先确认 STM32 串口能收命令，再确认手机 APP 能连蓝牙，最后再接电机电源实车测试。
+
+#### 6.9.1 先用 USB-TTL 测 STM32 串口
+
+先不要接电机电源，用 USB-TTL 临时代替蓝牙模块。
+
+| USB-TTL | STM32 |
+| --- | --- |
+| TXD | PB7 / USART1_RX |
+| RXD | PB6 / USART1_TX |
+| GND | GND |
+
+串口助手设置：
+
+```text
+9600 8N1
+```
+
+发送命令时每条后面都要带换行 `\n`：
+
+```text
+RUN 1
+SPD 0.5
+TURN 0.4
+CTL 0.5 0.4
+STOP
+RUN 0
+```
+
+Ozone 观察：
+
+```c
+g_remote_state.rx_count
+g_remote_state.valid_cmd_count
+g_remote_state.invalid_cmd_count
+g_remote_state.last_command
+g_remote_state.speed_cmd
+g_remote_state.turn_cmd
+g_remote_state.link_active
+g_balance_debug.run_enable
+g_balance_debug.speed_target
+g_balance_debug.turn_target
+```
+
+调好标准：
+
+- 串口每发一个字符，`rx_count` 增加。
+- 每发一条正确命令，`valid_cmd_count` 增加。
+- `last_command` 能看到最近一条命令。
+- `RUN 1` 能让 `run_enable` 变 1。
+- `RUN 0` 能让 `run_enable` 变 0，并清零速度和转向。
+- `SPD 0.5` 能让 `speed_target` 变 0.5。
+- `TURN 0.4` 能让 `turn_target` 变 0.4。
+- `CTL 0.5 0.4` 能同时让 `speed_target` 变 0.5、`turn_target` 变 0.4。
+
+如果 `rx_count` 不动，优先检查 PB6/PB7 是否接反、USB-TTL 是否共地、波特率是否是 9600。
+
+#### 6.9.2 手机配对 HC-05/HC-06
+
+先在手机系统蓝牙设置里搜索并配对蓝牙模块。常见名称是 `HC-05` 或 `HC-06`，常见配对码是：
+
+```text
+1234
+0000
+```
+
+调好标准：
+
+- 手机系统蓝牙列表中能看到模块。
+- 输入密码后显示已配对。
+- 蓝牙模块指示灯通常会从快速闪烁变为慢闪或连接状态闪烁，具体看模块型号。
+
+如果搜不到模块，先只给蓝牙模块供电测试；如果能搜到但配对失败，换 `1234/0000`，并确认模块没有进入 AT 模式。
+
+#### 6.9.3 编译并安装 Android APP
+
+APP 源码在：
+
+```text
+bluetooth_app/
+```
+
+用 Android Studio 打开这个目录，等待 Gradle Sync 完成，然后连接 Android 手机，点击 Run 安装。
+
+APP 使用流程：
+
+1. 先在手机系统蓝牙里配对 HC-05/HC-06。
+2. 打开 APP，界面会固定为横屏实体遥控器面板风格。
+3. 点击 `刷新设备`。
+4. 选择已配对的 HC-05/HC-06。
+5. 点击 `连接`。
+6. 点击中间下方的 `START` 发送 `RUN 1`。
+7. 左侧摇杆上下控制前进/后退，松开后速度自动归零。
+8. 右侧摇杆左右控制左转/右转，松开后转向自动归零。
+9. 中间区域会同步显示车上 OLED 的四行内容。
+10. 点击中间下方的 `EMERGENCY STOP` 发送 `RUN 0`。
+
+APP 遥控输出：
+
+```text
+左侧速度摇杆范围: -3.0 ~ +3.0
+右侧转向摇杆范围: -2.0 ~ +2.0
+遥控发送周期: 50ms
+连续遥控命令: CTL speed turn
+```
+
+APP 控制对应命令：
+
+| APP 操作 | 发送给 STM32 |
+| --- | --- |
+| 启动 | `RUN 1` |
+| 急停 | `RUN 0` |
+| 左摇杆向上 | `CTL 正速度 当前转向` |
+| 左摇杆向下 | `CTL 负速度 当前转向` |
+| 左摇杆松开 | `CTL 0 当前转向` |
+| 右摇杆向左/向右 | `CTL 当前速度 当前转向` |
+| 右摇杆松开 | `CTL 当前速度 0` |
+
+STM32 每隔约 500ms 会通过蓝牙回传一行 OLED 数据：
+
+```text
+OLED Temp:25.0 C|Humi:60 %|Weight:120 g|Raw:123456
+```
+
+APP 收到后会拆成四行显示，尽量和车上 OLED 内容保持一致：
+
+```text
+Temp: 25.0 C
+Humi: 60 %
+Weight: 120 g
+Raw: 123456
+```
+
+如果车的前进后退方向反了，优先改 APP 里速度摇杆的正负号；如果左右转向反了，优先改 `balance_control.c` 中 `turn_rate_target` 那一行的正负号。不要同时改角度环、电机方向、编码器方向和 APP 方向。
+
+#### 6.9.4 蓝牙和 STM32 联调
+
+接线：
+
+| HC-05/HC-06 | STM32 |
+| --- | --- |
+| TXD | PB7 / USART1_RX |
+| RXD | PB6 / USART1_TX |
+| GND | GND |
+| VCC | 按模块板标注接 3.3V 或 5V |
+
+Ozone 观察：
+
+```c
+g_remote_state.rx_count
+g_remote_state.valid_cmd_count
+g_remote_state.last_command
+g_remote_state.fault_flags
+g_balance_debug.speed_target
+g_balance_debug.turn_target
+g_balance_debug.run_enable
+```
+
+调好标准：
+
+- APP 点击启动，`last_command` 显示 `RUN 1`，`run_enable` 变 1。
+- 左摇杆向上，`last_command` 显示 `CTL`，`speed_target` 变正。
+- 左摇杆向下，`last_command` 显示 `CTL`，`speed_target` 变负。
+- 松开左摇杆，`speed_target` 回到 0。
+- 右摇杆左右移动，`turn_target` 正负变化。
+- 超过 500ms 没有新命令时，`speed_target/turn_target` 自动回 0，但 `run_enable` 不会被强制关掉。
+
+如果 APP 显示已连接但 `rx_count` 不增加，基本就是硬件链路问题：检查 `蓝牙 TXD -> PB7`、`蓝牙 RXD -> PB6`、共地、波特率是否一致。
+
+#### 6.9.5 架空和落地测试
+
+先把车轮架空，再接电机电源。
+
+架空时观察：
+
+```c
+g_balance_state.left_pwm
+g_balance_state.right_pwm
+g_balance_state.left_speed
+g_balance_state.right_speed
+g_balance_debug.speed_target
+g_balance_debug.turn_target
+```
+
+调好标准：
+
+- 前进时两个轮子方向一致。
+- 后退时两个轮子方向一致且与前进相反。
+- 左转/右转时左右轮出现可控差速。
+- 松开摇杆后 `speed_target/turn_target` 回到 0。
+- PWM 不长期打满。
+
+落地测试时先用手扶住车，只给很小的遥控动作。只要出现越跑越快、方向明显反、角度大幅振荡，立即急停，再回到 Ozone 看变量。
 
 ## 7. 方向反了怎么办
 
@@ -986,8 +1403,8 @@ g_balance_debug.clear_fault_request = 1;
 | `0x00000000` | 无故障 | 正常 |
 | `0x00000001` | DHT11 初始化失败 | 检查 PC14、供电和上拉 |
 | `0x00000002` | DHT11 读取失败 | 检查数据线、上拉、电源稳定性 |
-| `0x00000004` | FSR ADC 初始化失败 | 检查 ADC1/PA2 配置 |
-| `0x00000008` | FSR ADC 读取失败 | 检查 PA2 输入和 ADC |
+| `0x00000004` | XH711 初始化失败 | 检查 PB12/PB13 GPIO 配置 |
+| `0x00000008` | XH711 读取失败 | 检查 DT/SCK、供电、GND、称重传感器接线 |
 | `0x00000010` | OLED 初始化失败 | 检查 PB10/PB11、地址 0x3C、供电 |
 | `0x00000020` | OLED 刷新失败 | 检查 I2C 总线和 OLED 接触 |
 
@@ -998,7 +1415,19 @@ g_sensor_state.oled_probe_mask
 g_sensor_state.oled_fail_step
 ```
 
-如果 `oled_fail_step == 2` 且 `oled_probe_mask == 0`，说明 PB10/PB11 上没有探测到 `0x3C` 或 `0x3D` OLED，应优先检查 SCL/SDA 是否接反、供电/GND、模块是否真的是 I2C 版本。
+如果 `oled_fail_step == 2` 且 `oled_probe_mask == 0`，说明 PB10/PB11 的 I2C2 总线上没有探测到 `0x3C` 或 `0x3D` OLED，应优先检查 SCL/SDA 是否接反、供电/GND、模块是否真的是 I2C 版本。
+
+`g_remote_state.fault_flags` 是蓝牙遥控模块故障位。
+
+| 值 | 含义 | 排查方向 |
+| --- | --- | --- |
+| `0x00000000` | 无故障 | 正常 |
+| `0x00000001` | USART1 初始化失败 | 检查 HAL UART 是否启用、PB6/PB7 是否被其他外设占用 |
+| `0x00000002` | UART 接收中断重启失败 | 检查 USART1 中断和 HAL UART 状态 |
+| `0x00000004` | 命令行过长溢出 | APP 或串口助手发送的单条命令超过 31 字节 |
+| `0x00000008` | 命令格式错误 | 检查命令是否是 `RUN/SPD/TURN/CTL/STOP/PING`，并且是否带换行 |
+
+如果 `rx_count` 增加但 `valid_cmd_count` 不增加，通常是命令格式不对或没有发送 `\n`。
 
 ## 9. 脱离 Ozone 后自启动
 
@@ -1126,7 +1555,11 @@ HEX/BIN 只适合烧录，不适合看变量。
 - `main.c` 中是否还调用 `BalanceCar_Init()` 和 `BalanceCar_Background()`
 - `stm32f1xx_hal_msp.c` 中是否仍保留 SWD，不要禁用 SWD
 - `Makefile` 是否仍包含 `Core/Src/balance_car/*.c`
-- `stm32f1xx_hal_conf.h` 是否启用了 `HAL_I2C_MODULE_ENABLED`、`HAL_TIM_MODULE_ENABLED` 和 `HAL_ADC_MODULE_ENABLED`
+- `Makefile` 是否仍包含 `Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c`
+- `stm32f1xx_hal_conf.h` 是否启用了 `HAL_I2C_MODULE_ENABLED`、`HAL_TIM_MODULE_ENABLED` 和 `HAL_UART_MODULE_ENABLED`
+- OLED 是否仍接在 PB10/PB11 的 I2C2
+- PB6/PB7 是否仍留给 USART1 重映射蓝牙遥控，不要再接实体按键
+- PB12/PB13 是否仍留给 XFW-XH711，不要被其它外设占用
 
 ## 11. 安全建议
 

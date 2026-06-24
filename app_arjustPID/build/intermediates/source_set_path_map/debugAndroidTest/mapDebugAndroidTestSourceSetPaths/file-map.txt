@@ -1,0 +1,4 @@
+com.balancecar.bluetoothremote.test.app-androidTest-0 F:\STM32CubeMX\project\balance_car\balance_car_bluetooth\balance_car\android_bluetooth_remote\app\build\generated\res\resValues\androidTest\debug
+com.balancecar.bluetoothremote.test.app-mergeDebugAndroidTestResources-1 F:\STM32CubeMX\project\balance_car\balance_car_bluetooth\balance_car\android_bluetooth_remote\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\merged.dir
+com.balancecar.bluetoothremote.test.app-mergeDebugAndroidTestResources-2 F:\STM32CubeMX\project\balance_car\balance_car_bluetooth\balance_car\android_bluetooth_remote\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\stripped.dir
+com.balancecar.bluetoothremote.test.app-debugAndroidTest-3 F:\STM32CubeMX\project\balance_car\balance_car_bluetooth\balance_car\android_bluetooth_remote\app\build\intermediates\merged_res\debugAndroidTest\mergeDebugAndroidTestResources

@@ -12,5 +12,6 @@ typedef struct {
 HAL_StatusTypeDef Dht11_Init(void);
 HAL_StatusTypeDef Dht11_StartRead(void);
 HAL_StatusTypeDef Dht11_FinishRead(Dht11Reading_t *reading);
+uint8_t Dht11_GetFailStep(void);
 
 #endif

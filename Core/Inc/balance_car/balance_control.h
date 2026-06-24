@@ -22,8 +22,10 @@ typedef struct {
     uint8_t clear_fault_request; /* Ozone写入: 写1后清fault_flags，程序会自动改回0；硬件故障会再次置位 */
     uint8_t reserved;            /* 保留占位，不用调 */
     float speed_target;          /* Ozone写入: 目标前后速度。先保持0，速度环调好后再小幅改变 */
-    float turn_target;           /* Ozone写入: 目标左右速度差。先保持0，转向环调好后再小幅改变 */
+    float turn_target;           /* Ozone写入: 目标转向输入，内部乘turn_gyro_scale变成Z轴目标角速度 */
     float gyro_y_offset;         /* Ozone调试: 陀螺仪Y轴零漂。静止时看gy，填入静止偏置值 */
+    float gyro_z_offset;         /* Ozone调试: 陀螺仪Z轴零漂。静止时看gz，填入静止偏置值 */
+    float turn_gyro_scale;       /* Ozone调试: turn_target到Z轴目标角速度的比例，单位约deg/s */
     float angle_offset;          /* Ozone调试: 机械竖直角度偏置。竖直时调到angle接近0 */
     float fall_angle_limit;      /* Ozone调试: 倒车保护角度，默认50度，超过后自动run_enable=0 */
 } BalanceCarDebug_t;
@@ -35,9 +37,9 @@ typedef struct {
     uint8_t imu_ready;          /* Ozone观察: 1=MPU6050可用；0=初始化或读取失败 */
     uint8_t timer_error_flag;   /* Ozone观察: 1=控制节拍处理堆积，主循环跑不过来 */
     uint8_t mpu_id;             /* Ozone观察: MPU6050 WHO_AM_I，正常应为0x68 */
-    uint8_t button_raw;         /* Ozone观察: PB6按键原始状态，1=当前按下，0=当前松开 */
-    uint8_t button_stable;      /* Ozone观察: PB6按键消抖后状态，1=确认按下，0=确认松开 */
-    uint8_t button_toggle;      /* Ozone观察: 每次按键触发后翻转一次，用来确认按键事件产生 */
+    uint8_t button_raw;         /* 保留字段: PB6已让给蓝牙USART1_TX，固定为0 */
+    uint8_t button_stable;      /* 保留字段: PB6按键已移除，固定为0 */
+    uint8_t button_toggle;      /* 保留字段: PB6按键已移除，固定为0 */
     uint8_t reserved0;          /* 保留占位 */
 
     int16_t ax;                 /* Ozone观察: MPU6050加速度X原始值 */
@@ -50,11 +52,13 @@ typedef struct {
     float angle_acc;            /* Ozone观察: 只由加速度计算出的角度，静止准但运动时抖 */
     float angle_gyro;           /* Ozone观察: 由陀螺仪积分出的角度，短时平滑但会漂移 */
     float angle;                /* Ozone观察: 互补滤波后的最终俯仰角，调平衡主要看它 */
+    float gyro_z_rate;          /* Ozone观察: Z轴角速度deg/s，转向环Actual，原地旋转时应明显变化 */
+    float turn_rate_target;     /* Ozone观察: 转向环目标Z轴角速度deg/s，由turn_target换算得到 */
 
     float left_speed;           /* Ozone观察: 左轮输出轴速度，单位约为转/秒，前进方向应为正 */
     float right_speed;          /* Ozone观察: 右轮输出轴速度，单位约为转/秒，前进方向应为正 */
     float ave_speed;            /* Ozone观察: 左右轮平均速度，速度环Actual */
-    float dif_speed;            /* Ozone观察: 左右轮速度差，转向环Actual */
+    float dif_speed;            /* Ozone观察: 左右轮速度差，仅用于辅助判断左右轮是否一致 */
 
     int16_t left_pwm;           /* Ozone观察: 左电机最终PWM，范围-100~100 */
     int16_t right_pwm;          /* Ozone观察: 右电机最终PWM，范围-100~100 */

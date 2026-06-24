@@ -1,0 +1,7 @@
+#Wed Jun 24 12:44:56 CST 2026
+base.0=F\:\\STM32CubeMX\\project\\balance_car\\balance_car_bluetooth\\balance_car\\merged_app\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
+base.1=F\:\\STM32CubeMX\\project\\balance_car\\balance_car_bluetooth\\balance_car\\merged_app\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\12\\classes.dex
+path.0=0/classes.dex
+path.1=12/classes.dex
+renamed.0=classes.dex
+renamed.1=classes2.dex
