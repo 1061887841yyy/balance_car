@@ -4,6 +4,7 @@
 #include "balance_car/encoder_hal.h"
 #include "balance_car/motor_tb6612.h"
 #include "balance_car/mpu6050_hal.h"
+#include "balance_car/raspi_link.h"
 #include "balance_car/remote_control.h"
 #include <math.h>
 
@@ -272,6 +273,7 @@ HAL_StatusTypeDef BalanceCar_Init(void)
 
     (void)AppSensors_Init();
     (void)RemoteControl_Init();
+    (void)RaspiLink_Init();
 
     s_htim4.Instance = TIM4;
     s_htim4.Init.Prescaler = 64U - 1U;
@@ -292,6 +294,7 @@ void BalanceCar_Background(void)
 {
     AppSensors_Background();
     RemoteControl_Background();
+    RaspiLink_Background();
 
     if (g_balance_debug.clear_fault_request != 0U) {
         g_balance_debug.clear_fault_request = 0U;

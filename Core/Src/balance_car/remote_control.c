@@ -464,12 +464,12 @@ void RemoteControl_IRQHandler(void)
     HAL_UART_IRQHandler(&s_huart_remote);
 }
 
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+uint8_t RemoteControl_RxCpltCallback(UART_HandleTypeDef *huart)
 {
     uint8_t ch;
 
     if (huart->Instance != REMOTE_UART) {
-        return;
+        return 0U;
     }
 
     ch = s_rx_byte;
@@ -477,7 +477,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
     if (ch == '\r') {
         RemoteControl_StartReceive();
-        return;
+        return 1U;
     }
 
     if (ch == '\n') {
@@ -486,7 +486,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
         s_line_ready = 1U;
         g_remote_state.command_ready = 1U;
         RemoteControl_StartReceive();
-        return;
+        return 1U;
     }
 
     if (s_rx_index < REMOTE_LINE_MAX) {
@@ -498,11 +498,14 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     }
 
     RemoteControl_StartReceive();
+    return 1U;
 }
 
-void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
+uint8_t RemoteControl_ErrorCallback(UART_HandleTypeDef *huart)
 {
     if (huart->Instance == REMOTE_UART) {
         RemoteControl_StartReceive();
+        return 1U;
     }
+    return 0U;
 }
