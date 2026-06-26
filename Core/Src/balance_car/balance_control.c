@@ -292,9 +292,9 @@ HAL_StatusTypeDef BalanceCar_Init(void)
 
 void BalanceCar_Background(void)
 {
+    RaspiLink_Background();
     AppSensors_Background();
     RemoteControl_Background();
-    RaspiLink_Background();
 
     if (g_balance_debug.clear_fault_request != 0U) {
         g_balance_debug.clear_fault_request = 0U;

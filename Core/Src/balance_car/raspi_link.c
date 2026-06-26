@@ -23,9 +23,11 @@ volatile RaspiLinkDebug_t g_raspi_link_debug = {
     .timeout_stop_enable = 1U,
     .allow_run_enable = 1U,
     .odom_tx_enable = 1U,
+    .odom_reset_request = 0U,
     .speed_limit = 3.0f,
     .turn_limit = 2.0f,
     .wheel_radius_m = 0.0325f,
+    .odom_angular_deadband_rps = 0.02f,
     .timeout_ms = 500U,
     .odom_period_ms = 50U,
 };
@@ -66,6 +68,7 @@ static void RaspiLink_StopMotion(void)
     g_balance_debug.turn_target = 0.0f;
     g_raspi_link_state.linear_x_cmd = 0.0f;
     g_raspi_link_state.angular_z_cmd = 0.0f;
+    g_raspi_link_state.speed_target_rps = 0.0f;
 }
 
 static void RaspiLink_StartReceive(void)
@@ -241,6 +244,8 @@ static void RaspiLink_ProcessLine(char *line)
     uint8_t obstacle_stop;
     float linear_x;
     float angular_z;
+    float wheel_radius_m;
+    float speed_target_rps;
     char *cursor;
 
     if (line[0] == '\0') {
@@ -305,6 +310,11 @@ static void RaspiLink_ProcessLine(char *line)
 
     linear_x = RaspiLink_Clamp(linear_x, g_raspi_link_debug.speed_limit);
     angular_z = RaspiLink_Clamp(angular_z, g_raspi_link_debug.turn_limit);
+    wheel_radius_m = g_raspi_link_debug.wheel_radius_m;
+    if (wheel_radius_m <= 0.0f) {
+        wheel_radius_m = 0.0325f;
+    }
+    speed_target_rps = linear_x / (2.0f * RASPI_PI_F * wheel_radius_m);
 
     g_raspi_link_state.valid_frame_count++;
     g_raspi_link_state.parser_error = 0U;
@@ -314,6 +324,7 @@ static void RaspiLink_ProcessLine(char *line)
     g_raspi_link_state.obstacle_stop = obstacle_stop;
     g_raspi_link_state.linear_x_cmd = linear_x;
     g_raspi_link_state.angular_z_cmd = angular_z;
+    g_raspi_link_state.speed_target_rps = speed_target_rps;
 
     if (obstacle_stop != 0U || enable_motion == 0U) {
         RaspiLink_StopMotion();
@@ -323,7 +334,7 @@ static void RaspiLink_ProcessLine(char *line)
     if (g_raspi_link_debug.allow_run_enable != 0U) {
         g_balance_debug.run_enable = 1U;
     }
-    g_balance_debug.speed_target = linear_x;
+    g_balance_debug.speed_target = speed_target_rps;
     g_balance_debug.turn_target = angular_z;
 }
 
@@ -384,7 +395,15 @@ static void RaspiLink_UpdateOdometry(uint32_t now)
     dt_s = (float)dt_ms / 1000.0f;
     linear_x_mps = g_balance_state.ave_speed * 2.0f * RASPI_PI_F * wheel_radius_m;
     angular_z_rps = g_balance_state.gyro_z_rate * RASPI_DEG_TO_RAD;
+    if (angular_z_rps > -g_raspi_link_debug.odom_angular_deadband_rps &&
+        angular_z_rps < g_raspi_link_debug.odom_angular_deadband_rps) {
+        angular_z_rps = 0.0f;
+    }
 
+    g_raspi_link_state.speed_actual_rps = g_balance_state.ave_speed;
+    g_raspi_link_state.speed_actual_mps = linear_x_mps;
+    g_raspi_link_state.left_pwm_snapshot = g_balance_state.left_pwm;
+    g_raspi_link_state.right_pwm_snapshot = g_balance_state.right_pwm;
     g_raspi_link_state.odom_linear_x_mps = linear_x_mps;
     g_raspi_link_state.odom_angular_z_rps = angular_z_rps;
     g_raspi_link_state.odom_yaw_rad += angular_z_rps * dt_s;
@@ -485,6 +504,13 @@ static void RaspiLink_SendOdometry(uint32_t now)
 void RaspiLink_Background(void)
 {
     uint32_t now = HAL_GetTick();
+
+    if (g_raspi_link_debug.odom_reset_request != 0U) {
+        g_raspi_link_debug.odom_reset_request = 0U;
+        g_raspi_link_state.odom_x_m = 0.0f;
+        g_raspi_link_state.odom_y_m = 0.0f;
+        g_raspi_link_state.odom_yaw_rad = 0.0f;
+    }
 
     if (s_line_ready != 0U) {
         __disable_irq();

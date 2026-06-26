@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\future\AppData\Local\Temp\cc0ExfM0.s 			page 1
+ARM GAS  C:\Users\future\AppData\Local\Temp\ccgetgVZ.s 			page 1
 
 
    1              		.cpu cortex-m3
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\future\AppData\Local\Temp\cc0ExfM0.s 			page 1
   46              		.loc 1 10 1 view .LVU5
   47 000a 10BD     		pop	{r4, pc}
   48              	.LVL2:
-ARM GAS  C:\Users\future\AppData\Local\Temp\cc0ExfM0.s 			page 2
+ARM GAS  C:\Users\future\AppData\Local\Temp\ccgetgVZ.s 			page 2
 
 
   49              	.L4:
@@ -89,98 +89,119 @@ ARM GAS  C:\Users\future\AppData\Local\Temp\cc0ExfM0.s 			page 1
   71              		@ args = 0, pretend = 0, frame = 0
   72              		@ frame_needed = 0, uses_anonymous_args = 0
   73              		.loc 1 13 1 is_stmt 0 view .LVU9
-  74 0000 08B5     		push	{r3, lr}
+  74 0000 10B5     		push	{r4, lr}
   75              	.LCFI1:
   76              		.cfi_def_cfa_offset 8
-  77              		.cfi_offset 3, -8
+  77              		.cfi_offset 4, -8
   78              		.cfi_offset 14, -4
-  14:Core/Src/balance_car/uart_dispatch.c ****     (void)RaspiLink_TxCpltCallback(huart);
-  79              		.loc 1 14 5 is_stmt 1 view .LVU10
-  80              		.loc 1 14 11 is_stmt 0 view .LVU11
-  81 0002 FFF7FEFF 		bl	RaspiLink_TxCpltCallback
-  82              	.LVL5:
-  15:Core/Src/balance_car/uart_dispatch.c **** }
-  83              		.loc 1 15 1 view .LVU12
-  84 0006 08BD     		pop	{r3, pc}
-  85              		.cfi_endproc
-  86              	.LFE66:
-  88              		.section	.text.HAL_UART_ErrorCallback,"ax",%progbits
-  89              		.align	1
-  90              		.global	HAL_UART_ErrorCallback
-  91              		.syntax unified
-  92              		.thumb
-  93              		.thumb_func
-  95              	HAL_UART_ErrorCallback:
-  96              	.LVL6:
-  97              	.LFB67:
-  16:Core/Src/balance_car/uart_dispatch.c **** 
-  17:Core/Src/balance_car/uart_dispatch.c **** void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
-  18:Core/Src/balance_car/uart_dispatch.c **** {
-  98              		.loc 1 18 1 is_stmt 1 view -0
-  99              		.cfi_startproc
-ARM GAS  C:\Users\future\AppData\Local\Temp\cc0ExfM0.s 			page 3
+  79 0002 0446     		mov	r4, r0
+  14:Core/Src/balance_car/uart_dispatch.c ****     if (RemoteControl_TxCpltCallback(huart) != 0U) {
+  80              		.loc 1 14 5 is_stmt 1 view .LVU10
+  81              		.loc 1 14 9 is_stmt 0 view .LVU11
+  82 0004 FFF7FEFF 		bl	RemoteControl_TxCpltCallback
+  83              	.LVL5:
+  84              		.loc 1 14 8 discriminator 1 view .LVU12
+  85 0008 00B1     		cbz	r0, .L8
+  86              	.L5:
+  15:Core/Src/balance_car/uart_dispatch.c ****         return;
+  16:Core/Src/balance_car/uart_dispatch.c ****     }
+  17:Core/Src/balance_car/uart_dispatch.c ****     (void)RaspiLink_TxCpltCallback(huart);
+  18:Core/Src/balance_car/uart_dispatch.c **** }
+  87              		.loc 1 18 1 view .LVU13
+  88 000a 10BD     		pop	{r4, pc}
+  89              	.LVL6:
+  90              	.L8:
+  17:Core/Src/balance_car/uart_dispatch.c **** }
+  91              		.loc 1 17 5 is_stmt 1 view .LVU14
+  17:Core/Src/balance_car/uart_dispatch.c **** }
+  92              		.loc 1 17 11 is_stmt 0 view .LVU15
+  93 000c 2046     		mov	r0, r4
+  94 000e FFF7FEFF 		bl	RaspiLink_TxCpltCallback
+  95              	.LVL7:
+ARM GAS  C:\Users\future\AppData\Local\Temp\ccgetgVZ.s 			page 3
 
 
- 100              		@ args = 0, pretend = 0, frame = 0
- 101              		@ frame_needed = 0, uses_anonymous_args = 0
- 102              		.loc 1 18 1 is_stmt 0 view .LVU14
- 103 0000 10B5     		push	{r4, lr}
- 104              	.LCFI2:
- 105              		.cfi_def_cfa_offset 8
- 106              		.cfi_offset 4, -8
- 107              		.cfi_offset 14, -4
- 108 0002 0446     		mov	r4, r0
-  19:Core/Src/balance_car/uart_dispatch.c ****     if (RemoteControl_ErrorCallback(huart) != 0U) {
- 109              		.loc 1 19 5 is_stmt 1 view .LVU15
- 110              		.loc 1 19 9 is_stmt 0 view .LVU16
- 111 0004 FFF7FEFF 		bl	RemoteControl_ErrorCallback
- 112              	.LVL7:
- 113              		.loc 1 19 8 discriminator 1 view .LVU17
- 114 0008 00B1     		cbz	r0, .L10
- 115              	.L7:
-  20:Core/Src/balance_car/uart_dispatch.c ****         return;
-  21:Core/Src/balance_car/uart_dispatch.c ****     }
-  22:Core/Src/balance_car/uart_dispatch.c ****     (void)RaspiLink_ErrorCallback(huart);
-  23:Core/Src/balance_car/uart_dispatch.c **** }
- 116              		.loc 1 23 1 view .LVU18
- 117 000a 10BD     		pop	{r4, pc}
- 118              	.LVL8:
- 119              	.L10:
-  22:Core/Src/balance_car/uart_dispatch.c **** }
- 120              		.loc 1 22 5 is_stmt 1 view .LVU19
-  22:Core/Src/balance_car/uart_dispatch.c **** }
- 121              		.loc 1 22 11 is_stmt 0 view .LVU20
- 122 000c 2046     		mov	r0, r4
- 123 000e FFF7FEFF 		bl	RaspiLink_ErrorCallback
+  96 0012 FAE7     		b	.L5
+  97              		.cfi_endproc
+  98              	.LFE66:
+ 100              		.section	.text.HAL_UART_ErrorCallback,"ax",%progbits
+ 101              		.align	1
+ 102              		.global	HAL_UART_ErrorCallback
+ 103              		.syntax unified
+ 104              		.thumb
+ 105              		.thumb_func
+ 107              	HAL_UART_ErrorCallback:
+ 108              	.LVL8:
+ 109              	.LFB67:
+  19:Core/Src/balance_car/uart_dispatch.c **** 
+  20:Core/Src/balance_car/uart_dispatch.c **** void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
+  21:Core/Src/balance_car/uart_dispatch.c **** {
+ 110              		.loc 1 21 1 is_stmt 1 view -0
+ 111              		.cfi_startproc
+ 112              		@ args = 0, pretend = 0, frame = 0
+ 113              		@ frame_needed = 0, uses_anonymous_args = 0
+ 114              		.loc 1 21 1 is_stmt 0 view .LVU17
+ 115 0000 10B5     		push	{r4, lr}
+ 116              	.LCFI2:
+ 117              		.cfi_def_cfa_offset 8
+ 118              		.cfi_offset 4, -8
+ 119              		.cfi_offset 14, -4
+ 120 0002 0446     		mov	r4, r0
+  22:Core/Src/balance_car/uart_dispatch.c ****     if (RemoteControl_ErrorCallback(huart) != 0U) {
+ 121              		.loc 1 22 5 is_stmt 1 view .LVU18
+ 122              		.loc 1 22 9 is_stmt 0 view .LVU19
+ 123 0004 FFF7FEFF 		bl	RemoteControl_ErrorCallback
  124              	.LVL9:
- 125 0012 FAE7     		b	.L7
- 126              		.cfi_endproc
- 127              	.LFE67:
- 129              		.text
- 130              	.Letext0:
- 131              		.file 2 "C:/msys64/mingw64/arm-none-eabi/include/machine/_default_types.h"
- 132              		.file 3 "C:/msys64/mingw64/arm-none-eabi/include/sys/_stdint.h"
- 133              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
- 134              		.file 5 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
- 135              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
- 136              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h"
- 137              		.file 8 "Core/Inc/balance_car/raspi_link.h"
- 138              		.file 9 "Core/Inc/balance_car/remote_control.h"
-ARM GAS  C:\Users\future\AppData\Local\Temp\cc0ExfM0.s 			page 4
+ 125              		.loc 1 22 8 discriminator 1 view .LVU20
+ 126 0008 00B1     		cbz	r0, .L12
+ 127              	.L9:
+  23:Core/Src/balance_car/uart_dispatch.c ****         return;
+  24:Core/Src/balance_car/uart_dispatch.c ****     }
+  25:Core/Src/balance_car/uart_dispatch.c ****     (void)RaspiLink_ErrorCallback(huart);
+  26:Core/Src/balance_car/uart_dispatch.c **** }
+ 128              		.loc 1 26 1 view .LVU21
+ 129 000a 10BD     		pop	{r4, pc}
+ 130              	.LVL10:
+ 131              	.L12:
+  25:Core/Src/balance_car/uart_dispatch.c **** }
+ 132              		.loc 1 25 5 is_stmt 1 view .LVU22
+  25:Core/Src/balance_car/uart_dispatch.c **** }
+ 133              		.loc 1 25 11 is_stmt 0 view .LVU23
+ 134 000c 2046     		mov	r0, r4
+ 135 000e FFF7FEFF 		bl	RaspiLink_ErrorCallback
+ 136              	.LVL11:
+ 137 0012 FAE7     		b	.L9
+ 138              		.cfi_endproc
+ 139              	.LFE67:
+ 141              		.text
+ 142              	.Letext0:
+ 143              		.file 2 "C:/msys64/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 144              		.file 3 "C:/msys64/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 145              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ARM GAS  C:\Users\future\AppData\Local\Temp\ccgetgVZ.s 			page 4
+
+
+ 146              		.file 5 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 147              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
+ 148              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h"
+ 149              		.file 8 "Core/Inc/balance_car/raspi_link.h"
+ 150              		.file 9 "Core/Inc/balance_car/remote_control.h"
+ARM GAS  C:\Users\future\AppData\Local\Temp\ccgetgVZ.s 			page 5
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 uart_dispatch.c
-C:\Users\future\AppData\Local\Temp\cc0ExfM0.s:19     .text.HAL_UART_RxCpltCallback:00000000 $t
-C:\Users\future\AppData\Local\Temp\cc0ExfM0.s:25     .text.HAL_UART_RxCpltCallback:00000000 HAL_UART_RxCpltCallback
-C:\Users\future\AppData\Local\Temp\cc0ExfM0.s:60     .text.HAL_UART_TxCpltCallback:00000000 $t
-C:\Users\future\AppData\Local\Temp\cc0ExfM0.s:66     .text.HAL_UART_TxCpltCallback:00000000 HAL_UART_TxCpltCallback
-C:\Users\future\AppData\Local\Temp\cc0ExfM0.s:89     .text.HAL_UART_ErrorCallback:00000000 $t
-C:\Users\future\AppData\Local\Temp\cc0ExfM0.s:95     .text.HAL_UART_ErrorCallback:00000000 HAL_UART_ErrorCallback
+C:\Users\future\AppData\Local\Temp\ccgetgVZ.s:19     .text.HAL_UART_RxCpltCallback:00000000 $t
+C:\Users\future\AppData\Local\Temp\ccgetgVZ.s:25     .text.HAL_UART_RxCpltCallback:00000000 HAL_UART_RxCpltCallback
+C:\Users\future\AppData\Local\Temp\ccgetgVZ.s:60     .text.HAL_UART_TxCpltCallback:00000000 $t
+C:\Users\future\AppData\Local\Temp\ccgetgVZ.s:66     .text.HAL_UART_TxCpltCallback:00000000 HAL_UART_TxCpltCallback
+C:\Users\future\AppData\Local\Temp\ccgetgVZ.s:101    .text.HAL_UART_ErrorCallback:00000000 $t
+C:\Users\future\AppData\Local\Temp\ccgetgVZ.s:107    .text.HAL_UART_ErrorCallback:00000000 HAL_UART_ErrorCallback
 
 UNDEFINED SYMBOLS
 RemoteControl_RxCpltCallback
 RaspiLink_RxCpltCallback
+RemoteControl_TxCpltCallback
 RaspiLink_TxCpltCallback
 RemoteControl_ErrorCallback
 RaspiLink_ErrorCallback

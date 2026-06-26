@@ -37,6 +37,11 @@ typedef struct {
     uint32_t fault_flags;
     float linear_x_cmd;
     float angular_z_cmd;
+    float speed_target_rps;
+    float speed_actual_rps;
+    float speed_actual_mps;
+    int16_t left_pwm_snapshot;
+    int16_t right_pwm_snapshot;
     float odom_x_m;
     float odom_y_m;
     float odom_yaw_rad;
@@ -51,9 +56,11 @@ typedef struct {
     uint8_t timeout_stop_enable;
     uint8_t allow_run_enable;
     uint8_t odom_tx_enable;
+    uint8_t odom_reset_request;
     float speed_limit;
     float turn_limit;
     float wheel_radius_m;
+    float odom_angular_deadband_rps;
     uint32_t timeout_ms;
     uint32_t odom_period_ms;
 } RaspiLinkDebug_t;

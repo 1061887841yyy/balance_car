@@ -45,6 +45,7 @@ HAL_StatusTypeDef RemoteControl_Init(void);
 void RemoteControl_Background(void);
 void RemoteControl_IRQHandler(void);
 uint8_t RemoteControl_RxCpltCallback(UART_HandleTypeDef *huart);
+uint8_t RemoteControl_TxCpltCallback(UART_HandleTypeDef *huart);
 uint8_t RemoteControl_ErrorCallback(UART_HandleTypeDef *huart);
 
 #endif

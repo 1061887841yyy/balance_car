@@ -116,7 +116,7 @@ Pi 下发文本帧格式：
 $BB,<seq>,<enable_motion>,<obstacle_stop>,<linear_x>,<angular_z>*<checksum>
 ```
 
-`checksum` 为 `$` 和 `*` 之间所有 ASCII 字节的异或值，使用两位十六进制表示。合法帧才会更新 `g_balance_debug.speed_target` 和 `g_balance_debug.turn_target`；`enable_motion=0` 或 `obstacle_stop=1` 会立即停机并清零目标。超过 500ms 没收到合法帧时，STM32 会自动停机，防止保持旧命令。
+`checksum` 为 `$` 和 `*` 之间所有 ASCII 字节的异或值，使用两位十六进制表示。合法帧会把 `linear_x` 按轮半径换算成内部轮速目标，再更新 `g_balance_debug.speed_target`；`angular_z` 会更新 `g_balance_debug.turn_target`。`enable_motion=0` 或 `obstacle_stop=1` 会立即停机并清零目标。超过 500ms 没收到合法帧时，STM32 会自动停机，防止保持旧命令。
 
 STM32 还会周期性回传里程计帧给树莓派：
 
@@ -485,8 +485,13 @@ g_balance_state.angle
 | `last_seq` | 最近一次有效帧的序号 |
 | `odom_seq` | 最近一次发送的里程计序号 |
 | `fault_flags` | Pi 链路故障位 |
-| `linear_x_cmd` | 最近一次 Pi 线速度目标，已经过限幅 |
+| `linear_x_cmd` | 最近一次 Pi 线速度目标，单位 m/s，已经过限幅 |
 | `angular_z_cmd` | 最近一次 Pi 角速度目标，已经过限幅 |
+| `speed_target_rps` | `linear_x_cmd` 换算后的内部速度环目标，单位轮子输出轴转/秒 |
+| `speed_actual_rps` | 编码器测得的内部实际速度，单位轮子输出轴转/秒 |
+| `speed_actual_mps` | 编码器测得的实际线速度，单位 m/s |
+| `left_pwm_snapshot` | 最近一次记录的左电机 PWM |
+| `right_pwm_snapshot` | 最近一次记录的右电机 PWM |
 | `odom_x_m` | 回传给树莓派的里程计 X |
 | `odom_y_m` | 回传给树莓派的里程计 Y |
 | `odom_yaw_rad` | 回传给树莓派的里程计 yaw |
@@ -515,10 +520,13 @@ g_balance_state.angle
 | `speed_limit` | Pi 线速度目标绝对值限幅 | 3.0 |
 | `turn_limit` | Pi 角速度目标绝对值限幅 | 2.0 |
 | `wheel_radius_m` | 用于把轮速换成线速度的轮半径，65mm 直径对应 0.0325m | 0.0325 |
+| `odom_angular_deadband_rps` | 里程计 yaw 积分角速度死区，小于该值按 0 处理 | 0.02 |
 | `timeout_ms` | Pi 链路失联超时时间，单位 ms | 500 |
 | `odom_period_ms` | `$BO` 里程计回传周期，单位 ms | 50 |
 
-第一次联调时可以把 `allow_run_enable` 设为 0，只观察 `speed_target/turn_target` 是否随 `$BB` 帧变化，确认车架空和控制方向正确后再允许 Pi 启动。
+第一次联调时可以把 `allow_run_enable` 设为 0，只观察 `linear_x_cmd`、`speed_target_rps`、`speed_actual_mps` 和 `left_pwm_snapshot/right_pwm_snapshot` 是否合理，确认车架空和控制方向正确后再允许 Pi 启动。65mm 轮径下，`linear_x=0.02m/s` 对应内部速度目标约 `0.098rps`。
+
+如果车完全静止但 `/odom` 的 yaw 缓慢漂移，先校准 `g_balance_debug.gyro_z_offset`，让 `g_balance_state.gyro_z_rate` 静止时接近 0；仍有轻微漂移时，可以适当调大 `g_raspi_link_debug.odom_angular_deadband_rps`。写 `g_raspi_link_debug.odom_reset_request = 1` 可以清零当前 `x/y/yaw`。
 
 ### 5.8 三个 PID
 
